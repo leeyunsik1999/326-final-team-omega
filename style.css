@@ -1,0 +1,23 @@
+
+
+
+
+
+
+
+
+
+
+#toolbar{
+    min-height: 128px;
+    padding-top: 10px;
+}
+
+#toolbar-logo{
+    width: 96px;
+    height: 96px;
+}
+
+#page-content{
+    min-height: 768px;;
+}

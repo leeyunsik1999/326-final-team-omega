@@ -1,0 +1,12 @@
+.toolbar-logo{
+    width: 96px;
+    height: 96px;
+    position: absolute;
+    left: 50%;
+}
+
+.toolbar-logo-container{
+    display: flex;
+    justify-content: center;
+}
+
