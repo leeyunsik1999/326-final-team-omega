@@ -23,10 +23,10 @@
 .sub-button{
     padding: 10px;
     border-radius: 50%;
-    border-color: 5px solid #c04ee5;
+    border: 5px solid #c04ee5;
     background-color: #d891ef;
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     margin-left: 32px;
     margin-right: 32px;
 }
@@ -49,6 +49,14 @@
     height: 96px;
 }
 
+#toolbar-logo-button{
+    width: 96px;
+    height: 96px;
+    margin: 0px;
+    padding: 0px;
+    border-width: 5px;
+}
+
 #avatar-image{
     width: 32px;
     height: 32px;
@@ -58,3 +66,4 @@
 #page-content{
     min-height: 768px;
 }
+
