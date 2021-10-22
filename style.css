@@ -1,9 +1,40 @@
+.page{
+    height: 100%;
+    width: 100%;
+}
 
+.main-button{
+    padding: 10px;
+    border-radius: 50%;
+    border: 10px solid #9F40FF;
+    background-color: #c790ff;
+    height: 512px;
+    width: 512px;
+    margin-left: 48px;
+    margin-right: 48px;
+}
 
+.main-button-text{
+    color: white;
+    font-size: 3em;
+    font-weight: 500;
+}
 
+.sub-button{
+    padding: 10px;
+    border-radius: 50%;
+    border-color: 5px solid #c04ee5;
+    background-color: #d891ef;
+    height: 200px;
+    width: 200px;
+    margin-left: 32px;
+    margin-right: 32px;
+}
 
-
-
+.button-image{
+    height: 65%;
+    width: 65%;
+}
 
 
 
@@ -25,5 +56,5 @@
 }
 
 #page-content{
-    min-height: 768px;;
+    min-height: 768px;
 }
