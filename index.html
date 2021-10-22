@@ -13,7 +13,7 @@
 
 <body>
     <div id="page-container" class="d-flex flex-column container-fluid" style="margin-top: 0.5%;">
-        <div id="toolbar">
+        <div id="toolbar" class="d-flex flex-column">
             <div id="logo_row" class="row">
                 <div id="filler" class="col"></div>
                 <div id="logo-toolbar" class="d-flex justify-content-center">
@@ -21,7 +21,7 @@
                         <div style="color: white; font-weight: 500;">LOGO</div>
                     </div>
                 </div>
-                <div id="login-toolbar" class="col" style="margin-right: 1%;">
+                <div id="login-toolbar" class="col">
                     <div id="login-button" class="d-flex justify-content-end">
                         <div id="avatar-container">
                             <img id="avatar-image" src="./images/login_avatar.png">
@@ -30,11 +30,18 @@
                     </div>
                 </div>
             </div>
+            <div id="text-row" class="row">
+                <div id="toolbar-habit"></div>
+                <div id="toolbar-picture"></div>
+                <div id="toolbar-add"></div>
+            </div>
+            <div id="toolbar-divider" class="align-self-center">
+            </div>
         </div>
         <div id="page-content">
             <!-- THIS IS THE MAIN PAGE -->
             <div id="main-page" class="page">
-                <div id="main-button-row" class="d-flex justify-content-center" style="margin-top: 1%;">
+                <div id="main-button-row" class="d-flex justify-content-center">
                     <div id="habits-page-main-button" class="main-button d-flex justify-content-center align-items-center flex-column">
                         <div class="row main-button-text">habits</div>
                         <img id="habits-button-logo" class="button-image row" src="./images/notepad_logo.png">
@@ -45,7 +52,7 @@
                     </div>
 
                 </div>
-                <div id="sub-button-row" class="d-flex justify-content-center" style="margin-top: 2%;">
+                <div id="sub-button-row" class="d-flex justify-content-center">
                     <div id="theme-page-sub-button" class="sub-button d-flex justify-content-center align-items-center">
                         <img id="theme-button-logo" class="button-image" src="./images/palette_logo.png">
                     </div>
