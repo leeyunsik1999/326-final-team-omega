@@ -8,10 +8,10 @@
     border-radius: 50%;
     border: 10px solid #9F40FF;
     background-color: #c790ff;
-    height: 512px;
-    width: 512px;
-    margin-left: 48px;
-    margin-right: 48px;
+    height: 450px;
+    width: 450px;
+    margin-left: 4%;
+    margin-right: 4%;
 }
 
 .main-button-text{
@@ -23,17 +23,24 @@
 .sub-button{
     padding: 10px;
     border-radius: 50%;
-    border-color: 5px solid #c04ee5;
+    border: 5px solid #c04ee5;
     background-color: #d891ef;
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     margin-left: 32px;
     margin-right: 32px;
 }
 
 .button-image{
-    height: 65%;
-    width: 65%;
+    height: 60%;
+    width: 60%;
+}
+
+.toolbar-textbox{
+    width: 50%;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #c790ff;
 }
 
 
@@ -49,6 +56,14 @@
     height: 96px;
 }
 
+#toolbar-logo-button{
+    width: 96px;
+    height: 96px;
+    margin: 0px;
+    padding: 0px;
+    border-width: 5px;
+}
+
 #avatar-image{
     width: 32px;
     height: 32px;
@@ -57,4 +72,23 @@
 
 #page-content{
     min-height: 768px;
+}
+
+#toolbar-divider{
+    margin-top: 0.5%;
+    margin-bottom: 1%;
+    width: 90%; 
+    border: 1px solid #9F40FF;
+}
+
+#main-button-row{
+    margin-top: 1%;
+}
+
+#sub-button-row{
+    margin-top: 2%;
+}
+
+#text-row{
+    margin-top: 1%;
 }

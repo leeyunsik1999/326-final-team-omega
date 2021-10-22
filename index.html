@@ -12,47 +12,76 @@
 </head>
 
 <body>
-    <div id="page-container" class="d-flex flex-column container-fluid">
-        <div id="toolbar">
+    <div id="page-container" class="d-flex flex-column container-fluid" style="margin-top: 0.5%;">
+        <div id="toolbar" class="d-flex flex-column">
             <div id="logo_row" class="row">
                 <div id="filler" class="col"></div>
-                <div id="logo-toolbar" class="col text-center">
-                    <img id="toolbar-logo" src="./images/sample_logo.png">
+                <div id="logo-toolbar" class="d-flex justify-content-center">
+                    <div id="toolbar-logo-button" class="main-button d-flex justify-content-center align-items-center flex-column">
+                        <div style="color: white; font-weight: 500;">LOGO</div>
+                    </div>
                 </div>
                 <div id="login-toolbar" class="col">
                     <div id="login-button" class="d-flex justify-content-end">
                         <div id="avatar-container">
                             <img id="avatar-image" src="./images/login_avatar.png">
                         </div>
-                        <div>Login</div>
+                        <div style="font-weight: 500;">Login</div>
+                        <div style="min-width: 2%"></div>
                     </div>
                 </div>
             </div>
+            <div id="text-row" class="row">
+                <div id="toolbar-habit" class="d-flex justify-content-center col">
+                    <div id="habit-textbox" class="toolbar-textbox text-center">Habits</div>
+                </div>
+                <div id="toolbar-picture" class="d-flex justify-content-center col">
+                    <div id="picture-textbox" class="toolbar-textbox text-center">Pictures</div>
+                </div>
+                <div id="toolbar-add" class="d-flex justify-content-center col">
+                    <div id="add-textbox" class="toolbar-textbox text-center">Add</div>
+                </div>
+            </div>
+            <div id="toolbar-divider" class="align-self-center">
+            </div>
         </div>
         <div id="page-content">
-            <div id="main_page" class="page">
-                <div id="main_button_row" class="d-flex justify-content-center" style="margin-top: 25px;">
-                    <div id="habits_page_main_button" class="main-button d-flex justify-content-center align-items-center flex-column">
+            <!-- THIS IS THE MAIN PAGE -->
+            <div id="main-page" class="page">
+                <div id="main-button-row" class="d-flex justify-content-center">
+                    <div id="habits-page-main-button" class="main-button d-flex justify-content-center align-items-center flex-column">
                         <div class="row main-button-text">habits</div>
-                        <img id="habits_button_logo" class="button-image row" src="./images/notepad_logo.png">
+                        <img id="habits-button-logo" class="button-image row" src="./images/notepad_logo.png">
                     </div>
-                    <div id="pictures_page_main_button" class="main-button d-flex justify-content-center align-items-center flex-column">
+                    <div id="pictures-page-main-button" class="main-button d-flex justify-content-center align-items-center flex-column">
                         <div class="row main-button-text">pictures</div>
-                        <img id="pictures_button_logo" class="button-image" src="./images/camera_logo.png">
+                        <img id="pictures-button-logo" class="button-image" src="./images/camera_logo.png">
                     </div>
 
                 </div>
-                <div id="sub_button_row" class="d-flex justify-content-center" style="margin-top: 50px;">
-                    <div id="theme_page_sub_button" class="sub-button d-flex justify-content-center align-items-center">
-                        <img id="theme_button_logo" class="button-image" src="./images/palette_logo.png">
+                <div id="sub-button-row" class="d-flex justify-content-center">
+                    <div id="theme-page-sub-button" class="sub-button d-flex justify-content-center align-items-center">
+                        <img id="theme-button-logo" class="button-image" src="./images/palette_logo.png">
                     </div>
-                    <div id="add_page_sub_button" class="sub-button d-flex justify-content-center align-items-center">
-                        <img id="add_button_logo" class="button-image" src="./images/add_logo.png">
+                    <div id="add-page-sub-button" class="sub-button d-flex justify-content-center align-items-center">
+                        <img id="add-button-logo" class="button-image" src="./images/add_logo.png">
                     </div>
-                    <div id="setting_page_sub_button" class="sub-button d-flex justify-content-center align-items-center">
-                        <img id="setting_button_logo" class="button-image" src="./images/settings_logo.png">
+                    <div id="setting-page-sub-button" class="sub-button d-flex justify-content-center align-items-center">
+                        <img id="setting-button-logo" class="button-image" src="./images/settings_logo.png">
                     </div>
                 </div>
+            </div>
+            <!-- Where you should work on for the habits page. Habits main button and toolbar leads here -->
+            <div id="habits-page" class="page" style="background-color:red;">
+                <div>THIS IS THE HABITS PAGE! REMEMBER TO REMOVE STYLE FROM habits-page DIV ID WHEN YOU'RE DONE</div>
+            </div>
+            <!-- Where you should work on for the pictures page. Pictures main button and toolbar leads here -->
+            <div id="pictures-page" class="page" style="background-color:greenyellow;">
+                <div>THIS IS THE PICTURES PAGE! REMEMBER TO REMOVE STYLE FROM pictures-page DIV ID WHEN YOU'RE DONE</div>
+            </div>
+            <!-- Where you should work on for the add page. Add main button and toolbar leads here -->
+            <div id="add-page" class="page" style="background-color:fuchsia;">
+                <div>THIS IS THE ADD PAGE! REMEMBER TO REMOVE STYLE FROM add-page DIV ID WHEN YOU'RE DONE</div>
             </div>
         </div>
 
