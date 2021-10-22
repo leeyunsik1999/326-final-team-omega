@@ -23,15 +23,19 @@ function initialize() {
     // Adding functionality to logo button going back to main page
     document.getElementById("toolbar-logo-button").addEventListener("click", () => load_page("main-page"));
 
-    // Adding functionality to logo button going to habits page
+    // Adding functionality to logo button and toolbar button going to habits page
     document.getElementById("habits-page-main-button").addEventListener("click", () => load_page("habits-page"));
-
-    // Adding functionality to logo button going to pictures page
+    document.getElementById("habit-textbox").addEventListener("click", () => load_page("habits-page"));
+    
+    // Adding functionality to logo button and toolbar button going to pictures page
     document.getElementById("pictures-page-main-button").addEventListener("click", () => load_page("pictures-page"));
-
-    // Adding functionality to logo button going to add page
+    document.getElementById("picture-textbox").addEventListener("click", () => load_page("pictures-page"));
+    
+    // Adding functionality to logo button and toolbar button going to add page
     document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
-
+    document.getElementById("add-textbox").addEventListener("click", () => load_page("add-page"));
+    
+    
     load_page("main-page");
 }
 

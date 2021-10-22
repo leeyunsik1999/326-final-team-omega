@@ -36,6 +36,13 @@
     width: 60%;
 }
 
+.toolbar-textbox{
+    width: 50%;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #c790ff;
+}
+
 
 
 
@@ -67,12 +74,8 @@
     min-height: 768px;
 }
 
-#login-toolbar{
-    margin-right: 1%;
-}
-
 #toolbar-divider{
-    margin-top: 1%;
+    margin-top: 0.5%;
     margin-bottom: 1%;
     width: 90%; 
     border: 1px solid #9F40FF;
@@ -84,4 +87,8 @@
 
 #sub-button-row{
     margin-top: 2%;
+}
+
+#text-row{
+    margin-top: 1%;
 }
