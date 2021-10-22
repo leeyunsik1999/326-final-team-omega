@@ -1,0 +1,38 @@
+/**
+ * Takes in the page id of page-content's child to show. Hides all other children of page-content.
+ * Used as a really bad solution for page switching through buttons.
+ * Temporary solution until all pages are loaded via DOM-surgery in JS
+ * @param {string} page_id the DOM object's id to load. Child of page-content
+ */
+function load_page(page_id) {
+    console.log("Blep");
+    const pages = [
+        "main-page",
+        "habits-page",
+        "pictures-page",
+        "add-page"
+    ];
+
+    for (const page of pages) {
+        console.log(page);
+        document.getElementById(page).style.display = page === page_id ? "block" : "none";
+    }
+}
+
+function initialize() {
+    // Adding functionality to logo button going back to main page
+    document.getElementById("toolbar-logo-button").addEventListener("click", () => load_page("main-page"));
+
+    // Adding functionality to logo button going to habits page
+    document.getElementById("habits-page-main-button").addEventListener("click", () => load_page("habits-page"));
+
+    // Adding functionality to logo button going to pictures page
+    document.getElementById("pictures-page-main-button").addEventListener("click", () => load_page("pictures-page"));
+
+    // Adding functionality to logo button going to add page
+    document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
+
+    load_page("main-page");
+}
+
+initialize();
