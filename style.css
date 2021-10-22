@@ -18,6 +18,12 @@
     height: 96px;
 }
 
+#avatar-image{
+    width: 32px;
+    height: 32px;
+    padding-right: 5px;
+}
+
 #page-content{
     min-height: 768px;;
 }
