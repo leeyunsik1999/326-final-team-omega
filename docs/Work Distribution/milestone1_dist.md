@@ -1,8 +1,9 @@
 # Yun's To-Do
 ## Main page
 ### Details
-- Implement two main buttons that navigate to habits page and pictures page
-- Implement sub-buttons that leads to theme, add habits, and settings page
+- [x] Implement two main buttons that navigate to habits page and pictures page
+- [x] Implement sub-buttons that leads to theme (planned, nothing concrete yet), add habits, and settings (planned, nothing concrete yet) page
+- [ ] Finish up part0 for milestone 1 markdown
 
 ## Other Page Frameworks
 ### Details
@@ -10,11 +11,11 @@
 
 ## Object data structure outlining and dummy data
 ### Details
-- Come up with structure that objects should be made to utilize their data
-- Includes being able to navigate to other pages, implemented by a empty flexbox where teammates can work on implementing details of other pages (habits, pictures, etc).
+- [ ] ~~Come up with structure that objects should be made to utilize their data~~ Moved to milestone 2
+- [x] Includes being able to navigate to other pages, implemented by a empty flexbox where teammates can work on implementing details of other pages (habits, pictures, etc).
 ### Object models to use
-- Image: Would have image ID, captions, optional linked event IDs and date in a json object.
-- Event object: Would have ID, name, date and linked image ID. Would have userID as a field in the database, but no need for it front-end.
+- [ ] ~~Image: Would have image ID, captions, optional linked event IDs and date in a json object.~~ Part of datastructures-- moved to milestone 2, coming up with draft right now, however.
+- [ ] ~~Event object: Would have ID, name, date and linked image ID. Would have userID as a field in the database, but no need for it front-end.~~ Same as above.
 
 # Erin's To-Do
 ## Wireframe mock-up
