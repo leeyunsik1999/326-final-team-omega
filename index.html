@@ -72,8 +72,71 @@
                 </div>
             </div>
             <!-- Where you should work on for the habits page. Habits main button and toolbar leads here -->
-            <div id="habits-page" class="page" style="background-color:red;">
-                <div>THIS IS THE HABITS PAGE! REMEMBER TO REMOVE STYLE FROM habits-page DIV ID WHEN YOU'RE DONE</div>
+            <div id="habits-page" class="page">
+                <div class = "container">
+                    <div class = "row">
+                        <div id = "habit-to-do" class = "col-4" >
+                            <div class = "card" style="background-color:mediumpurple;">
+                                <div class = "card-body">
+                                    <h1 id = "habits-date">DATE</h1>
+                                    <div id = "habits-list">
+                                        <div class = "custom-control custom-checkbox">
+                                            <input type = "checkbox" class = "custom-control-input" id = "check1">
+                                            <label class = "custom-control-label" for = "check1">Habit 1</label>
+                                        </div>
+                                        <div class = "custom-control custom-checkbox">
+                                            <input type = "checkbox" class = "custom-control-input" id = "check2" checked>
+                                            <label class = "custom-control-label" for = "check2">Habit 2</label>
+                                        </div>
+                                        <div class = "custom-control custom-checkbox">
+                                            <input type = "checkbox" class = "custom-control-input" id = "check3" checked>
+                                            <label class = "custom-control-label" for = "check3">Habit 3</label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id="add-habit-sub-button" class="add-habit-btn d-flex justify-content-center sub-button-primary">
+                                        <img id="add-button-logo" src="./images/add_logo.png">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="d-flex justify-content-center" id = "monthly-page-button"> 
+                                <button type = "button" class = "btn btn-light">Monthly View</button>
+                            </div>
+                        </div>
+
+                        <div id = "daily-photos" class = "col-8">
+                            <div class = "card" style="background-color:lightgray;">
+                                <div class = "card-body">
+                                    <div class = "container"> 
+                                        <div id = "image-row" class = "row">
+                                            <div id = "image-col-1" class = "col">
+                                                <img src = "./images/pic1.jpg">
+                                                <img src = "./images/pic2.png">
+                                                <img src = "./images/pic3.jpg">
+                                            </div>
+                                            <div id = "image-col-2" class = "col">
+                                                <img src = "./images/pic5.jpg">
+                                                <img src = "./images/pic4.jpg">
+                                            </div>
+                                            <div id = "image-col-3" class = "col">
+                                                
+                                            </div>
+                                            <div id = "image-col-4" class = "col">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id="add-pic-sub-button" class="add-pic-btn d-flex justify-content-center sub-button-primary">
+                                        <img id="add-button-logo" src="./images/add_logo.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <!-- Where you should work on for the pictures page. Pictures main button and toolbar leads here -->
             <div id="pictures-page" class="page" style="background-color:greenyellow;">

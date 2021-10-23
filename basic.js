@@ -34,6 +34,12 @@ function initialize() {
     // Adding functionality to logo button and toolbar button going to add page
     document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-textbox").addEventListener("click", () => load_page("add-page"));
+
+    // Adding functionalty to add buttons on habits page
+    document.getElementById("add-habit-sub-button").addEventListener("click", () => load_page("add-page"));
+    document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
+
+    // Adding functionality to monthly view button on habits page
     
     
     load_page("main-page");
