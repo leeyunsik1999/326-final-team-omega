@@ -3,7 +3,8 @@
 ### Details
 - [x] Implement two main buttons that navigate to habits page and pictures page
 - [x] Implement sub-buttons that leads to theme (planned, nothing concrete yet), add habits, and settings (planned, nothing concrete yet) page
-- [ ] Finish up part0 for milestone 1 markdown
+- [x] Finish up part0 for milestone 1 markdown
+- [ ] Responsible for Part 1 and Part 2 descriptions of homepage in markdown
 
 ## Other Page Frameworks
 ### Details
@@ -26,14 +27,18 @@
 ### Details
 - Responsible for implementing the habits page, layout of events / photos based on daily/monthly view.
 - Need to implement switching between daily/monthly.
-- Rendering objects based on dummy data using JS.
+- ~~Rendering objects based on dummy data using JS.~~ Moved to milestone 2.
+- [ ] Responsible for Part 1 and Part 2 descriptions of daily page and monthly page.
 
 # Swar's To-Do
 ## Photos Page
 ### Details
-- Responsible for implementing the photos page, a grid view of uploaded photos from dummy data sorted by date.
-- Should be rendering the grid through usage of CSS grid objects and bootstrap dynamically via JS.
+- ~~Responsible for implementing the photos page, a grid view of uploaded photos from dummy data sorted by date.~~ Moved to milestone 2.
+- ~~Should be rendering the grid through usage of CSS grid objects and bootstrap dynamically via JS.~~ Moved to milestone 2.
+- Should be implementing the HTML/CSS mockup of photos page and add habits/photos page.
+- [ ] Responsible for Part 1 and Part 2 descriptions of photos page and add page.
 
 ## Add Habits/Photos page
 - Responsible for implementing the habits/photos page. No need to be functional, just the visual aspects of it.
-- Should be loaded through JS.
+- ~~Should be loaded through JS.~~ Moved to milestone 2
+- 
