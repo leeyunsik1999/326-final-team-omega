@@ -1,5 +1,3 @@
-Notes: Please view ```docs/"Work Distribution"/milestone1_dist.md``` for each part of the project individual members are responsible for for grading purposes.
-
 # Part 0: Data Interactions
 ## Important Data
 We will have four main data objects that will be managed: Habits, Habit Events, Pictures, Captions, and Themes. The names are bound to change, but those would be the data objects the user will interact with. We don't include user info in here as per instructions.
