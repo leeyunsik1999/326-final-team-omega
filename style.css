@@ -1,3 +1,5 @@
+/* Yun css */
+
 .page{
     height: 100%;
     width: 100%;
@@ -94,6 +96,8 @@
 }
 
 
+/* Erin css */
+
 .add-pic-btn {
     padding: 10px;
     border-radius: 50%;
@@ -159,3 +163,38 @@
     vertical-align: middle;
     width: 100%;
 }
+
+#habits-month {
+    font-size: 50px;
+    font-weight: bold;
+    font-style: italic;
+    color:blueviolet;
+}
+
+#habit-label {
+    font-size: 25px;
+    color:blueviolet;
+    margin-left: 40px;
+    margin-top: 20px;;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: inline-grid;
+    grid-column-gap: 2px;
+}
+
+
+.grid {
+    display: grid;
+    grid-auto-flow: column;
+    margin-top: 26px;
+    background-color:lightgray;
+    color:lightgray;
+}
+
+.day {
+    border: 2px solid black;
+}
+
+/* */

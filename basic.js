@@ -5,12 +5,12 @@
  * @param {string} page_id the DOM object's id to load. Child of page-content
  */
 function load_page(page_id) {
-    console.log("Blep");
     const pages = [
         "main-page",
         "habits-page",
         "pictures-page",
-        "add-page"
+        "add-page",
+        "monthly-habits-page"
     ];
 
     for (const page of pages) {
@@ -40,7 +40,8 @@ function initialize() {
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
     // Adding functionality to monthly view button on habits page
-    
+    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));   
+    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));   
     
     load_page("main-page");
 }
