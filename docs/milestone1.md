@@ -53,7 +53,7 @@ Contains buttons that will let you add more habits/pictures and go to the monthl
 
 Monthly view page will also return back to daily view page.
 
-> Wireframe
+> Wireframe 
 ![habits page daily wireframe](./images_for_md/daily-page-wireframe.png)
 ![habits page monthly wireframe](./images_for_md/monthly-page-wireframe.png)
 
