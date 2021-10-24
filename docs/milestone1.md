@@ -47,7 +47,19 @@ Also illustrates where the themes/settings button would be.
 ![main page mockup](./images_for_md/main-page-html.png)
 
 ## Habits page
-Maybe a subsection for daily/monthly pages?
+Page where all submitted habits and photos will show up.
+
+Contains buttons that will let you add more habits/pictures and go to the monthly view page.
+
+Monthly view page will also return back to daily view page.
+
+> Wireframe
+![habits page daily wireframe](./images_for_md/daily-page-wireframe.png)
+![habits page monthly wireframe](./images_for_md/monthly-page-wireframe.png)
+
+> HTML/CSS Mockup
+![habits page daily mockup](./images_for_md/daily-page-html.png)
+![habits page monthly mockup](./images_for_md/monthly-page-html.png)
 
 ## Pictures page
 
@@ -78,13 +90,13 @@ https://whimsical.com/habituall-TQPRSdX8HhGURRMvLXXfKY
 
 ## Erin's To-Do
 ### Wireframe mock-up
-- Mainly responsible for designing and finalizing the wireframe based on initial hand-drawn designs.
+- Designed and finalized the wireframe based on initial hand-drawn designs in whimsical.
 
 ### Habits Page
 - Responsible for implementing the habits page, layout of events / pictures based on daily/monthly view.
-- Need to implement switching between daily/monthly.
+- Implemented switching between daily/monthly.
 - ~~Rendering objects based on dummy data using JS.~~ Moved to milestone 2.
-- [ ] Responsible for Part 1 and Part 2 descriptions of daily page and monthly page.
+- [x] Responsible for Part 1 and Part 2 descriptions of daily page and monthly page.
 
 ## Swar's To-Do
 ### Pictures Page
