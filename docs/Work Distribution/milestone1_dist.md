@@ -19,12 +19,13 @@
 # Erin's To-Do
 ## Wireframe mock-up
 ### Details
-- Mainly responsible for designing and finalizing the wireframe based on initial hand-drawn designs.
+- Designed and finalized the wireframe based on initial hand-drawn designs on whimsical.
 
-## Habits Page
+## Habits and Montly Page
 ### Details
 - Responsible for implementing the habits page, layout of events / photos based on daily/monthly view.
-- Need to implement switching between daily/monthly.
+  - Habits page includes both habits and pictures along with link to the add page if user wishes to do so.
+- Implemented switching between daily/monthly.
 - Rendering objects based on dummy data using JS.
 
 # Swar's To-Do
