@@ -201,4 +201,83 @@
     background-color: mediumpurple;
 }
 
-/* */
+/* Swarathmika CSS */
+
+.photo-image {
+    display: block;
+    height: 5%;
+    width: 5%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Picture Page CSS */
+.container.gallery-container {
+    background-color: #fff;
+    color: #35373a;
+    min-height: 100vh;
+    padding: 30px 50px;
+}
+
+
+#gallery-row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+
+/* Four equal columns next to each other */
+#gallery-column {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+}
+
+#gallery-column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    #gallery-column {
+      flex: 50%;
+      max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #gallery-column {
+      flex: 100%;
+      max-width: 100%;
+    }
+}
+
+.baguetteBox-button {
+    background-color: transparent !important;
+}
+
+#add-habit-card {
+    background-color: beige;
+}
+
+#add-pic-card {
+    background-color: beige;
+}
+
+.upload-drop-box {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center
+}
+
+.upload-drop-box.drop {
+    color: #222;
+    border-color: #222;
+}
+
