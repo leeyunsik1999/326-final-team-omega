@@ -63,8 +63,18 @@ Monthly view page will also return back to daily view page.
 
 ## Pictures page
 
+> Wireframe 
+![Picture page wirefram](./images_for_md/Gallery-wireframe.png)
+
+> HTML/CSS Mockup
+![Gallery Page](./images_for_md/Gallery.png)
 ## Add page
 
+> Wireframe 
+![Add page wirefram](./images_for_md/Add-wireframe.png)
+
+> HTML/CSS Mockup 
+![Add Page](./images_for_md/Add_Habits_And_Picture_Page.png)
 
 
 
