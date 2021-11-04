@@ -3,6 +3,8 @@ import * as http from 'http';
 import * as url from 'url';
 import * as fs from 'fs';
 
+import express from 'express';
+
 // Variable to store pre-defined data on
 /**
  * Format:
@@ -88,7 +90,7 @@ const data = {
                 ],
                 "events": []
             },
-            "20211103":{
+            "20211103": {
                 "images": [],
                 "events": [
                     {
@@ -101,12 +103,14 @@ const data = {
     }
 };
 
+const app = express();
+const port = 8080;
+
+// Making files in ../client available to use from (domain)/ as if it was (domain)/client/
+app.use(express.static('../client'));
 
 
-let server = http.createServer();
-server.on('request', async (request, response) => {
 
-    response.end();
-});
-
-server.listen(8080);
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
