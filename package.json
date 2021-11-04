@@ -1,0 +1,26 @@
+{
+  "name": "326-final-team-omega",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Public repository for CS326 final project, team omega.",
+  "main": "./server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leeyunsik1999/326-final-team-omega.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leeyunsik1999/326-final-team-omega/issues"
+  },
+  "homepage": "https://github.com/leeyunsik1999/326-final-team-omega#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
