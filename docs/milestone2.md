@@ -1,4 +1,61 @@
+# Part 0: Project API Planning
+## User-Related endpoints
+NOTE: all endpoints using user ID should use user username for demo instead. This will be much easier when we use a database, but json is hard to do it with.
 
+### Yun's Responsibility
+- /user/login?username=username&password=password
+  - Should return user ID if username/password is valid. Else, a 404 error for user not found (should signal username/password is invalid)
+- /user/create?username=username&password=password
+  - Should create the user with given username/password combo. If username exists, a 409 conflicted error should be returned.
+  - Create new user with username as key, password as password and a new id with theme default to 1, and data obj with empty value
+- /user/reset?username=username&password=password
+  - Should reset the user's password if user exists. Else, 404 error not found
+  - Reset the user's password value
+- /user/id/theme
+  - Should return the theme ID of the user's theme settings.
+  - Return the theme key's value
+- /user/id/theme/set?id=2
+  - Should set the theme ID of the user.
+  - Update the "theme" value for user data
+- /user/id/date
+  - Should return the full list of dates that the user has data for.
+  - Essentially return an array of keys for "data" value under the user JSON
+
+### Erin's Responsibility
+- /user/id/events
+  - Should return the list of events that the user currently is keeping track of.
+  - Return the array of events within the user JSON data, accessed by key "events"
+- /user/id/date/events/create
+  - POST request to create a new event.
+  - Should add the event to event list in the userdata, and add said event to current day's data.
+- /user/id/date/events/update
+  - PUT request to update a new event.
+  - Should update the given event's name in the events list, current date and any past dates.
+- /user/id/date/events/delete
+  - DELETE request to delete an event with the name.
+  - Should delete it from the current day and the list. Don't alter past dates.
+- /user/id/date/events?day=yyyymmdd
+  - Should return the list of events that the user has data for on that day.
+  - Return the array of "events" within the JSON value of the key "day" as passed in by API.
+- /user/id/date?day=yyyymmdd
+  - Should return the data (all events/images) that the user has on given day.
+  - Essentially, just return the JSON object that is the value of the appropriate "day" key.
+
+### Swar's responsibility
+- /images/id
+  - Should return an image buffer with the given id. 404 not found if it doesn't exist.
+  - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/1.jpg) as an image buffer.
+- /user/id/date/images?day=yyyymmdd
+  - Should return the list of images that the user has data for on that day.
+  - Return the array of "images" within the JSON value of the key "day" as passed in by API.
+- /user/id/date/images/create
+  - POST request to create a new image.
+  - Should add image to the day's image list, and upload image to images directory with appropriate id.
+- /user/id/date/images/update
+  - PUT request to update an image's name or caption.
+- /user/id/date/images/delete
+  - DELETE request to delete an image.
+  - Should delete image from the server. Also delete it from the appropriate date.
 
 
 
@@ -18,16 +75,15 @@
 - [ ] Make main page load via JS and DOM surgery
 - [ ] Make login page and have it load via JS and DOM surgery
 - [ ] Implement basic CRUD API regarding user interactions (create user, verify user)
-- [ ] 
+  
 ## Erin's To-Do
 - [ ] Make day page load via JS and DOM surgery
 - [ ] Make month page load via JS and DOM surgery
 - [ ] Make theme page load via JS.
 - [ ] Make theme page load/save selection via API's regarding user interactions made by Yun
-- [ ] Utilize basic CRUD API for events
+- [ ] Create CRUD API for events (High priority)
 
 ## Swar's To-Do
 - [ ] Make album page load images via JS and DOM surgery
 - [ ] Make add event/images load via JS and DOM surgery
 - [ ] Create and use CRUD API for images (High priority)
-- [ ] Create CRUD API for events (High priority)
