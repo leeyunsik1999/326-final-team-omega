@@ -110,6 +110,7 @@ const local_port = 8080;
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('/app/client'));
+app.use(express.static('../client'));
 
 // Required to test with postman
 app.use(bodyParser.json());
@@ -232,6 +233,7 @@ app.get("*", (req, res) => {
     const __filename = url.fileURLToPath(import.meta.url);
     res.sendFile(dirname(__filename) + "/../client/index.html");
     */
+    // Should not need this for local
     res.sendFile("/app/client/index.html");
 });
 
