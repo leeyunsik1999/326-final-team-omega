@@ -83,6 +83,19 @@
     border: 1px solid #9F40FF;
 }
 
+#logo-text-placeholder{
+    color: white;
+    font-weight: 500;
+}
+
+#login-text{
+    font-weight: 500;
+}
+
+#login-buffer{
+    min-width: 2%;
+}
+
 #main-button-row{
     margin-top: 1%;
 }
