@@ -84,3 +84,5 @@ function login(){
 }
 
 login();
+
+window.hostname = "temp";
