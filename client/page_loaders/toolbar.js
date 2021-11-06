@@ -94,7 +94,7 @@ function append_logo_row(toolbar){
     // login-text is what we should alter for name updates on button after login
     const login_text = document.createElement("div");
     login_text.id = "login-text";
-    login_text.innerText = "Login";
+    login_text.innerText = `${window.user_name} - Logout`;
     login_button.appendChild(login_text);
 
     const login_buffer = document.createElement("div");
