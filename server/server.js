@@ -5,6 +5,7 @@ import * as fs from 'fs';
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import { dirname } from 'path';
 
 // Variable to store pre-defined data on
 /**
@@ -227,7 +228,8 @@ app.get('/user/:id/date', (req, res) => {
 });
 
 app.get("*", (req, res) => {
-    res.sendFile("../client/index.html");
+    const __filename = url.fileURLToPath(import.meta.url);
+    res.sendFile(dirname(__filename) + "../client/index.html");
 });
 
 app.listen(process.env.PORT || 443, () => {
