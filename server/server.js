@@ -228,8 +228,11 @@ app.get('/user/:id/date', (req, res) => {
 });
 
 app.get("*", (req, res) => {
+    /* 
     const __filename = url.fileURLToPath(import.meta.url);
     res.sendFile(dirname(__filename) + "/../client/index.html");
+    */
+    res.sendFile("app/client/index.html");
 });
 
 app.listen(process.env.PORT || 443, () => {
