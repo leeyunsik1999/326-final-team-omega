@@ -1,1 +1,1 @@
-https://git.heroku.com/cs326-habituall.git
+https://cs326-habituall.herokuapp.com
