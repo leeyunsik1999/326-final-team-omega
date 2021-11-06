@@ -1,5 +1,6 @@
 import { load_toolbar } from './page_loaders/toolbar.js';
 import { load_main_page } from './page_loaders/main_page.js';
+import { load_login_card } from './page_loaders/login.js';
 
 /**
  * Takes in the page id of page-content's child to show. Hides all other children of page-content.
@@ -26,6 +27,7 @@ function load_page(page_id) {
 
 function initialize() {
     const page_container = document.getElementById("page-container");
+
     const page = document.getElementById("page-content");
     // Loading pages via JS
     load_toolbar(page_container);
@@ -53,9 +55,28 @@ function initialize() {
 
     // Adding functionality to monthly view button on habits page
     document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));   
-    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));   
+    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page")); 
     
     load_page("main-page");
 }
 
-initialize();
+function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+function login(){
+    // Saving initialize function so we can call it from login.js without
+    // a circular import.
+    // It's a really bad way to do it but shrug
+    window.init_func = initialize;
+    const page = document.getElementById("page-container");
+    
+    // Saving content to HTML that we can recall later.
+    // DO NOT TO THIS ONCE WE HAVE FUNCTIONS TO LOAD PAGES!!!
+    window.main_page_content = page.innerHTML;
+    page.innerHTML = "";
+
+    load_login_card();
+}
+
+login();
