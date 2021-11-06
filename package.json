@@ -9,7 +9,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "start": "node ./server/server.js"
+=======
+    "start": "cd server && node server.js"
+>>>>>>> 619048a34b906c4d85e557acc0dbe43ad1c59cb4
   },
   "repository": {
     "type": "git",
