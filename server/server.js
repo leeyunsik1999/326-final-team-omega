@@ -3,7 +3,11 @@ import * as http from 'http';
 import * as url from 'url';
 import * as fs from 'fs';
 
+import { getUserImageRoute, updateUserImageRoute, deleteUserImageRoute, initializePictureObjects, createUserImageRoute, getUserImagesByDate} from './pictures-api.js';
+
 import express from 'express';
+import multer from 'multer';
+import bodyParser from 'body-parser';
 
 // Variable to store pre-defined data on
 /**
@@ -103,13 +107,53 @@ const data = {
     }
 };
 
+const upload = multer({ dest: 'uploads/' });
 const app = express();
 const port = 8080;
 
+// Picture API shared object
+export const picturesApi = initializePictureObjects();
+console.log(picturesApi);
+console.log(picturesApi.getUserPictures("username"));
+
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
+app.use(express.json()) // To parse JSON bodies.
+app.use(bodyParser.urlencoded({extended: true}));
 
+// IMAGE routes
+// - /images/id
+//   - Should return an image buffer with the given id. 404 not found if it doesn't exist.
+//   - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/1.jpg) as an image buffer.
+// app.get('/images/:id', getUserImageRoute(req, res));
 
+// - /images/user/id
+//   - Should return an image buffer for a specific user with the given id. 404 not found if it doesn't exist.
+//   - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/user/date/1.jpg) as an image buffer.
+app.get('/images/:user/:id', function(req, res) {getUserImageRoute(req, res)});
+
+// - /user/id/date/images
+//   - Should return the list of images that the user has data for on that day.
+//   - Return the array of "images" within the JSON value of the key "day" as passed in by API.
+app.get('/:user/:date/images', function(req, res){getUserImagesByDate(req, res)});
+
+// - /user/id/date/images/create
+//   - POST request to create a new image.
+//   - Should add image to the day's image list, and upload image to images directory with appropriate id.
+app.post('/:user/:id/:date/images/create', upload.single('img'), function(req, res){createUserImageRoute(req, res)});
+
+// - /user/id/date/images/update
+//   - PUT request to update an image's name or caption.
+app.put('/:user/:id/:date/images/update', function(req, res){updateUserImageRoute(req, res)});
+
+// - /user/id/images/update
+//   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
+app.put('/:user/:id/images/update', function(req, res){updateUserImageRoute(req, res)});
+
+// - /user/id/date/images/delete
+//   - DELETE request to delete an image.
+//   - Should delete image from the server. Also delete it from the appropriate date.
+app.delete('/:user/:id/:date/images/delete', function(req, res){deleteUserImageRoute(req, res)});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

@@ -26,23 +26,23 @@ function initialize() {
     // Adding functionality to logo button and toolbar button going to habits page
     document.getElementById("habits-page-main-button").addEventListener("click", () => load_page("habits-page"));
     document.getElementById("habit-textbox").addEventListener("click", () => load_page("habits-page"));
-    
+
     // Adding functionality to logo button and toolbar button going to pictures page
     document.getElementById("pictures-page-main-button").addEventListener("click", () => load_page("pictures-page"));
     document.getElementById("picture-textbox").addEventListener("click", () => load_page("pictures-page"));
-    
+
     // Adding functionality to logo button and toolbar button going to add page
     document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-textbox").addEventListener("click", () => load_page("add-page"));
 
-    // Adding functionalty to add buttons on habits page
+    // Adding functionality to add buttons on habits page
     document.getElementById("add-habit-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
     // Adding functionality to monthly view button on habits page
-    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));   
-    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));   
-    
+    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
+    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));
+
     load_page("main-page");
 }
 
