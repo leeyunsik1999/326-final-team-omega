@@ -109,6 +109,32 @@ const port = 8080;
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
 
+// In the future, when we don't need to reference Data (with databases), we
+// can and SHOULD refactor so that these app.gets are instead given a handler.
+
+// login request
+app.get('/login', (req, res) => {
+    const username = req.query.username;
+    const password = req.query.password;
+    console.log(`U: ${username}, P: ${password}`);
+
+    // Invalid username
+    if (!(username in data)) {
+        console.log("username not found");
+        res.status(404);
+    }
+    // Invalid password
+    else if (data[username]["password"] !== password) {
+        console.log(`incorrect password-- expected ${data[username]["password"]}`);
+        res.status(404);
+    } else {
+        res.status(200);
+        res.write(JSON.stringify({
+            "id": data[username]["id"]
+        }));
+    }
+    res.end();
+})
 
 
 app.listen(port, () => {
