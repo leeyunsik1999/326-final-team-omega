@@ -128,7 +128,7 @@ class UserPictures {
 }
 
 class Picture {
-  constructor(userId, pictureId, picturePath, date, name, caption) {
+  constructor(userId, pictureId, picturePath, date) {
     this.userId = userId;
     this.pictureId = pictureId;
     this.picturePath = picturePath;
@@ -136,24 +136,25 @@ class Picture {
     this.nameFile = `${this.picturePath}-name.txt`;
     this.pictureDate = date;
     this.pictureBuffer = readFileSync(this.picturePath);
-    this.name = name;
-    this.caption = caption;
-    writePictureDetails();
+    this.name = "";
+    this.caption = "";
+    this.loadPictureDetails();
   }
 
   deletePicture() {
-    unlinkSync(this.picturePath);
-    unlinkSync(this.captionFile);
-    unlinkSync(this.nameFile);
+    deleteFileIfExists(this.picturePath);
+    deleteFileIfExists(this.captionFile);
+    deleteFileIfExists(this.nameFile);
   }
 
   setPictureCaption(caption) {
     this.caption = caption;
-    this.writePictureDetails();
+    writeFileSync(this.captionFile, this.caption);
   }
 
   setPictureName(name) {
     this.name = name;
+    writeFileSync(this.nameFile, this.name);
   }
 
   getPictureBuffer() {
@@ -190,6 +191,7 @@ class Picture {
   loadPicture() {
     if (existsSync(this.picturePath)) {
       this.pictureBuffer = readFileSync(this.picturePath);
+      this.name = readFileSync(this.nameFile);
     }
   }
 
@@ -256,14 +258,17 @@ export function createUserImageRoute(req, res) {
   const pictureId = req.params.id;
   const date = req.params.date;
   const img = req.file;
+  const caption = req.body.caption;
+  const name = req.body.name;
 
   picturesApi.getUserPictures(userId).loadPictures(); // Keep object up to date.
   if (parse(img.originalname).ext === '.jpg' || parse(img.originalname).ext === '.png') {
     if (picturesApi.hasUser(userId)) {
       if (!picturesApi.getUserPictures(userId).hasPicture(pictureId)) {
         const filePath = `${picturesApi.getUserPictures(userId).userPicturesPath}/${date}/${pictureId}${parse(img.originalname).ext}`;
-        console.log("FilePath: " + filePath);
         picturesApi.getUserPictures(userId).createPicture(pictureId, date, img, filePath);
+        picturesApi.getUserPictures(userId).getPicture(pictureId).setPictureCaption(caption);
+        picturesApi.getUserPictures(userId).getPicture(pictureId).setPictureName(name);
         res.writeHead(200, {
           'Content-Type': 'text/plain'
         });
@@ -315,11 +320,13 @@ export function updateUserImageRoute(req, res) {
   const userId = req.params.user;
   const pictureId = req.params.id;
   const caption = req.body.caption;
+  const name = req.body.name;
 
   if (picturesApi.hasUser(userId)) {
     if (picturesApi.getUserPictures(userId).hasPicture(pictureId)) {
       picturesApi.getUserPictures(userId).getPicture(pictureId).loadPicture(); // Keep object up to date.
       picturesApi.getUserPictures(userId).getPicture(pictureId).setPictureCaption(caption);
+      picturesApi.getUserPictures(userId).getPicture(pictureId).setPictureName(name);
       res.writeHead(200, {
         'Content-Type': 'text/plain'
       });

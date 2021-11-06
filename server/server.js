@@ -113,8 +113,6 @@ const port = 8080;
 
 // Picture API shared object
 export const picturesApi = initializePictureObjects();
-console.log(picturesApi);
-console.log(picturesApi.getUserPictures("username"));
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
