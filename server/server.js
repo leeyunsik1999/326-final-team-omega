@@ -163,6 +163,7 @@ app.post('/register', (req, res) => {
         data[username] = temp;
         res.status(200);
         console.log("User created");
+        console.log(data);
     }
     res.end();
 });

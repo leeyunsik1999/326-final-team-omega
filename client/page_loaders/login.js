@@ -15,13 +15,11 @@ export function load_login_card() {
     parent.innerHTML = "";
     parent.append(login_card);
 
-    // Basically loads the saved HTML to page-container, un-loads the login-container, then calls initialize.
-    // Also: Implement logout so logging out calls the load_login_card().
+    // Adding event listeners to button-- login and switching to register form.
     document.getElementById("btn-primary").addEventListener("click", login_button_event);
     document.getElementById("btn-secondary").addEventListener("click", load_register_card);
 }
 
-// TODO: Get register working with API.
 /**
  * Function that appends the login card to login-container.
  * Generates the register card/page.
@@ -37,8 +35,8 @@ function load_register_card() {
     parent.innerHTML = "";
     parent.append(login_card);
 
-    //
-    document.getElementById("btn-primary").addEventListener("click", login_button_event);
+    // Adding functionalities to buttons-- registering and cancel register (go back to login) button.
+    document.getElementById("btn-primary").addEventListener("click", register_button_event);
     document.getElementById("btn-secondary").addEventListener("click", load_login_card);
 }
 
@@ -112,33 +110,83 @@ function get_card_body(type) {
  * If fail, alert is sent with a message according to the status code received from server.
  * Err 401: Invalid password
  * Err 404: Username not found
+ * 
+ * When successfully logged in, un-loads login content, then loads main page through initalize().
  */
 async function login_button_event() {
     const username = document.getElementById("username-input").value;
     const password = document.getElementById("password-input").value;
 
-    // Requesting login to server
-    const response = await fetch(`http://localhost:8080/login?username=${username}&password=${password}`);
-
-    // Processing response
-    if (response.status === 401){
-        alert("Invalid password!");
-    } else if (response.status === 404){
-        alert("Invalid username!");
+    // Checks if both username/password exists.
+    if (username.length === 0) {
+        alert("Enter a username!");
+    } else if (password.length === 0) {
+        alert("Enter a password!");
     } else {
-        // Getting JSON data fetched from server
-        const data = await response.json();
-        // Setting session data
-        window.user_name = username;
-        window.user_id = data["id"];
+        // Requesting login to server
+        const response = await fetch(`http://localhost:8080/login?username=${username}&password=${password}`);
 
-        // Un-loading login page
-        document.getElementById("login-container").innerHTML = "";
+        // Processing response
+        if (response.status === 401) {
+            alert("Invalid password!");
+        } else if (response.status === 404) {
+            alert("Invalid username!");
+        } else {
+            // Getting JSON data fetched from server
+            const data = await response.json();
+            // Setting session data
+            window.user_name = username;
+            window.user_id = data["id"];
+            console.log(window.user_name);
+            console.log(username);
+            // Un-loading login page
+            document.getElementById("login-container").innerHTML = "";
 
-        // Loading main page after logging in successfully
-        // TO REPLACE when we can generate entire page_content through JS
-        document.getElementById("page-container").innerHTML = window.main_page_content;
-        parent.innerHTML = "";
-        window.init_func();
+            // Loading main page after logging in successfully
+            // TO REPLACE when we can generate entire page_content through JS
+            document.getElementById("page-container").innerHTML = window.main_page_content;
+            parent.innerHTML = "";
+            window.init_func();
+        }
+    }
+}
+
+/**
+ * Function run when register is attempted.
+ * Sends username/password to server to see if you can create an account.
+ * Err 406: Username or password is too short (0 length chars)
+ * Err 409: Username already exists.
+ * 
+ * Appropriate alert is given for each errors, and success case.
+ */
+async function register_button_event(){
+    const username = document.getElementById("username-input").value;
+    const password = document.getElementById("password-input").value;
+    // Checks if both username/password exists.
+    if (username.length === 0) {
+        alert("Enter a username!");
+    } else if (password.length === 0) {
+        alert("Enter a password!");
+    } else {
+        // Requesting login to server
+        const response = await fetch(`http://localhost:8080/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        });
+
+        // Processing response
+        if (response.status === 406) {
+            alert("Username or password is too short!");
+        } else if (response.status === 409) {
+            alert("Username already exists.");
+        } else {
+            alert("Account created! You can now log in.");
+        }
     }
 }

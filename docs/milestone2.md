@@ -12,7 +12,6 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
   - Body should be: {"username": username, "password": password}
   - Should create the user with given username/password combo. If username exists, a 409 conflicted error should be returned.
   - Create new user with username as key, password as password and a new id with theme default to 1, and data obj with empty value
-
 - /user/id/theme
   - GET request
   - Should return the theme ID of the user's theme settings.
@@ -80,7 +79,7 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
 - [x] Create example image and event objects to base things off of
 - [x] Make main page load via JS and DOM surgery
 - [x] Make login page and have it load via JS and DOM surgery
-- [ ] Implement basic CRUD API regarding user interactions (create user, verify user)
+- [x] Implement basic CRUD API regarding user interactions (create user, verify user)
   
 ## Erin's To-Do
 - [ ] Make day page load via JS and DOM surgery

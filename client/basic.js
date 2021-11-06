@@ -26,10 +26,6 @@ function load_page(page_id) {
 }
 
 function initialize() {
-    //TEMPORARILY MIMICING WHAT A LOGIN WOULD DO
-    window.user_id = 1;
-    window.user_name = "username";
-
     const page_container = document.getElementById("page-container");
 
     const page = document.getElementById("page-content");
@@ -81,10 +77,6 @@ function initialize() {
     
     load_page("main-page");
 }
-
-function sleep (time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
 
 function login(){
     // Saving initialize function so we can call it from login.js without
