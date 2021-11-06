@@ -133,7 +133,7 @@ app.get('/login', (req, res) => {
     // Invalid password
     else if (data[username]["password"] !== password) {
         console.log(`incorrect password-- expected ${data[username]["password"]}`);
-        res.status(404);
+        res.status(401);
     } else {
         res.status(200);
         console.log(`${username} logged in`);
