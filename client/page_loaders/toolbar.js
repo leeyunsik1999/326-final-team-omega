@@ -14,7 +14,12 @@ export function load_toolbar(parent){
     append_text_row(toolbar);
     append_divider(toolbar);
 
-    parent.appendChild(toolbar);
+    /**
+     * Prepending as toolbar needs to come before anything else.
+     * I won't need to do this when everything is loaded via JS, but as of now,
+     * rest of the page is HTML so i need to prepend this.
+     */
+    parent.prepend(toolbar);
 }
 
 // Below functions are separated for convenience and readability's sake
@@ -53,6 +58,7 @@ function append_logo_row(toolbar){
 
     const logo_button_text = document.createElement("div"); // Holder for logo button text
     logo_button_text.id = "logo-text-placeholder";
+    logo_button_text.innerText = "LOGO";
 
     logo_button.appendChild(logo_button_text);
 
@@ -108,9 +114,13 @@ function append_text_row(toolbar){
      * @param {String} text String to show on the button
      */
     function helper(text){
+        // Div for button itself-- this is what will be clicked
         const toolbar_button = document.createElement("div");
+        // Adding id in form of "habits-textbox", etc. as it's fetched for addEventListener
+        toolbar_button.id = `${text.toLowerCase()}-textbox`
         toolbar_button.classList.add("d-flex", "justify-content-center", "col");
 
+        // Div for the text of the textbox
         const toolbar_button_text = document.createElement("div");
         toolbar_button_text.classList.add("toolbar-textbox", "text-center");
         toolbar_button_text.innerText = text;

@@ -68,11 +68,11 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
 
 # Addendum: Work Distribution
 ## Yun's To-Do
-- [ ] Set up API details
-- [ ] Set up basic server framework so we can expand on it with individual API's
-- [ ] Set up dummy data for user that will be used for login (username, pw, theme, etc)
-- [ ] Create example image and event objects to base things off of
-- [ ] Make main page load via JS and DOM surgery
+- [x] Set up API details
+- [x] Set up basic server framework so we can expand on it with individual API's
+- [x] Set up dummy data for user that will be used for login (username, pw, theme, etc)
+- [x] Create example image and event objects to base things off of
+- [x] Make main page load via JS and DOM surgery
 - [ ] Make login page and have it load via JS and DOM surgery
 - [ ] Implement basic CRUD API regarding user interactions (create user, verify user)
   
