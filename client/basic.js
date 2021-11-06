@@ -100,7 +100,7 @@ await (async () => {
      * Variable used for API call hostname.
      * Fetches hostname automatically from host.txt
      * host.txt content should be http://localhost:8080 in all branches but main.
-     * In main, content should be https://git.heroku.com/cs326-habituall.git
+     * In main, content should be https://cs326-habituall.herokuapp.com
      * Add file to .gitignore so it stays consistent.
      */
     window.hostname = host;
