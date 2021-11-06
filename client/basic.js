@@ -1,4 +1,5 @@
 import { load_toolbar } from './page_loaders/toolbar.js';
+import { load_main_page } from './page_loaders/main_page.js';
 
 /**
  * Takes in the page id of page-content's child to show. Hides all other children of page-content.
@@ -17,13 +18,19 @@ function load_page(page_id) {
 
     for (const page of pages) {
         document.getElementById(page).style.display = page === page_id ? "block" : "none";
+        
+        // Once all pages are loaded by JS, toggle them at the end of generation so we can use this to switch visibility instead
+        //document.getElementById(page).classList.toggle("visible");
     }
 }
 
 function initialize() {
-    const page = document.getElementById("page-container");
-    // Creating toolbar HTML via javascript
-    load_toolbar(page);
+    const page_container = document.getElementById("page-container");
+    const page = document.getElementById("page-content");
+    // Loading pages via JS
+    load_toolbar(page_container);
+
+    load_main_page(page);
 
     // Adding functionality to logo button going back to main page
     document.getElementById("toolbar-logo-button").addEventListener("click", () => load_page("main-page"));

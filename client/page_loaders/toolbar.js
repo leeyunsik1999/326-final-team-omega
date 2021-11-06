@@ -33,6 +33,7 @@ function append_logo_row(toolbar){
     // Creating logo row to add contents to
     const logo_row = document.createElement("div");
     logo_row.id = "logo-row";
+    logo_row.classList.add("row");
 
 
 
@@ -47,7 +48,7 @@ function append_logo_row(toolbar){
     // Creating logo div and appending to logo_row
     const logo_toolbar = document.createElement("div");
     logo_toolbar.id = "logo-toolbar";
-    logo_toolbar.classList.add("d-flex", "justify-content-center");
+    logo_toolbar.classList.add("d-flex", "justify-content-center", "col");
     logo_row.appendChild(logo_toolbar);
 
     // Creating logo button holder and appending logo button to logo_toolbar
