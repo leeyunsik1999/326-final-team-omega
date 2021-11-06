@@ -105,7 +105,7 @@ const data = {
 };
 
 const app = express();
-const port = 8080;
+const local_port = 8080;
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
@@ -226,6 +226,6 @@ app.get('/user/:id/date', (req, res) => {
     res.end();
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+app.listen(process.env.PORT || local_port, () => {
+    console.log(`Example app listening at ${this.address()}${this.address().port}`)
 });
