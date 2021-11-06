@@ -94,3 +94,7 @@ function login(){
 }
 
 login();
+
+const testing = true;
+
+window.hostname = testing ? 'http://localhost:8080' : "temp";
