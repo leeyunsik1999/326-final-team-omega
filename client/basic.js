@@ -93,8 +93,12 @@ function login(){
     load_login_card();
 }
 
+
+/**
+ * Variable used for API call hostname.
+ * Should be http://localhost:8080 when running locally.
+ * Should be https://git.heroku.com/cs326-habituall.git in main, as we're deploying to heroku in main.
+ */
+window.hostname = "http://localhost:8080";
+
 login();
-
-const testing = true;
-
-window.hostname = testing ? 'http://localhost:8080' : "temp";
