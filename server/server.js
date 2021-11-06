@@ -109,7 +109,7 @@ const app = express();
 const local_port = 8080;
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
-app.use(express.static('app/client'));
+app.use(express.static('/app/client'));
 
 // Required to test with postman
 app.use(bodyParser.json());
