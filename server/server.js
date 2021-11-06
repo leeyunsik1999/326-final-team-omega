@@ -226,6 +226,6 @@ app.get('/user/:id/date', (req, res) => {
     res.end();
 });
 
-app.listen(process.env.PORT || local_port, () => {
-    console.log(`Example app listening at ${this.address()}${this.address().port}`)
+app.listen(process.env.PORT || 443, () => {
+    console.log(`Example app listening at ${process.env.PORT}`);
 });
