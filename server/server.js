@@ -4,6 +4,7 @@ import * as url from 'url';
 import * as fs from 'fs';
 
 import express from 'express';
+import bodyParser from 'body-parser';
 
 // Variable to store pre-defined data on
 /**
@@ -74,7 +75,7 @@ const data = {
         "events": [
             "Eat breakfast"
         ],
-        "theme": 1,
+        "theme": 2,
         "data": {
             "20211101": {
                 "images": [],
@@ -109,10 +110,16 @@ const port = 8080;
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
 
+// Required to test with postman
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // In the future, when we don't need to reference Data (with databases), we
 // can and SHOULD refactor so that these app.gets are instead given a handler.
 
-// login request
+// LOGIN RELATED APIs
+
+// Login request
 app.get('/login', (req, res) => {
     const username = req.query.username;
     const password = req.query.password;
@@ -129,14 +136,95 @@ app.get('/login', (req, res) => {
         res.status(404);
     } else {
         res.status(200);
-        res.write(JSON.stringify({
-            "id": data[username]["id"]
-        }));
+        console.log(`${username} logged in`);
+        res.json({"id": data[username]["id"]});
     }
     res.end();
-})
+});
 
+// Register request
+app.post('/register', (req, res) => {
+    const username = req.body['username'];
+    const password = req.body['password'];
+    if (username in data){
+        console.log(`Register error: username ${username} already exists`);
+        res.status(409);
+    } else if (username.length === 0 || password.length === 0){
+        console.log("Username or password too short");
+        res.status(406);
+    } else {
+        let temp = {
+            "id": Math.floor(Math.random() * (999999 - 3 + 1) + 3),
+            "password": password,
+            "events": [],
+            "theme": 1,
+            "data": {}
+        };
+        data[username] = temp;
+        res.status(200);
+        console.log("User created");
+    }
+    res.end();
+});
+
+
+
+
+
+// THEME RELATED APIs
+
+// Fetch user's theme id
+app.get('/user/:id/theme', (req, res) => {
+    const username = req.params["id"];
+    if (!(username in data)){
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    } else {
+        res.status(200);
+        res.json({"theme": data[username]["theme"]});
+        console.log(`Theme for ${username} found`);
+    }
+    res.end();
+});
+
+// Set user's theme ID
+app.put('/user/:id/theme/set', (req, res) => {
+    const username = req.params["id"];
+    const theme = req.body["id"];
+    if (!(username in data)){
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    } else if (typeof(theme) !== "number"){
+        console.log(`${theme} is INVALID`);
+        res.status(400);
+    } else {
+        res.status(200);
+        console.log("Theme successfully overwritten");
+        data[username]["theme"] = theme;
+    }
+    res.end();
+});
+
+
+
+
+// DATE related API's
+
+// Fetches dates that user has data for
+app.get('/user/:id/date', (req, res) => {
+    const username = req.params["id"];
+    if (!(username in data)){
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    } else {
+        res.status(200);
+        res.json({
+            "dates": Object.keys(data[username]["data"])
+        })
+    }
+    res.end();
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
-})
+});
