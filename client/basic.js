@@ -26,6 +26,10 @@ function load_page(page_id) {
 }
 
 function initialize() {
+    //TEMPORARILY MIMICING WHAT A LOGIN WOULD DO
+    window.user_id = 1;
+    window.user_name = "username";
+
     const page_container = document.getElementById("page-container");
 
     const page = document.getElementById("page-content");

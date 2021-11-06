@@ -1,3 +1,5 @@
+//import { URL, URLSearchParams } from 'url';
+
 /**
  * Function that appends the login card to login-container.
  * Generates the login card/page.
@@ -17,6 +19,21 @@ export function load_login_card(){
     // TODO: Get it working with API checks AND THEN calling this.
     // Also: Implement logout so logging out calls the load_login_card().
     document.getElementById("btn-primary").addEventListener("click", () => {
+
+        /*
+        const url = new URL('https://localhost:8080/login');
+        const params = {
+            "username": document.getElementById("username-input").value,
+            "password": document.getElementById("password-input").value
+        }
+        url.search = new URLSearchParams(params).toString();
+        fetch(url).then(response => {
+            console.log(response.status);
+            response.json().then(data => {
+                console.log(data);
+            })
+        })
+        */
         document.getElementById("page-container").innerHTML = window.main_page_content;
         parent.innerHTML = "";
         window.init_func();
