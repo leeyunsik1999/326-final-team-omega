@@ -227,8 +227,7 @@ app.get('/user/:id/date', (req, res) => {
 });
 
 app.get("*", (req, res) => {
-    console.log(__dirname+"../client/index.html")
-    res.sendFile(__dirname+"../client/index.html");
+    res.sendFile("../client/index.html");
 });
 
 app.listen(process.env.PORT || 443, () => {
