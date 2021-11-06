@@ -19,7 +19,7 @@ function load_page(page_id) {
 
     for (const page of pages) {
         document.getElementById(page).style.display = page === page_id ? "block" : "none";
-        
+
         // Once all pages are loaded by JS, toggle them at the end of generation so we can use this to switch visibility instead
         //document.getElementById(page).classList.toggle("visible");
     }
@@ -58,11 +58,11 @@ function initialize() {
     // Adding functionality to logo button and toolbar button going to habits page
     document.getElementById("habits-page-main-button").addEventListener("click", () => load_page("habits-page"));
     document.getElementById("habits-textbox").addEventListener("click", () => load_page("habits-page"));
-    
+
     // Adding functionality to logo button and toolbar button going to pictures page
     document.getElementById("pictures-page-main-button").addEventListener("click", () => load_page("pictures-page"));
     document.getElementById("pictures-textbox").addEventListener("click", () => load_page("pictures-page"));
-    
+
     // Adding functionality to logo button and toolbar button going to add page
     document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-textbox").addEventListener("click", () => load_page("add-page"));
@@ -72,19 +72,19 @@ function initialize() {
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
     // Adding functionality to monthly view button on habits page
-    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));   
-    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page")); 
-    
+    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
+    document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));
+
     load_page("main-page");
 }
 
-function login(){
+function login() {
     // Saving initialize function so we can call it from login.js without
     // a circular import.
     // It's a really bad way to do it but shrug
     window.init_func = initialize;
     const page = document.getElementById("page-container");
-    
+
     // Saving content to HTML that we can recall later.
     // TO REPLACE when we can generate entire page_content through JS
     window.main_page_content = page.innerHTML;
@@ -93,12 +93,16 @@ function login(){
     load_login_card();
 }
 
-
-/**
- * Variable used for API call hostname.
- * Should be http://localhost:8080 when running locally.
- * Should be https://git.heroku.com/cs326-habituall.git in main, as we're deploying to heroku in main.
- */
-window.hostname = "http://localhost:8080";
-
-login();
+await (async () => {
+    const response = await fetch('./host.txt');
+    const host = await response.text();
+    /**
+     * Variable used for API call hostname.
+     * Fetches hostname automatically from host.txt
+     * host.txt content should be http://localhost:8080 in all branches but main.
+     * In main, content should be https://git.heroku.com/cs326-habituall.git
+     * Add file to .gitignore so it stays consistent.
+     */
+    window.hostname = host;
+    login();
+})();

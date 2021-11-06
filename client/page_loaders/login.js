@@ -137,8 +137,6 @@ async function login_button_event() {
             // Setting session data
             window.user_name = username;
             window.user_id = data["id"];
-            console.log(window.user_name);
-            console.log(username);
             // Un-loading login page
             document.getElementById("login-container").innerHTML = "";
 
