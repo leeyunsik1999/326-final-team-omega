@@ -15,6 +15,9 @@ export function load_login_card() {
     parent.innerHTML = "";
     parent.append(login_card);
 
+    // Hiding password when entering
+    document.getElementById("password-input").type="password";
+
     // Adding event listeners to button-- login and switching to register form.
     document.getElementById("btn-primary").addEventListener("click", login_button_event);
     document.getElementById("btn-secondary").addEventListener("click", load_register_card);
