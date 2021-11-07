@@ -1,5 +1,3 @@
-
-
 export function load_daily_page(parent) {
 
   const habits_page = document.createElement("div");
@@ -25,25 +23,25 @@ export function load_daily_page(parent) {
   habit_card.appendChild(card_body);
 
   const date_text = document.createElement("h1");
-  document.body.appendChild(document.innerText(`${get_date_text()}`));
+  // document.body.appendChild(document.innerText(`${get_date_text()}`));
   card_body.appendChild(date_text);
 
   const habits_list = document.createElement("div");
-  const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date()}/events}/`)
-  if(event_response.status !== 200) {
-    alert("An error has occured.");
-  } else {
-    const events = await event_response.json()
-    for(const event in events) {
-      habits_list.appendChild(create_habit(event));
-    }
-  }
+  // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date()}/events}/`)
+  // if(event_response.status !== 200) {
+  //   alert("An error has occured.");
+  // } else {
+  //   const events = await event_response.json()
+  //   for(const event in events) {
+  //     habits_list.appendChild(create_habit(event));
+  //   }
+  // }
   card_body.appendChild(habits_list);
 
   habit_card.appendChild(document.createElement("br"));
 
   const add_habit_sub_button = document.createElement("div");
-  add_habit_sub_button.classList("add-habit-btn", "d-flex", "justify-content-center", "sub-button-primary");
+  add_habit_sub_button.classList.add("add-habit-btn", "d-flex", "justify-content-center", "sub-button-primary");
   card_body.appendChild(add_habit_sub_button);
   const plus_image = document.createElement("img");
   plus_image.id = "plus_image";
@@ -58,7 +56,7 @@ export function load_daily_page(parent) {
   habit_card.appendChild(monthly_page_button);
   const button = document.createElement("button");
   button.classList.add("btn", "btn-light");
-  button.innerText("Monthly View");
+  button.innerText = "Monthly View";
   monthly_page_button.appendChild(button);
 
   const daily_photos = document.createElement("div");

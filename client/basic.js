@@ -37,7 +37,7 @@ function initialize() {
 
     load_daily_page(page);
 
-    load_monthly_page(page);
+    // load_monthly_page(page);
 
     // Adding functionality to logo button going back to main page
     document.getElementById("toolbar-logo-button").addEventListener("click", () => load_page("main-page"));
@@ -48,7 +48,7 @@ function initialize() {
         page_container.removeChild(page_container.querySelector("#toolbar"));
         page.removeChild(page.querySelector("#main-page"));
         page.removeChild(page.querySelector("#habits-page"));
-        page.removeChild(page.querySelector("#monthly_habits-page"));
+        // page.removeChild(page.querySelector("#monthly_habits-page"));
 
         // ANY PAGES THAT ARE ADDED BY JS NEEDS TO BE HANDLED THE WAY ABOVE!
 
