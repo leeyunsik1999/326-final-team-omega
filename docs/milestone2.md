@@ -36,13 +36,10 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
 - /user/id/date/events/update
   - PUT request to update a new event.
   - Should update the given event's name in the events list, current date and any past dates.
-- /user/id/date/events/delete
-  - DELETE request to delete an event with the name.
-  - Should delete it from the current day and the list. Don't alter past dates.
-- /user/id/date/events?day=yyyymmdd
+- /user/id/date/events
   - Should return the list of events that the user has data for on that day.
   - Return the array of "events" within the JSON value of the key "day" as passed in by API.
-- /user/id/date?day=yyyymmdd
+- /user/id/date/full_day
   - Should return the data (all events/images) that the user has on given day.
   - Essentially, just return the JSON object that is the value of the appropriate "day" key.
 
@@ -93,11 +90,11 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
 - [x] Deploy on heroku
   
 ## Erin's To-Do
-- [ ] Make day page load via JS and DOM surgery
-- [ ] Make month page load via JS and DOM surgery
+- [x] Make day page load via JS and DOM surgery
+- [x] Make month page load via JS and DOM surgery
 - [ ] Make theme page load via JS.
 - [ ] Make theme page load/save selection via API's regarding user interactions made by Yun
-- [ ] Create CRUD API for events (High priority)
+- [x] Create CRUD API for events (High priority)
 
 ## Swar's To-Do
 - [ ] Make album page load images via JS and DOM surgery

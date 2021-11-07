@@ -120,6 +120,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // LOGIN RELATED APIs
 
 // Login request
+// /login?username=username&password=password
 app.get('/login', (req, res) => {
     const username = req.query.username;
     const password = req.query.password;
@@ -222,6 +223,77 @@ app.get('/user/:id/date', (req, res) => {
         res.json({
             "dates": Object.keys(data[username]["data"])
         })
+    }
+    res.end();
+});
+
+
+// ERIN
+// EVENTS
+
+app.get('/user/:id/events', (req, res) => {
+    const username = req.params["id"];
+    if(!(username in data)) {
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        res.status(200);
+        res.json({"events": data[username]["events"]});
+    }
+    res.end();
+});
+
+app.post('/user/:id/:date/events/create', (req, res) => {
+    const username = req.params["id"];
+    if(!(username in data)) {
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        if(!date in data["username"]["data"]) {
+            data["username"]["data"][date] = {
+                "images": [],
+                "events": []
+            }
+        }
+        data["username"]["data"][date] = req.body;
+    }
+});
+
+app.put('/user/:id/:date/events/update', (req, res) => {
+    const username = req.params["id"];
+    if (!(username in data)){
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        
+    }
+});
+
+app.get('/user/:id/date/events', (req, res) => {
+    const username = req.params["id"];
+    if(!(username in data)) {
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        res.status(200);
+        res.json({"events": data[username]["data"][date]["events"]});
+    }
+    res.end();
+});
+
+app.get('/user/:id/date/full_day', (req, res) => {
+    const username = req.params["id"];
+    if(!(username in data)) {
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        res.status(200);
+        res.json({"events": data[username]["data"][date]});
     }
     res.end();
 });
