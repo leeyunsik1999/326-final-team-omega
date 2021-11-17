@@ -79,15 +79,21 @@ class UserPictures {
     return null;
   }
 
-  // Get the paths to all pictures for this user.
-  getPicturePaths() {
-    const paths = [];
+  // Get the details for all pictures for this user.
+  getAllDetails() {
+    const images = [];
 
     for (let picture of this.pictures.values()) {
-      paths.push(picture.picturePath);
+      const details = {
+        pictureId: picture.pictureId,
+        caption: picture.caption,
+        path: picture.picturePath,
+      }
+
+      images.push(details);
     }
 
-    return paths;
+    return images;
   }
 
   // Get the picture ids for this user under the specified date.
@@ -337,10 +343,10 @@ export function getUserImagesByDate(req, res) {
   }
 }
 
-// - /user/images
-//   - Should return a list of paths for images of that user
-//   - Return the array of paths within the JSON value of the key "images".
-export function getUserImagePaths(req, res) {
+// - /user/images/details
+//   - Should return a list of details {path, name, caption) for images of that user
+//   - Return the array of details within the JSON value of the key "images".
+export function getUserImageDetails(req, res) {
   const userId = req.params.user;
   const date = req.params.date;
 
@@ -349,7 +355,7 @@ export function getUserImagePaths(req, res) {
       'Content-Type': 'application/json'
     });
     const paths = {
-      images: picturesApi.getUserPictures(userId).getPicturePaths(),
+      images: picturesApi.getUserPictures(userId).getAllDetails(),
     }
     res.end(JSON.stringify(paths));
   } else {

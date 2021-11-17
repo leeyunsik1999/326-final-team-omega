@@ -138,7 +138,7 @@ app.get('/:user/:date/images', function(req, res){picApi.getUserImagesByDate(req
 // - /user/images
 //   - Should return a list of paths for images of that user
 //   - Return the array of paths within the JSON value of the key "images".
-app.get('/:user/images', function(req, res){picApi.getUserImagePaths(req, res)});
+app.get('/:user/images/details', function(req, res){picApi.getUserImageDetails(req, res)});
 
 // - /user/id/date/images/create
 //   - POST request to create a new image.

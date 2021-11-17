@@ -1,11 +1,12 @@
-export function loadImagesPage(page) {
+export async function loadImagesPage(page) {
     console.log("loadImagesPage");
     const imagePage = document.createElement("div");
     imagePage.id = "pictures-page"
     imagePage.classList.add("page");
 
     imagePage.appendChild(loadLogo());
-    imagePage.appendChild(createGallery());
+    const gallery = await createGallery();
+    imagePage.appendChild(gallery);
 
     page.appendChild(imagePage);
 }
@@ -20,59 +21,66 @@ function loadLogo() {
   return logo;
 }
 
-function createGallery() {
+async function createGallery() {
   const gallery = document.createElement("div");
   gallery.classList.add("container", "gallery-container");
-  gallery.appendChild(createGalleryRow());
+
+  const details = await getUserImages();
+  console.log(details);
+  console.log("0:  ", details.length);
+
+  gallery.appendChild(createGalleryRow(details));
 
   return gallery;
 }
 
-function createGalleryRow() {
+async function getUserImages() {
+  const username = window.user_name;
+  const url = `${window.hostname}/${username}/images/details`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data["images"];
+}
+
+function createGalleryRow(details) {
   const row = document.createElement("div");
   row.id = "gallery-row";
   row.classList.add("row");
 
   for (let i = 0; i < 4; i++) {
-    row.appendChild(createGalleryColumn());
+    row.appendChild(createGalleryColumn(details));
   }
 
   return row;
 }
 
-function createGalleryColumn() {
+function createGalleryColumn(details) {
   const column = document.createElement("div");
   column.id = "gallery-column";
   column.classList.add("column");
 
-  for (let i = 1; i < 6; i++) {
-    column.appendChild(loadImage(i));
+  for (let i = 0; i < 6; i++) {
+    column.appendChild(loadImage(details[i]));
   }
 
   return column;
 }
 
 
-function loadImage(picNum) {
+function loadImage(detail) {
   const lightBox = document.createElement("a");
-
-  // Hack around the 2nd picture being a png.
-  let imgPath = "./images/pic" + picNum + ".jpg";
-  if (picNum === 2) {
-    imgPath = "./images/pic" + picNum + ".png";
-  }
+  const path = "." + detail["path"].substr(9); // remove "../client" For some reason the path is not correct.
 
   lightBox.classList.add("lightbox");
-  lightBox.setAttribute("href", imgPath);
+  lightBox.setAttribute("href", path);
 
   const image = document.createElement("img");
-  image.src = imgPath;
-  image.alt = "pic" + picNum;
-  image.id = "pic" + picNum;
+  image.src = path;
+  image.alt = detail["caption"];
+  image.id = detail["pictureId"];
   image.classList.add("pic");
 
   lightBox.appendChild(image);
 
   return lightBox;
 }
-

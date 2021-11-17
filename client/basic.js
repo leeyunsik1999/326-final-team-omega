@@ -27,7 +27,7 @@ function load_page(page_id) {
     }
 }
 
-function initialize() {
+async function initialize() {
     const page_container = document.getElementById("page-container");
 
     const page = document.getElementById("page-content");
@@ -36,7 +36,7 @@ function initialize() {
 
     load_main_page(page);
 
-    loadImagesPage(page);
+    await loadImagesPage(page);
     loadAddPage(page);
 
     // Adding functionality to logo button going back to main page
