@@ -228,6 +228,15 @@ app.get('/user/:id/date', (req, res) => {
     res.end();
 });
 
+app.get("*", (req, res) => {
+    /* 
+    const __filename = url.fileURLToPath(import.meta.url);
+    res.sendFile(dirname(__filename) + "/../client/index.html");
+    */
+    res.write(fs.readFileSync(`${clientDir}/index.html`));
+    res.end();
+});
+
 app.listen(port, () => {
     console.log(`Example app listening at port ${port}`);
 });
