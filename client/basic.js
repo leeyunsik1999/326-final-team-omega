@@ -1,6 +1,8 @@
 import { load_toolbar } from './page_loaders/toolbar.js';
 import { load_main_page } from './page_loaders/main_page.js';
 import { load_login_card } from './page_loaders/login.js';
+import { loadImagesPage } from './page_loaders/loadImages.js';
+import { loadAddPage } from './page_loaders/addPage.js';
 
 /**
  * Takes in the page id of page-content's child to show. Hides all other children of page-content.
@@ -33,6 +35,9 @@ function initialize() {
     load_toolbar(page_container);
 
     load_main_page(page);
+
+    loadImagesPage(page);
+    loadAddPage(page);
 
     // Adding functionality to logo button going back to main page
     document.getElementById("toolbar-logo-button").addEventListener("click", () => load_page("main-page"));
@@ -67,7 +72,7 @@ function initialize() {
     document.getElementById("add-page-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-textbox").addEventListener("click", () => load_page("add-page"));
 
-    // Adding functionality to add buttons on habits page
+    // Adding functionalty to add buttons on habits page
     document.getElementById("add-habit-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
