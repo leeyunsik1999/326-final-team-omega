@@ -8,6 +8,7 @@ import * as picApi from './pictures-api.js';
 import express from 'express';
 import multer from 'multer';
 import bodyParser from 'body-parser';
+import { dirname } from 'path';
 
 // Variable to store pre-defined data on
 /**
@@ -109,13 +110,17 @@ const data = {
 
 const upload = multer({ dest: '../client/uploads/' });
 const app = express();
-const port = 8080;
 
 // Picture API shared object
 export const picturesApi = picApi.initializePictureObjects();
 
-// Making files in ../client available to use from (domain)/ as if it was (domain)/client/
-app.use(express.static('../client'));
+const port = process.env.PORT || 8080;
+
+// Env variable for client directory, setting based on local or heroku environment
+
+const clientDir = process.env.CLIENTDIR || '../client';
+// Making files in client available to use from (domain)/ as if it was (domain)/client/
+app.use(express.static(clientDir));
 app.use(express.json()) // To parse JSON bodies.
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -181,7 +186,7 @@ app.get('/login', (req, res) => {
     } else {
         res.status(200);
         console.log(`${username} logged in`);
-        res.json({"id": data[username]["id"]});
+        res.json({ "id": data[username]["id"] });
     }
     res.end();
 });
@@ -190,10 +195,10 @@ app.get('/login', (req, res) => {
 app.post('/register', (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
-    if (username in data){
+    if (username in data) {
         console.log(`Register error: username ${username} already exists`);
         res.status(409);
-    } else if (username.length === 0 || password.length === 0){
+    } else if (username.length === 0 || password.length === 0) {
         console.log("Username or password too short");
         res.status(406);
     } else {
@@ -205,9 +210,9 @@ app.post('/register', (req, res) => {
             "data": {}
         };
         data[username] = temp;
+
         res.status(200);
         console.log("User created");
-        console.log(data);
     }
     res.end();
 });
@@ -221,12 +226,12 @@ app.post('/register', (req, res) => {
 // Fetch user's theme id
 app.get('/user/:id/theme', (req, res) => {
     const username = req.params["id"];
-    if (!(username in data)){
+    if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
     } else {
         res.status(200);
-        res.json({"theme": data[username]["theme"]});
+        res.json({ "theme": data[username]["theme"] });
         console.log(`Theme for ${username} found`);
     }
     res.end();
@@ -236,10 +241,10 @@ app.get('/user/:id/theme', (req, res) => {
 app.put('/user/:id/theme/set', (req, res) => {
     const username = req.params["id"];
     const theme = req.body["id"];
-    if (!(username in data)){
+    if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
-    } else if (typeof(theme) !== "number"){
+    } else if (typeof (theme) !== "number") {
         console.log(`${theme} is INVALID`);
         res.status(400);
     } else {
@@ -258,7 +263,7 @@ app.put('/user/:id/theme/set', (req, res) => {
 // Fetches dates that user has data for
 app.get('/user/:id/date', (req, res) => {
     const username = req.params["id"];
-    if (!(username in data)){
+    if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
     } else {
@@ -270,6 +275,15 @@ app.get('/user/:id/date', (req, res) => {
     res.end();
 });
 
+app.get("*", (req, res) => {
+    /*
+    const __filename = url.fileURLToPath(import.meta.url);
+    res.sendFile(dirname(__filename) + "/../client/index.html");
+    */
+    res.write(fs.readFileSync(`${clientDir}/index.html`));
+    res.end();
+});
+
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Example app listening at port ${port}`);
 });

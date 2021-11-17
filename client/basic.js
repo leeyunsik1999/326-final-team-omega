@@ -99,15 +99,7 @@ function login() {
 }
 
 await (async () => {
-    const response = await fetch('./host.txt');
-    const host = await response.text();
-    /**
-     * Variable used for API call hostname.
-     * Fetches hostname automatically from host.txt
-     * host.txt content should be http://localhost:8080 in all branches but main.
-     * In main, content should be https://cs326-habituall.herokuapp.com
-     * Add file to .gitignore so it stays consistent.
-     */
-    window.hostname = host;
+    // Setting hostname to use for API calls
+    window.requestName = window.location.hostname === 'localhost' ? 'http://localhost:8080' : `https://${window.location.hostname}`;
     login();
 })();
