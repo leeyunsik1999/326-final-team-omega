@@ -7,7 +7,7 @@ import { picturesApi } from './server.js';
 class PicturesApi {
   constructor() {
     this.userPictures = new Map();
-    this.picturesPath = './images';
+    this.picturesPath = '../client/images/user_images';
     createDirIfDNE(this.picturesPath);
   }
 
@@ -36,7 +36,7 @@ class PicturesApi {
 class UserPictures {
   constructor(userId) {
     this.userId = userId;
-    this.userPicturesPath = `./images/${userId}`;
+    this.userPicturesPath = `../client/images/user_images/${userId}`;
     this.pictures = new Map();
 
     createDirIfDNE(this.userPicturesPath);

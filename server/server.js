@@ -107,7 +107,7 @@ const data = {
     }
 };
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: '../client/uploads/' });
 const app = express();
 const port = 8080;
 
