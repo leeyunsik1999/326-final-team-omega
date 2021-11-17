@@ -227,6 +227,11 @@
 
 /* Swarathmika CSS */
 
+#add-button-logo {
+    height: 25px;
+    width: 25px;
+}
+
 .photo-image {
     display: block;
     height: 5%;

@@ -35,9 +35,7 @@ async function createGallery() {
 }
 
 async function getUserImages() {
-  const username = window.user_name;
-  const url = `${window.hostname}/${username}/images/details`;
-  const response = await fetch(url);
+  const response = await fetch(`${window.hostname}/${window.user_name}/images/details`);
   const data = await response.json();
   return data["images"];
 }
@@ -59,7 +57,7 @@ function createGalleryColumn(details) {
   column.id = "gallery-column";
   column.classList.add("column");
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < details.length; i++) {
     column.appendChild(loadImage(details[i]));
   }
 

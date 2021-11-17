@@ -1,6 +1,6 @@
 'use strict';
 
-import { readFileSync, readdirSync, writeFileSync, existsSync, unlinkSync, renameSync} from 'fs';
+import { readFileSync, readdirSync, writeFileSync, existsSync, unlinkSync, renameSync, mkdirSync} from 'fs';
 import { parse}  from "path";
 import { picturesApi } from './server.js';
 

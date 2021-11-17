@@ -154,6 +154,7 @@ function loadAddPicCard() {
 
   cardBody.appendChild(cardTitle);
   cardBody.appendChild(loadAddPicBox());
+  cardBody.appendChild(selectFileForm());
   cardBody.appendChild(loadPicAddButton());
 
   addPicCard.appendChild(cardBody);
@@ -172,7 +173,7 @@ function loadAddPicBox() {
 }
 
 function loadAddButton() {
-  const addPicButton = document.createElement("div");
+  const addPicButton = document.createElement("button");
   addPicButton.classList.add("d-flex", "justify-content-center", "sub-button-primary");
 
   const addLogo = document.createElement("img");
@@ -184,12 +185,70 @@ function loadAddButton() {
   return addPicButton;
 }
 
-function loadPicAddButton() {
-  const addButton = loadAddButton();
-  addButton.id = "add-pic-sub-button";
-  addButton.classList.add("add-pic-btn");
+function selectFileForm() {
+  const addForm = document.createElement("div");
+  addForm.classList.add("form-group");
 
-  return addButton;
+  const fileIdLabel = document.createElement("label");
+  fileIdLabel.for = "file-id";
+  fileIdLabel.innerText = "File ID";
+
+  const fileIdInput = document.createElement("input");
+  fileIdInput.type = "text";
+  fileIdInput.classList.add("form-control");
+  fileIdInput.id = "file-id";
+
+  addForm.appendChild(fileIdLabel);
+  addForm.appendChild(fileIdInput);
+
+  const fileNameLabel = document.createElement("label");
+  fileNameLabel.for = "file-name";
+  fileNameLabel.innerText = "File Name";
+
+  const fileNameInput = document.createElement("input");
+  fileNameInput.type = "text";
+  fileNameInput.classList.add("form-control");
+  fileNameInput.id = "file-name";
+
+  addForm.appendChild(fileNameLabel);
+  addForm.appendChild(fileNameInput);
+
+  const fileCaptionLabel = document.createElement("label");
+  fileCaptionLabel.for = "file-caption";
+  fileCaptionLabel.innerText = "File Caption";
+
+  const fileCaptionInput = document.createElement("input");
+  fileCaptionInput.type = "text";
+  fileCaptionInput.classList.add("form-control");
+  fileCaptionInput.id = "file-caption";
+
+  addForm.appendChild(fileCaptionLabel);
+  addForm.appendChild(fileCaptionInput);
+
+  const uploadFileInput = document.createElement("input");
+  uploadFileInput.type = "file";
+  uploadFileInput.classList.add("form-control-file");
+  uploadFileInput.id = "add-file-form";
+
+  addForm.appendChild(uploadFileInput);
+
+  return addForm;
+}
+
+function loadPicAddButton() {
+  const addPicButton = document.createElement("button");
+  addPicButton.classList.add("d-flex", "justify-content-center", "sub-button-primary", "add-image-button");
+
+  const addLogo = document.createElement("img");
+  addLogo.id = "add-button-logo";
+  addLogo.src = "./images/add_logo.png";
+
+  addPicButton.appendChild(addLogo);
+  addPicButton.id = "add-pic-sub-button";
+  addPicButton.classList.add("add-pic-btn");
+  addPicButton.addEventListener("click", addImage);
+
+  return addPicButton;
 }
 
 function loadHabitAddButton() {
@@ -198,4 +257,37 @@ function loadHabitAddButton() {
   addButton.classList.add("add-habit-btn");
 
   return addButton;
+}
+
+// - /user/id/date/images/create
+//   - POST request to create a new image.
+//   - Should add image to the day's image list, and upload image to images directory with appropriate id.
+async function addImage() {
+  const formData = new FormData();
+  formData.append("img", document.getElementById("add-file-form").files[0]);
+  formData.append("name", document.getElementById("file-name".value));
+  formData.append("caption", document.getElementById("file-caption").value);
+
+  var today = new Date();
+  const date = `${today.getFullYear()}` + `${today.getMonth()+1}` + `${today.getDate()}`;
+  console.log(date);
+  const fileId = document.getElementById("file-id").value;
+
+  const endpoint = `${window.hostname}/${window.user_name}/${fileId}/${date}/images/create`;
+
+  const postOptions = {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {},
+    body: formData
+  };
+
+  const response = await fetch(endpoint, postOptions);
+  if (response.ok) {
+    console.log("Image added");
+  } else {
+    alert("Failed to add Image!");
+  }
 }
