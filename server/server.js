@@ -242,8 +242,8 @@ app.get("*", (req, res) => {
     const __filename = url.fileURLToPath(import.meta.url);
     res.sendFile(dirname(__filename) + "/../client/index.html");
     */
-    // Should not need this for local
-    res.sendFile("index.html");
+    res.write(fs.readFileSync(`${clientDir}/index.html`));
+    res.end();
 });
 
 app.listen(port, () => {
