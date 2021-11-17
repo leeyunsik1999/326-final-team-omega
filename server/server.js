@@ -107,8 +107,11 @@ const data = {
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Making files in ../client available to use from (domain)/ as if it was (domain)/client/
-app.use(express.static('../client'));
+// Env variable for client directory, setting based on local or heroku environment
+
+const clientDir = process.env.CLIENTDIR || '../client';
+// Making files in client available to use from (domain)/ as if it was (domain)/client/
+app.use(express.static(clientDir));
 
 // Required to test with postman
 app.use(bodyParser.json());
