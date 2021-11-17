@@ -45,12 +45,23 @@
     color: #c790ff;
 }
 
+.center-card{
+    width: 30%;
+    margin: 25%;
+    margin-top: 15%;
+    margin-left: 35%;
+    margin-right: 35%;
+}
 
-
+#login-container{
+    width: 100%;
+    height: 100%;
+}
 
 #toolbar{
     min-height: 128px;
     padding-top: 10px;
+    margin-top: 0.5%;
 }
 
 #toolbar-logo{
@@ -81,6 +92,19 @@
     margin-bottom: 1%;
     width: 90%; 
     border: 1px solid #9F40FF;
+}
+
+#logo-text-placeholder{
+    color: white;
+    font-weight: 500;
+}
+
+#login-text{
+    font-weight: 500;
+}
+
+#login-buffer{
+    min-width: 2%;
 }
 
 #main-button-row{
