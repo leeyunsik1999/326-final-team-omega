@@ -106,11 +106,21 @@ const data = {
 };
 
 const app = express();
+<<<<<<< HEAD
 const local_port = 8080;
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('/app/client'));
 app.use(express.static('../client'));
+=======
+const port = process.env.PORT || 8080;
+
+// Env variable for client directory, setting based on local or heroku environment
+
+const clientDir = process.env.CLIENTDIR || '../client';
+// Making files in client available to use from (domain)/ as if it was (domain)/client/
+app.use(express.static(clientDir));
+>>>>>>> f33b441fd308ddd06eb8f65610ce7af6e35fe920
 
 // Required to test with postman
 app.use(bodyParser.json());
@@ -165,7 +175,6 @@ app.post('/register', (req, res) => {
         data[username] = temp;
         res.status(200);
         console.log("User created");
-        console.log(data);
     }
     res.end();
 });
@@ -234,9 +243,9 @@ app.get("*", (req, res) => {
     res.sendFile(dirname(__filename) + "/../client/index.html");
     */
     // Should not need this for local
-    res.sendFile("/app/client/index.html");
+    res.sendFile("index.html");
 });
 
-app.listen(process.env.PORT || 443, () => {
-    console.log(`Example app listening at ${process.env.PORT}`);
+app.listen(port, () => {
+    console.log(`Example app listening at port ${port}`);
 });

@@ -1,4 +1,4 @@
-# Part 0: Project API Planning
+# API Planning
 ## User-Related endpoints
 NOTE: all endpoints using user ID should use user username for demo instead. This will be much easier when we use a database, but json is hard to do it with.
 
@@ -63,12 +63,23 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
   - Should delete image from the server. Also delete it from the appropriate date.
 
 
+# Submission
 
+## Part 1 - API details
+- Completed above.
 
+## Part 2 - Screenshots
+>Example failed login screen from heroku, unauthorized
+![Failed login example](./images_for_md/milestone2-login-fail.png)
 
+>Example main page screen, connected from heroku
+![Heroku mainpage](images_for_md/milestone2-mainpage-heroku.png)
 
-
-
+## Part 3 - Heroku Deployment
+[habituALL on heroku](https://cs326-habituall.herokuapp.com/)
+- Notes: Either register account or use the following accounts to gain access:
+  - Username: username Password: password
+  - Username: user1 Password: asdf1234
 
 
 # Addendum: Work Distribution
@@ -80,6 +91,7 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
 - [x] Make main page load via JS and DOM surgery
 - [x] Make login page and have it load via JS and DOM surgery
 - [x] Implement basic CRUD API regarding user interactions (create user, verify user)
+- [x] Deploy on heroku
   
 ## Erin's To-Do
 - [ ] Make day page load via JS and DOM surgery
