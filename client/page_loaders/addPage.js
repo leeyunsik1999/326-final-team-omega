@@ -160,7 +160,6 @@ function loadAddPicCard() {
   addPicCard.appendChild(cardBody);
 
   return addPicCard;
-
 }
 
 function loadAddPicBox() {
@@ -270,10 +269,9 @@ async function addImage() {
 
   var today = new Date();
   const date = `${today.getFullYear()}` + `${today.getMonth()+1}` + `${today.getDate()}`;
-  console.log(date);
   const fileId = document.getElementById("file-id").value;
 
-  const endpoint = `${window.hostname}/${window.user_name}/${fileId}/${date}/images/create`;
+  const endpoint = `${window.requestName}/${window.user_name}/${fileId}/${date}/images/create`;
 
   const postOptions = {
     method: 'POST',
@@ -286,7 +284,7 @@ async function addImage() {
 
   const response = await fetch(endpoint, postOptions);
   if (response.ok) {
-    console.log("Image added");
+    console.log("Image added!");
   } else {
     alert("Failed to add Image!");
   }

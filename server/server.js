@@ -210,7 +210,7 @@ app.post('/register', (req, res) => {
             "data": {}
         };
         data[username] = temp;
-
+        picturesApi.addUser(username); // Create the user folder for the pictures api.
         res.status(200);
         console.log("User created");
     }

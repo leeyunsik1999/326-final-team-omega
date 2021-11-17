@@ -26,18 +26,10 @@ async function createGallery() {
   gallery.classList.add("container", "gallery-container");
 
   const details = await getUserImages();
-  console.log(details);
-  console.log("0:  ", details.length);
 
   gallery.appendChild(createGalleryRow(details));
 
   return gallery;
-}
-
-async function getUserImages() {
-  const response = await fetch(`${window.hostname}/${window.user_name}/images/details`);
-  const data = await response.json();
-  return data["images"];
 }
 
 function createGalleryRow(details) {
@@ -45,8 +37,17 @@ function createGalleryRow(details) {
   row.id = "gallery-row";
   row.classList.add("row");
 
-  for (let i = 0; i < 4; i++) {
+  let numColumns = details.length;
+  if (numColumns > 4) { // Truncate to 4 columns if more than 4 images
+    numColumns = 4;
+  }
+
+  for (let i = 0; i < numColumns; i++) {
     row.appendChild(createGalleryColumn(details));
+  }
+
+  for (let i = 0; i < details.length; i++) {
+    row.childNodes[i % numColumns].appendChild(loadImage(details[i]));
   }
 
   return row;
@@ -56,10 +57,6 @@ function createGalleryColumn(details) {
   const column = document.createElement("div");
   column.id = "gallery-column";
   column.classList.add("column");
-
-  for (let i = 0; i < details.length; i++) {
-    column.appendChild(loadImage(details[i]));
-  }
 
   return column;
 }
@@ -81,4 +78,15 @@ function loadImage(detail) {
   lightBox.appendChild(image);
 
   return lightBox;
+}
+
+// Get request to server to get all images for the user
+async function getUserImages() {
+  try {
+    const response = await fetch(`${window.requestName}/${window.user_name}/images/details`);
+    const data = await response.json();
+    return data["images"];
+  } catch (error) {
+    console.log(error);
+  }
 }
