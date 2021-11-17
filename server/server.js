@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as url from 'url';
 import * as fs from 'fs';
 
-import { getUserImageRoute, updateUserImageRoute, deleteUserImageRoute, initializePictureObjects, createUserImageRoute, getUserImagesByDate} from './pictures-api.js';
+import * as picApi from './pictures-api.js';
 
 import express from 'express';
 import multer from 'multer';
@@ -112,7 +112,7 @@ const app = express();
 const port = 8080;
 
 // Picture API shared object
-export const picturesApi = initializePictureObjects();
+export const picturesApi = picApi.initializePictureObjects();
 
 // Making files in ../client available to use from (domain)/ as if it was (domain)/client/
 app.use(express.static('../client'));
@@ -121,37 +121,42 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // IMAGE routes
 // - /images/id
-//   - Should return an image buffer with the given id. 404 not found if it doesn't exist.
-//   - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/1.jpg) as an image buffer.
+//   - Should return the path to the image with the given id. 404 not found if it doesn't exist.
+//   - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/1.jpg)
 // app.get('/images/:id', getUserImageRoute(req, res));
 
 // - /images/user/id
-//   - Should return an image buffer for a specific user with the given id. 404 not found if it doesn't exist.
-//   - Return the image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/user/date/1.jpg) as an image buffer.
-app.get('/images/:user/:id', function(req, res) {getUserImageRoute(req, res)});
+//   - Should return the path to the image for a specific user with the given id. 404 not found if it doesn't exist.
+//   - Return the path to image pointed at by the id (id.jpg-- for example, image id 1 would point to /images/user/date/1.jpg)
+app.get('/images/:user/:id', function(req, res) {picApi.getUserImageRoute(req, res)});
 
 // - /user/id/date/images
 //   - Should return the list of images that the user has data for on that day.
 //   - Return the array of "images" within the JSON value of the key "day" as passed in by API.
-app.get('/:user/:date/images', function(req, res){getUserImagesByDate(req, res)});
+app.get('/:user/:date/images', function(req, res){picApi.getUserImagesByDate(req, res)});
+
+// - /user/images
+//   - Should return a list of paths for images of that user
+//   - Return the array of paths within the JSON value of the key "images".
+app.get('/:user/images', function(req, res){picApi.getUserImagePaths(req, res)});
 
 // - /user/id/date/images/create
 //   - POST request to create a new image.
 //   - Should add image to the day's image list, and upload image to images directory with appropriate id.
-app.post('/:user/:id/:date/images/create', upload.single('img'), function(req, res){createUserImageRoute(req, res)});
+app.post('/:user/:id/:date/images/create', upload.single('img'), function(req, res){picApi.createUserImageRoute(req, res)});
 
 // - /user/id/date/images/update
 //   - PUT request to update an image's name or caption.
-app.put('/:user/:id/:date/images/update', function(req, res){updateUserImageRoute(req, res)});
+app.put('/:user/:id/:date/images/update', function(req, res){picApi.updateUserImageRoute(req, res)});
 
 // - /user/id/images/update
 //   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
-app.put('/:user/:id/images/update', function(req, res){updateUserImageRoute(req, res)});
+app.put('/:user/:id/images/update', function(req, res){picApi.updateUserImageRoute(req, res)});
 
 // - /user/id/date/images/delete
 //   - DELETE request to delete an image.
 //   - Should delete image from the server. Also delete it from the appropriate date.
-app.delete('/:user/:id/:date/images/delete', function(req, res){deleteUserImageRoute(req, res)});
+app.delete('/:user/:id/:date/images/delete', function(req, res){picApi.deleteUserImageRoute(req, res)});
 
 // In the future, when we don't need to reference Data (with databases), we
 // can and SHOULD refactor so that these app.gets are instead given a handler.
