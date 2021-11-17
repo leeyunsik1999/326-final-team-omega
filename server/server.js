@@ -6,10 +6,7 @@ import * as fs from 'fs';
 import { getUserImageRoute, updateUserImageRoute, deleteUserImageRoute, initializePictureObjects, createUserImageRoute, getUserImagesByDate} from './pictures-api.js';
 
 import express from 'express';
-<<<<<<< HEAD
 import multer from 'multer';
-=======
->>>>>>> origin/main
 import bodyParser from 'body-parser';
 
 // Variable to store pre-defined data on
@@ -122,7 +119,6 @@ app.use(express.static('../client'));
 app.use(express.json()) // To parse JSON bodies.
 app.use(bodyParser.urlencoded({extended: true}));
 
-<<<<<<< HEAD
 // IMAGE routes
 // - /images/id
 //   - Should return an image buffer with the given id. 404 not found if it doesn't exist.
@@ -156,14 +152,6 @@ app.put('/:user/:id/images/update', function(req, res){updateUserImageRoute(req,
 //   - DELETE request to delete an image.
 //   - Should delete image from the server. Also delete it from the appropriate date.
 app.delete('/:user/:id/:date/images/delete', function(req, res){deleteUserImageRoute(req, res)});
-
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
-=======
-// Required to test with postman
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // In the future, when we don't need to reference Data (with databases), we
 // can and SHOULD refactor so that these app.gets are instead given a handler.
@@ -280,4 +268,3 @@ app.get('/user/:id/date', (req, res) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 });
->>>>>>> origin/main
