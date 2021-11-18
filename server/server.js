@@ -286,36 +286,39 @@ app.get('/login', (req, res) => {
 app.post('/register', (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
-    // Local implementation: username in data
-    if (user.find({ "username": username }).count() !== 0) {
-        console.log(`Register error: username ${username} already exists`);
-        res.status(409);
-    } else if (username.length === 0 || password.length === 0) {
-        console.log("Username or password too short");
-        res.status(406);
-    } else {
-        /*
-        local implementation: 
+    (async () => {
 
-        let temp = {
-            "id": Math.floor(Math.random() * (999999 - 3 + 1) + 3),
-            "password": password,
-            "events": [],
-            "theme": 1,
-            "data": {}
-        };
-        data[username] = temp;
-        */
-        picturesApi.addUser(username); // Create the user folder for the pictures api.
-        user.insertOne({
-            "username": username,
-            "password": password,
-            "theme": 1
-        });
-        res.status(200);
-        console.log("User created");
-    }
-    res.end();
+        // Queries db for any documents with given username.
+        if (await user.find({ "username": username }).count() !== 0) {
+            console.log(`Register error: username ${username} already exists`);
+            res.status(409);
+        } else if (username.length === 0 || password.length === 0) {
+            console.log("Username or password too short");
+            res.status(406);
+        } else {
+            /*
+            local implementation: 
+    
+            let temp = {
+                "id": Math.floor(Math.random() * (999999 - 3 + 1) + 3),
+                "password": password,
+                "events": [],
+                "theme": 1,
+                "data": {}
+            };
+            data[username] = temp;
+            */
+            picturesApi.addUser(username); // Create the user folder for the pictures api.
+            user.insertOne({
+                "username": username,
+                "password": password,
+                "theme": 1
+            });
+            res.status(200);
+            console.log("User created");
+        }
+        res.end();
+    })();
 });
 
 
