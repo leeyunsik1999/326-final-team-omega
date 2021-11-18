@@ -10,3 +10,6 @@ server/uploads
 
 # editor stuff
 .vscode/
+
+# Database password
+server/secrets.json
