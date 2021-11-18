@@ -17,7 +17,7 @@ let secrets;
 let password;
 
 if (!process.env.PASSWORD) {
-    secrets = JSON.parse(readFileSync("secrets.json"));
+    secrets = JSON.parse(fs.readFileSync("secrets.json"));
     password = secrets["password"];
 } else {
     password = process.env.PASSWORD;
@@ -62,20 +62,23 @@ let database, events, eventList, images, user, counters;
         console.log(`Exit code: ${code}`);
         gracefulShutdown();
     });
-    
+
     process.on('SIGTERM', (code) => {
         console.log(`Exit code: ${code}`);
         gracefulShutdown();
     });
 
+    // Database
     database = client.db("habituall");
+
+    // Collections list
     eventList = database.collection("eventList");
     events = database.collection("events");
     images = database.collection("images");
     user = database.collection("user");
     counters = database.collection("counters");
-    
-});
+
+})();
 
 // Variable to store pre-defined data on
 /**
@@ -241,34 +244,59 @@ app.get('/login', (req, res) => {
     const password = req.query.password;
     console.log(`U: ${username}, P: ${password}`);
 
-    // Invalid username
-    if (!(username in data)) {
-        console.log("username not found");
-        res.status(404);
-    }
-    // Invalid password
-    else if (data[username]["password"] !== password) {
-        console.log(`incorrect password-- expected ${data[username]["password"]}`);
-        res.status(401);
-    } else {
-        res.status(200);
-        console.log(`${username} logged in`);
-        res.json({ "id": data[username]["id"] });
-    }
-    res.end();
+    // Calling DB for the document with username.
+    user.findOne({ 'username': username }).then(document => {
+        // Invalid username
+        if (document === null) {
+            console.log("username not found");
+            res.status(404);
+        }
+        // Invalid password
+        else if (document["password"] !== password) {
+            console.log(`incorrect password-- expected ${document["password"]}`);
+            res.status(401);
+        } else {
+            res.status(200);
+            // Now returns userID based off of the unique id identifier.
+            res.json({ "id": document["_id"].toString() });
+        }
+        res.end();
+        /*
+        Old implementation using data
+        // Invalid username
+        if (!(username in data)) {
+            console.log("username not found");
+            res.status(404);
+        }
+        // Invalid password
+        else if (data[username]["password"] !== password) {
+            console.log(`incorrect password-- expected ${data[username]["password"]}`);
+            res.status(401);
+        } else {
+            res.status(200);
+            console.log(`${username} logged in`);
+            res.json({ "id": data[username]["id"] });
+        }
+        res.end();
+        */
+    });
 });
 
 // Register request
 app.post('/register', (req, res) => {
     const username = req.body['username'];
     const password = req.body['password'];
-    if (username in data) {
+    // Local implementation: username in data
+    if (user.find({ "username": username }).count() !== 0) {
         console.log(`Register error: username ${username} already exists`);
         res.status(409);
     } else if (username.length === 0 || password.length === 0) {
         console.log("Username or password too short");
         res.status(406);
     } else {
+        /*
+        local implementation: 
+
         let temp = {
             "id": Math.floor(Math.random() * (999999 - 3 + 1) + 3),
             "password": password,
@@ -277,7 +305,13 @@ app.post('/register', (req, res) => {
             "data": {}
         };
         data[username] = temp;
+        */
         picturesApi.addUser(username); // Create the user folder for the pictures api.
+        user.insertOne({
+            "username": username,
+            "password": password,
+            "theme": 1
+        });
         res.status(200);
         console.log("User created");
     }
@@ -292,7 +326,19 @@ app.post('/register', (req, res) => {
 
 // Fetch user's theme id
 app.get('/user/:id/theme', (req, res) => {
-    const username = req.params["id"];
+    const id = req.params["id"];
+    user.findOne({ '_id': new ObjectId(id) }).then(document => {
+        if (document === null){
+            res.status(404);
+            console.log(`User not found`);
+        } else {
+            res.status(200);
+            res.json({"theme": document["theme"]});
+            console.log(`Theme for user found`);
+        }
+    });
+    /*
+    Old implementation
     if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
@@ -302,9 +348,11 @@ app.get('/user/:id/theme', (req, res) => {
         console.log(`Theme for ${username} found`);
     }
     res.end();
+    */
 });
 
 // Set user's theme ID
+// TODO: Update this with database implementation
 app.put('/user/:id/theme/set', (req, res) => {
     const username = req.params["id"];
     const theme = req.body["id"];
