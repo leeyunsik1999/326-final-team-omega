@@ -13,3 +13,4 @@ server/uploads
 
 # Database password
 server/secrets.json
+server/testing.js

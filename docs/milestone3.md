@@ -41,3 +41,9 @@ user document{
     theme: int32            // user's theme setting.
 }
 ```
+# Work Distribution
+## Yun's Responsibility
+
+## Erin's Responsibility
+
+## Swar's Responsibility
