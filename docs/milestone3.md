@@ -22,6 +22,8 @@ eventList document{
 events document{
     _id: <ObjectId1>,       // id of this event
     userID: <ObjectId1>,    // id of user that this event belongs to
+    eventID: <ObjectId1>,   // id of event that this is an instance of
+    name: String,           // name of even tthat this is an instance of
     date: String,           // Date that this specific events this is for. Format: YYYY-mm-dd
     completed: Boolean      // If this event / habit was completed or not.
 }
