@@ -17,6 +17,7 @@ eventList document{
     _id: <ObjectId1>,       // id of this eventList
     userID: <ObjectId1>,    // id of user that this eventList belongs to
     name: String,           // Name of event / habit that is being kept track of.
+    month: String           // Month that this event is being tracked for. JAN, FEB, MAR, etc. All caps
 }
 
 events document{
@@ -24,6 +25,8 @@ events document{
     userID: <ObjectId1>,    // id of user that this event belongs to
     eventID: <ObjectId1>,   // id of event that this is an instance of
     name: String,           // name of even tthat this is an instance of
+    month: String,          // Month that this specific event occured in. JAN, FEB, MAR, etc. All caps
+    day: int32,             // Day that this specific event occured in. 1, 2, 3, 4, etc.
     date: String,           // Date that this specific events this is for. Format: YYYY-mm-dd
     completed: Boolean      // If this event / habit was completed or not.
 }
