@@ -20,11 +20,23 @@ export async function createUserImageHandler(req, res) {
   const caption = req.body.caption;
   const name = req.body.name;
 
+  if (img === undefined) {
+    res.writeHead(404, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('No image was uploaded.');
+    return;
+  }
+
   // Limit input to only jpg format.
   if (parse(img.originalname).ext === '.jpg') {
     if (userApi.userExists(username)) {
       try {
         await createUserImage(username, img, date, caption, name);
+        res.writeHead(200, {
+          'Content-Type': 'text/plain'
+        });
+        res.end('Picture added!');
       } catch (err) {
         console.log(err);
         res.writeHead(500, {
@@ -32,6 +44,12 @@ export async function createUserImageHandler(req, res) {
         });
         res.end('Internal server error');
       }
+    }
+    else {
+      res.writeHead(404, {
+        'Content-Type': 'text/plain'
+      });
+      res.end('User does not exist');
     }
   } else {
     res.writeHead(400, {
@@ -52,8 +70,11 @@ export async function deleteUserImageHandler(req, res) {
   const pictureId = req.params.id;
 
   try {
-    const result = await deleteUserImage(username, pictureId);
-    deleteFileIfExists(result);
+    await deleteUserImage(username, pictureId);
+    res.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Picture deleted.');
   }
   catch (err) {
     console.log(err);
@@ -62,14 +83,9 @@ export async function deleteUserImageHandler(req, res) {
     });
     res.end('Internal server error.');
   }
-
-  res.writeHead(200, {
-    'Content-Type': 'text/plain'
-  });
-  res.end('Picture deleted.');
 }
 
-// - /user/id/date/images/update
+// - /user/id/images/update
 //   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
 export async function updateUserImageHandler(req, res) {
   const username = req.params.user;
@@ -77,8 +93,21 @@ export async function updateUserImageHandler(req, res) {
   const caption = req.body.caption;
   const name = req.body.name;
 
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
+
   try {
-    const result = await updateUserImage(username, pictureId, caption, name);
+    await updateImageDetails(pictureId, caption, name);
+    res.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Picture details updated!');
   }
   catch (err) {
     console.log(err);
@@ -87,11 +116,70 @@ export async function updateUserImageHandler(req, res) {
     });
     res.end('Internal server error.');
   }
+}
 
-  res.writeHead(200, {
-    'Content-Type': 'text/plain'
-  });
-  res.end('Picture updated');
+// - /user/id/images/caption/update
+//   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
+export async function updateUserImageCaptionHandler(req, res) {
+  const username = req.params.user;
+  const pictureId = req.params.id;
+  const caption = req.body.caption;
+
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
+
+  try {
+    await updateImageCaption(pictureId, caption);
+    res.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Picture caption updated!');
+  }
+  catch (err) {
+    console.log(err);
+    res.writeHead(500, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Internal server error.');
+  }
+}
+
+// - /user/id/images/name/update
+//   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
+export async function updateUserImageNameHandler(req, res) {
+  const username = req.params.user;
+  const pictureId = req.params.id;
+  const name = req.body.name;
+
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
+
+  try {
+    await updateImageName(pictureId, name);
+    res.writeHead(200, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Picture name updated!');
+  }
+  catch (err) {
+    console.log(err);
+    res.writeHead(500, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Internal server error.');
+  }
 }
 
 // - /user/images/details
@@ -99,6 +187,15 @@ export async function updateUserImageHandler(req, res) {
 //   - Return the array of details within the JSON value of the key "images".
 export async function getUserImageDetailsHandler(req, res) {
   const username = req.params.user;
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
+
   try {
     const details = await getAllImagesForAUser(username);
     res.writeHead(200, {
@@ -124,6 +221,15 @@ export async function getUserImagesByDateHandler(req, res) {
   const username = req.params.user;
   const date = req.params.date;
 
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
+
   try {
     const images = await getUserImagesByDate(username, date);
     res.writeHead(200, {
@@ -131,7 +237,7 @@ export async function getUserImagesByDateHandler(req, res) {
     });
     const pictureDates = {};
     const dateStr = date.toString();
-    pictureDates[dateStr] = [];
+    pictureDates[dateStr] = images;
     res.end(JSON.stringify(pictureDates));
   } catch (err) {
     console.log(err);
@@ -148,6 +254,15 @@ export async function getUserImagesByDateHandler(req, res) {
 export async function getUserImageHandler(req, res) {
   const username = req.params.user;
   const pictureId = req.params.id;
+
+  if (!userApi.userExists(username)) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('User does not exist');
+
+    return;
+  }
 
   try {
     const image = await getUserImage(username, pictureId);
@@ -187,7 +302,7 @@ async function getImagePathsForAllImagesForAUser(username) {
 
 // Get all images for a user.
 async function getAllImagesForAUser(username) {
-    const userId = userApi.getUserId(username);
+    const userId = await userApi.getUserId(username);
     if (userId === null) {
       throw new Error(`User (${username}) does not exist.`);
     }
@@ -197,7 +312,7 @@ async function getAllImagesForAUser(username) {
 
 // Get all images for a user for a specific date.
 async function getUserImagesByDate(username, date) {
-    const userId = userApi.getUserId(username);
+    const userId = await userApi.getUserId(username);
     if (userId === null) {
       throw new Error(`User (${username}) does not exist.`);
     }
@@ -207,7 +322,7 @@ async function getUserImagesByDate(username, date) {
 
 // Get an image from a user based on its ID
 async function getUserImage(username, id) {
-  const userId = userApi.getUserId(username);
+  const userId = await userApi.getUserId(username);
   if (userId === null) {
     throw new Error(`User (${username}) does not exist.`);
   }
@@ -217,7 +332,7 @@ async function getUserImage(username, id) {
 
 // Delete all images for a user.
 async function deleteUserPictures(username) {
-  const userId = userApi.getUserId(username);
+  const userId = await userApi.getUserId(username);
   if (userId === null) {
     throw new Error(`User (${username}) does not exist.`);
   }
@@ -237,7 +352,7 @@ async function deleteUserPictures(username) {
 
 // Delete all images for a user for a specific date.
 async function deleteUserPicturesByDate(username, date) {
-  const userId = userApi.getUserId(username);
+  const userId = await userApi.getUserId(username);
   if (userId === null) {
     throw new Error(`User (${username}) does not exist.`);
   }
@@ -257,7 +372,7 @@ async function deleteUserPicturesByDate(username, date) {
 
 // Delete an image from the database for a user based on its ID.
 async function deleteUserImage(username, id) {
-  const userId = userApi.getUserId(username);
+  const userId = await userApi.getUserId(username);
   if (userId === null) {
     throw new Error(`User (${username}) does not exist.`);
   }
@@ -266,7 +381,7 @@ async function deleteUserImage(username, id) {
   try {
     const deletedImg = await images.findOneAndDelete({"_id": imgID});
     // Return the path to the image to be deleted.
-    return deletedImg.path;
+    deleteFileIfExists(`../client/images/user_images/${imgID}.jpg`);
   } catch (err) {
     throw new Error(`Failed to delete image ${id} for user ${username} from DB: ${err.toString()}`);
   }
@@ -274,7 +389,7 @@ async function deleteUserImage(username, id) {
 
 // Create a new image in the database for a user. No guarantee that the image will be moved .
 async function createUserImage(username, img, date, caption, name) {
-  const userId = userApi.getUserId(username);
+  const userId = await userApi.getUserId(username);
   if (userId === null) {
     throw new Error(`User (${username}) does not exist.`);
   }

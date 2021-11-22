@@ -222,7 +222,15 @@ app.post('/:user/:date/images/create', upload.single('img'), function (req, res)
 //   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
 app.put('/:user/:id/images/update', function (req, res) { picApi.updateUserImageHandler(req, res) });
 
-// - /user/id/date/images/delete
+// - /user/id/images/name/update
+//   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
+app.put('/:user/:id/images/name/update', function (req, res) { picApi.updateUserImageCaptionHandler(req, res) });
+
+// - /user/id/images/caption/update
+//   - PUT request to update an image's name or caption. (Since image id is unique per user, this is the same as /user/id/date/images/update).
+app.put('/:user/:id/images/caption/update', function (req, res) { picApi.updateUserImageCaptionHandler(req, res) });
+
+// - /user/id/images/delete
 //   - DELETE request to delete an image.
 //   - Should delete image from the server. Also delete it from the appropriate date.
 app.delete('/:user/:id/images/delete', function (req, res) { picApi.deleteUserImageHandler(req, res) });
