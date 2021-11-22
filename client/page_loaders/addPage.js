@@ -256,8 +256,8 @@ async function addImage() {
   formData.append("caption", document.getElementById("file-caption").value);
 
   document.getElementById("add-file-form").value = "";
-  document.getElementById("file-name").value = "";
-  document.getElementById("file-caption").value = "";
+  document.getElementById("file-name").value = "Name";
+  document.getElementById("file-caption").value = "Caption";
 
   var today = new Date();
   const date = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
