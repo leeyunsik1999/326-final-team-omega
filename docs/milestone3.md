@@ -32,8 +32,9 @@ events document{
 }
 
 images document{
-    _id: <ObjectId1>,       // id of this image. Should also be used as the image's name with ObjectId.toString(). Could probably format it like `${ObjectId.toString()}.jpg`
+    _id: <ObjectId1>,       // id of this image. Should also be used as the image's name with ObjectId.
     userID: <ObjectId1>,    // id of the user that this image belongs to
+    path: String,           // Path to the specific image.
     date: String,           // Date that this specific image is for. Format: YYYY-mm-dd
     name: String,           // User-specified name for this image.
     caption: String         // Additional details specified by the user for this image.
