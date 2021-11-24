@@ -37,13 +37,13 @@ function get_month() {
 export function load_monthly_page(parent) {
   (async () => {
     const month_days = months[get_month];
-    let habit_list;
-    const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${month_word[get_month]}/events}/`);
-    if(event_response.status !== 200) {
-      alert("An error has occured.");
-    } else {
-      habit_list = await event_response.json();
-    }
+    let habit_list = {};
+    // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${month_word[get_month]}/events}`);
+    // if(event_response.status !== 200) {
+    //   alert("An error has occured.");
+    // } else {
+    //   habit_list = await event_response.json();
+    // }
 
     const monthly_habits_page = document.createElement("div");
     monthly_habits_page.id = "monthly-habits-page";
@@ -57,7 +57,8 @@ export function load_monthly_page(parent) {
 
     const habits_month = document.createElement("h1");
     habits_month.id = "habits-month";
-    habits_month.innerText = month_word[get_month];
+    console.log(month_word[get_month()]);
+    habits_month.innerText = month_word[get_month()];
     grid_container.appendChild(habits_month);
 
     add_br(grid_container);

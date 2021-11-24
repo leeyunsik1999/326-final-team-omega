@@ -39,21 +39,21 @@ export function load_daily_page(parent) {
     card_body.classList.add("card-body");
     habit_card.appendChild(card_body);
 
-    const date_text = document.createElement("h1");
-    document.body.appendChild(document.innerText = `${get_date_text}`);
+    const date_text = document.createElement("h2");
+    date_text.innerText = `${get_date_text()}`;
     card_body.appendChild(date_text);
 
     const habits_list = document.createElement("div");
     habits_list.id = "habits-list";
-    const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date}/events}/`)
-    if(event_response.status !== 200) {
-      alert("An error has occured.");
-    } else {
-      const events = await event_response.json();
-      for(const event in events) {
-        habits_list.appendChild(create_habit(event));
-      }
-    }
+    // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date()}/events}`)
+    // if(event_response.status !== 200) {
+    //   alert("An error has occured.");
+    // } else {
+    //   const events = await event_response.json();
+    //   for(const event in events) {
+    //     habits_list.appendChild(create_habit(event));
+    //   }
+    // }
     card_body.appendChild(habits_list);
 
     habit_card.appendChild(document.createElement("br"));
@@ -82,7 +82,7 @@ export function load_daily_page(parent) {
     const daily_photos = document.createElement("div");
     daily_photos.id = "daily-photos";
     daily_photos.classList.add("col-8");
-    habit_to_do.appendChild(daily_photos);
+    row.appendChild(daily_photos);
 
     const photo_card = document.createElement("div")
     photo_card.classList.add("card");
@@ -108,9 +108,10 @@ export function load_daily_page(parent) {
     add_pic_sub_button.classList.add("add-pic-btn", "d-flex", "justify-content-center", "sub-button-primary");
     photo_card_container.appendChild(add_pic_sub_button);
 
-    const add_button_logo = document.createElement("div");
+    const add_button_logo = document.createElement("img");
     add_button_logo.id = "add-button-logo";
     add_button_logo.src = "./images/add_logo.png";
+    add_pic_sub_button.appendChild(add_button_logo);
   })();
 }
 

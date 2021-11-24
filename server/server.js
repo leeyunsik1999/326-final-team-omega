@@ -272,6 +272,19 @@ app.put('/user/:id/:date/events/update', (req, res) => {
     }
 });
 
+app.get('/user/:id/:month/events', (req, res) => {
+    const username = req.params["id"];
+    if(!(username in data)) {
+        res.status(404);
+        console.log(`Username ${username} not found`);
+    }
+    else {
+        res.status(200);
+        
+    }
+    res.end();
+});
+
 app.get('/user/:id/date/events', (req, res) => {
     const username = req.params["id"];
     if(!(username in data)) {
