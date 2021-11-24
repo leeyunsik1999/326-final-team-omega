@@ -59,6 +59,7 @@ NOTE: all endpoints using user ID should use user username for demo instead. Thi
   - DELETE request to delete an image.
   - Should delete image from the server. Also delete it from the appropriate date.
 
+
 # Submission
 
 ## Part 1 - API details

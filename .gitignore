@@ -3,3 +3,13 @@
 ._*
 .Spotlight-V100
 .Trashes
+
+# Project specific
+server/uploads
+
+
+# editor stuff
+.vscode/
+
+# Database password
+server/secrets.json

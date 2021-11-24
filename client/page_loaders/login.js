@@ -127,7 +127,7 @@ async function login_button_event() {
         alert("Enter a password!");
     } else {
         // Requesting login to server
-        const response = await fetch(`${window.hostname}/login?username=${username}&password=${password}`);
+        const response = await fetch(`${window.requestName}/login?username=${username}&password=${password}`);
 
         // Processing response
         if (response.status === 401) {
@@ -170,7 +170,7 @@ async function register_button_event(){
         alert("Enter a password!");
     } else {
         // Requesting login to server
-        const response = await fetch(`${window.hostname}/register`, {
+        const response = await fetch(`${window.requestName}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
