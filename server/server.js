@@ -407,7 +407,7 @@ app.get('/user/:id/events', (req, res) => {
     }
     else {
         res.status(200);
-        res.json({"events": data[username]["events"]});
+        eventList.find({userID : id});
     }
     res.end();
 });
@@ -429,16 +429,16 @@ app.post('/user/:id/:date/events/create', (req, res) => {
     }
 });
 
-app.put('/user/:id/:date/events/update', (req, res) => {
-    const username = req.params["id"];
-    if (!(username in data)){
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
+// app.put('/user/:id/:date/events/update', (req, res) => {
+//     const username = req.params["id"];
+//     if (!(username in data)){
+//         res.status(404);
+//         console.log(`Username ${username} not found`);
+//     }
+//     else {
         
-    }
-});
+//     }
+// });
 
 app.get('/user/:id/:month/events', (req, res) => {
     const username = req.params["id"];
@@ -448,7 +448,7 @@ app.get('/user/:id/:month/events', (req, res) => {
     }
     else {
         res.status(200);
-        
+        eventList.find({userID = id, month = month});
     }
     res.end();
 });
@@ -461,7 +461,8 @@ app.get('/user/:id/date/events', (req, res) => {
     }
     else {
         res.status(200);
-        res.json({"events": data[username]["data"][date]["events"]});
+        // res.json({"events": data[username]["data"][date]["events"]});
+        events.find({userID : id, date : date, name : events});
     }
     res.end();
 });
@@ -474,7 +475,8 @@ app.get('/user/:id/date/full_day', (req, res) => {
     }
     else {
         res.status(200);
-        res.json({"events": data[username]["data"][date]});
+        // res.json({"events": data[username]["data"][date]});
+        events.find({userID : id, date : date});
     }
 });
 
