@@ -47,3 +47,19 @@ user document{
     theme: int32            // user's theme setting.
 }
 ```
+
+
+# Labor Breakdown
+## Yun
+- Made the database and made the server.js connect to the database.
+- Defined environment variables to use
+- Defined the database collection specifications
+- Converted the login API's to utilize the database instead of dummy data
+
+## Swar
+- Converted all picture-related API to utilize the database for image storage/fetching.
+
+## Erin
+- Converted all theme and event-related API to utilize the database for event storage/fetching.
+
+In summary, we just converted our API's to utilize the database instead of our dummy data, as finishing the API's was a part of our milestone 2 objectives.
