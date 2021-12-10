@@ -1,5 +1,3 @@
-// import { createModalContent } from './lighbox.js';
-
 export async function loadImagesPage(page) {
     const imagePage = document.createElement("div");
     imagePage.id = "pictures-page"
@@ -122,10 +120,10 @@ function showPicture(path, caption, name, id) {
   var captionText = document.getElementById("caption");
   var nameText = document.getElementById("name");
 
+  // setDeleteImageButton(id);
   modalImg.src = path;
   nameText.innerHTML = name;
   captionText.innerHTML = caption;
-  // setDeleteImageButton(id);
 }
 
 function updateImageButton() {
@@ -133,15 +131,24 @@ function updateImageButton() {
   deleteButton.id = "edit-button";
   deleteButton.classList.add("btn", "btn-danger");
   deleteButton.innerHTML = "Edit/Delete Image";
-  deleteButton.dataset.toggle = "modal";
-  deleteButton.dataset.target = "#editModal";
+  // deleteButton.dataset.toggle = "modal";
+  // deleteButton.dataset.target = "#editModal";
+  deleteButton.onclick = function() {closeModal(); openEditModal();};
 
   return deleteButton;
 }
 
+function openEditModal() {
+  document.getElementById("editModal").style.display = "block";
+}
+
+function closeEditModal() {
+  document.getElementById("editModal").style.display = "none";
+}
+
 function setDeleteImageButton(imageId) {
-  const deleteButton = document.getElementById("delete-button");
-  deleteButton.onclick = function() {deleteImage(imageId); closeModal();};
+  const deleteButton = document.getElementById("edit-button");
+  deleteButton.onclick = closeModal;
 }
 
 function initializeModal() {
@@ -233,6 +240,7 @@ function createEditModal() {
   modalContent.appendChild(createEditModalFooter());
 
   modalDialog.appendChild(modalContent);
+  modal.appendChild(modalDialog);
 
   return modal;
 }
@@ -249,8 +257,9 @@ function createEditModalHeader() {
 
   const closeButton = document.createElement("button");
   closeButton.className = "close";
+  closeButton.id = "closeX";
   closeButton.innerHTML = "&times;";
-  closeButton.dataset.dismiss = "modal";
+  closeButton.onclick = closeEditModal;
 
   modalHeader.appendChild(closeButton);
 
