@@ -15,6 +15,9 @@ export async function loadImagesPage(page) {
     const modal = initializeModal();
     imagePage.appendChild(modal);
 
+    const editModal = createEditModal();
+    imagePage.appendChild(editModal);
+
     page.appendChild(imagePage);
 }
 
@@ -225,7 +228,11 @@ function createEditModal() {
   const modalContent = document.createElement("div");
   modalContent.className = "modal-content";
 
+  modalContent.appendChild(createEditModalHeader());
+  modalContent.appendChild(createEditModalBody());
+  modalContent.appendChild(createEditModalFooter());
 
+  modalDialog.appendChild(modalContent);
 
   return modal;
 }
@@ -246,6 +253,8 @@ function createEditModalHeader() {
   closeButton.dataset.dismiss = "modal";
 
   modalHeader.appendChild(closeButton);
+
+  return modalHeader;
 }
 
 function createEditModalBody() {
@@ -289,7 +298,7 @@ function createEditModalBody() {
   return modalBody;
 }
 
-function createModalFooter() {
+function createEditModalFooter() {
   const modalFooter = document.createElement("div");
   modalFooter.className = "modal-footer";
 
@@ -307,4 +316,5 @@ function createModalFooter() {
 
   modalFooter.appendChild(saveButton);
 
+  return modalFooter;
 }
