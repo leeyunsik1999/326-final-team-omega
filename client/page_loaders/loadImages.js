@@ -51,7 +51,7 @@ function createGalleryRow(details) {
   }
 
   for (let i = 0; i < details.length; i++) {
-    row.childNodes[i % numColumns].appendChild(loadImage(details[i]), i);
+    row.childNodes[i % numColumns].appendChild(loadImage(details[i]));
   }
 
   return row;
@@ -66,14 +66,14 @@ function createGalleryColumn(details) {
 }
 
 
-function loadImage(detail, currNum) {
+function loadImage(detail) {
   const path = "." + detail["path"].substr(9); // remove "../client" For some reason the path is not correct.
-
+  console.log(detail);
   const image = document.createElement("img");
   image.src = path;
   image.alt = detail["caption"];
   image.id = detail["_id"];
-  image.onclick = function() {openModal();showPicture(path, detail["caption"])};
+  image.onclick = function() {openModal();showPicture(path, detail["caption"], detail["name"], detail["_id"])};
   image.classList.add("pic");
 
   return image;
@@ -90,10 +90,10 @@ async function getUserImages() {
   }
 }
 
-// Delete image from the server
+// Delete request to delete an image from the server
 async function deleteUserImage() {
   try {
-    const response = await fetch(`${window.requestName}/${window.user_name}/images/details`);
+    const response = await fetch(`${window.requestName}/${window.user_name}/images/delete`);
     const data = await response.json();
     return data["images"];
   } catch (error) {
@@ -101,6 +101,7 @@ async function deleteUserImage() {
   }
 }
 
+// Mode details picture modal
 
 // Open the Modal
 function openModal() {
@@ -113,11 +114,31 @@ function closeModal() {
 }
 
 // Render the modal
-function showPicture(path, caption) {
+function showPicture(path, caption, name, id) {
   var modalImg = document.getElementById("modalImage");
   var captionText = document.getElementById("caption");
+  var nameText = document.getElementById("name");
+
   modalImg.src = path;
+  nameText.innerHTML = name;
   captionText.innerHTML = caption;
+  // setDeleteImageButton(id);
+}
+
+function updateImageButton() {
+  const deleteButton = document.createElement("button");
+  deleteButton.id = "edit-button";
+  deleteButton.classList.add("btn", "btn-danger");
+  deleteButton.innerHTML = "Edit/Delete Image";
+  deleteButton.dataset.toggle = "modal";
+  deleteButton.dataset.target = "#editModal";
+
+  return deleteButton;
+}
+
+function setDeleteImageButton(imageId) {
+  const deleteButton = document.getElementById("delete-button");
+  deleteButton.onclick = function() {deleteImage(imageId); closeModal();};
 }
 
 function initializeModal() {
@@ -136,11 +157,16 @@ function createModal() {
   modal.appendChild(createCloseButton());
   console.log("Created Close Button!");
 
+  modal.appendChild(createNameText());
+  console.log("Created Name Content!");
+
   modal.appendChild(createModalImage());
   console.log("Created Modal Content!");
 
   modal.appendChild(createCaptionText());
   console.log("Created Caption!");
+
+  modal.appendChild(updateImageButton());
 
   return modal;
 }
@@ -174,3 +200,111 @@ function createCaptionText(imageDetails) {
   return captionText;
 }
 
+function createNameText(imageDetails) {
+  var nameText = document.createElement("div");
+  nameText.className = "name-container";
+
+  const name = document.createElement("p");
+  name.id = "name";
+  name.innerHTML = "";
+
+  nameText.appendChild(name);
+
+  return nameText;
+}
+
+// BS4 Edit/Delete Modal
+function createEditModal() {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.id = "editModal";
+
+  const modalDialog = document.createElement("div");
+  modalDialog.className = "modal-dialog";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "modal-content";
+
+
+
+  return modal;
+}
+
+function createEditModalHeader() {
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const headerTitle = document.createElement("h4");
+  headerTitle.className = "modal-title";
+  headerTitle.innerHTML = "Edit Image Details";
+
+  modalHeader.appendChild(headerTitle);
+
+  const closeButton = document.createElement("button");
+  closeButton.className = "close";
+  closeButton.innerHTML = "&times;";
+  closeButton.dataset.dismiss = "modal";
+
+  modalHeader.appendChild(closeButton);
+}
+
+function createEditModalBody() {
+  const modalBody = document.createElement("div");
+  modalBody.className = "modal-body";
+
+  const form = document.createElement("form");
+  form.id = "edit-form";
+
+  const formGroup = document.createElement("div");
+  formGroup.className = "form-group";
+
+  // Name Form
+  const nameLabel = document.createElement("label");
+  nameLabel.innerHTML = "Name";
+
+  const nameInput = document.createElement("input");
+  nameInput.className = "form-control";
+  nameInput.type = "text";
+  nameInput.id = "name-input";
+
+  formGroup.appendChild(nameLabel);
+  formGroup.appendChild(nameInput);
+
+  // Caption form
+  const captionLabel = document.createElement("label");
+  captionLabel.innerHTML = "Caption";
+
+  const captionInput = document.createElement("input");
+  captionInput.className = "form-control";
+  captionInput.type = "text";
+  captionInput.id = "caption-input";
+
+  formGroup.appendChild(captionLabel);
+  formGroup.appendChild(captionInput);
+
+  form.appendChild(formGroup);
+
+  modalBody.appendChild(form);
+
+  return modalBody;
+}
+
+function createModalFooter() {
+  const modalFooter = document.createElement("div");
+  modalFooter.className = "modal-footer";
+
+  const deleteButton = document.createElement("button");
+  deleteButton.className = "btn btn-secondary";
+  deleteButton.innerHTML = "Cancel";
+  deleteButton.dataset.dismiss = "modal";
+  // deleteButton.onclick = closeModal;
+
+  const saveButton = document.createElement("button");
+  saveButton.className = "btn btn-primary";
+  saveButton.innerHTML = "Save";
+  saveButton.id = "save-button";
+  saveButton.dataset.dismiss = "modal";
+
+  modalFooter.appendChild(saveButton);
+
+}
