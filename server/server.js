@@ -153,11 +153,9 @@ function checkLoggedIn(req, res, next) {
     console.log("Checking logged in");
     if (req.isAuthenticated()) {
         // If we are authenticated, run the next route.
-        console.log("logged in");
         next();
     } else {
         // Otherwise, redirect to the login page.
-        console.log("Not logged in, redirecting to login");
         res.redirect('/login');
     }
 }
@@ -211,7 +209,7 @@ app.delete('/:user/:id/images/delete', function (req, res) { picApi.deleteUserIm
 // LOGIN RELATED APIs
 
 app.get('/login', (req, res) => {
-    res.sendFile(`login.html`, {'root' : clientDir});
+    res.sendFile(`login.html`, { 'root': clientDir });
 });
 
 // Login request
@@ -244,7 +242,7 @@ app.post('/login',
         res.end();
     });
     */
-//});
+    //});
 );
 // Register request
 app.post('/register', (req, res) => {
@@ -355,28 +353,36 @@ app.get('/user/:id/',
     checkLoggedIn,
     (req, res) => {
         if (req.params.id === req.user) {
-            res.sendFile(`page.html`, {'root' : clientDir});
-		} else {
-			res.redirect('/user/');
-		}
+            res.sendFile(`page.html`, { 'root': clientDir });
+        } else {
+            res.redirect('/user/');
+        }
     }
 )
 
 app.get('/logout', (req, res) => {
     req.logout(); // Logs us out!
-	res.redirect('/login'); // back to login
+    res.redirect('/login'); // back to login
 })
 
 // Default route-- redirects to main page if logged in, else to login
 app.get("/",
     checkLoggedIn,
     (req, res) => {
+        console.log(req.path);
+        console.log(req.url);
+        console.log(req.params);
+        console.log("/");
         res.redirect('/user');
     }
 );
 
 // Route for invalid requests
 app.all("*", (req, res) => {
+    console.log(req.path);
+    console.log(req.url);
+    console.log(req.params);
+    console.log("*");
     res.redirect('/');
 });
 
