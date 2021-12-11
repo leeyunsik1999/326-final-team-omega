@@ -103,7 +103,7 @@ export async function updateUserImageHandler(req, res) {
   }
 
   try {
-    await updateImageDetails(pictureId, caption, name);
+    await updateImageDetails(pictureId, name, caption);
     res.writeHead(200, {
       'Content-Type': 'text/plain'
     });

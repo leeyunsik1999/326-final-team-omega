@@ -1,3 +1,5 @@
+import { resetImagesPage } from "./loadImages.js";
+
 export function loadAddPage(page) {
   console.log("loadAddPage");
   const addPage = document.createElement("div");
@@ -153,7 +155,6 @@ function loadAddPicCard() {
   cardTitle.innerText = "Add Picture";
 
   cardBody.appendChild(cardTitle);
-  cardBody.appendChild(loadAddPicBox());
   cardBody.appendChild(selectFileForm());
   cardBody.appendChild(loadPicAddButton());
 
@@ -162,22 +163,13 @@ function loadAddPicCard() {
   return addPicCard;
 }
 
-function loadAddPicBox() {
-  const addPicBox = document.createElement("div");
-  addPicBox.id = "drop-box"
-  addPicBox.classList.add("upload-drop-box");
-  addPicBox.innerText = "Drop Files Here";
-
-  return addPicBox;
-}
-
 function loadAddButton() {
   const addPicButton = document.createElement("button");
   addPicButton.classList.add("d-flex", "justify-content-center", "sub-button-primary");
 
   const addLogo = document.createElement("img");
   addLogo.id = "add-button-logo";
-  addLogo.src = "./images/add_logo.png";
+  addLogo.src = "/images/add_logo.png";
 
   addPicButton.appendChild(addLogo);
 
@@ -228,7 +220,7 @@ function loadPicAddButton() {
 
   const addLogo = document.createElement("img");
   addLogo.id = "add-button-logo";
-  addLogo.src = "./images/add_logo.png";
+  addLogo.src = "/images/add_logo.png";
 
   addPicButton.appendChild(addLogo);
   addPicButton.id = "add-pic-sub-button";
@@ -276,9 +268,10 @@ async function addImage() {
   const response = await fetch(endpoint, postOptions);
   if (response.ok) {
     console.log("Image added!");
+    await resetImagesPage();
+    document.getElementById("pictures-page").style.display = "none";
     alert("Image added!");
   } else {
     alert("Failed to add Image!");
   }
 }
-

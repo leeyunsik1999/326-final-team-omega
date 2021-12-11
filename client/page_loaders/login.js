@@ -127,27 +127,30 @@ async function login_button_event() {
         alert("Enter a password!");
     } else {
         // Requesting login to server
-        const response = await fetch(`${window.requestName}/login?username=${username}&password=${password}`);
+        //const response = await fetch(`${window.requestName}/login?username=${username}&password=${password}`);
+        
+        // Changed to post request
+        const response = await fetch(`${window.requestName}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        });
 
-        // Processing response
+        console.log(response.redirected);
+        
+        console.log("Post request processing clientside");
+        // Processing respons
         if (response.status === 401) {
             alert("Invalid password!");
         } else if (response.status === 404) {
             alert("Invalid username!");
-        } else {
-            // Getting JSON data fetched from server
-            const data = await response.json();
-            // Setting session data
-            window.user_name = username;
-            window.user_id = data["id"];
-            // Un-loading login page
-            document.getElementById("login-container").innerHTML = "";
-
-            // Loading main page after logging in successfully
-            // TO REPLACE when we can generate entire page_content through JS
-            document.getElementById("page-container").innerHTML = window.main_page_content;
-            parent.innerHTML = "";
-            window.init_func();
+        } else if (response.redirected){
+            window.location.href = response.url;
         }
     }
 }
@@ -180,7 +183,6 @@ async function register_button_event(){
                 "password": password
             })
         });
-
         // Processing response
         if (response.status === 406) {
             alert("Username or password is too short!");

@@ -87,7 +87,7 @@ function append_logo_row(toolbar){
     const avatar = document.createElement("img");
     avatar.id = "avatar-image";
     // This is what we should alter in other places if we ever support custom avatar images
-    avatar.src = "./images/login_avatar.png";
+    avatar.src = "/images/login_avatar.png";
     avatar_container.appendChild(avatar);
 
     // Creating and appending login-text and login-buffer to login-button
