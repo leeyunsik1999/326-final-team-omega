@@ -4,11 +4,11 @@ import * as url from 'url';
 import * as fs from 'fs';
 
 import * as picApi from './pictures-api.js';
+import * as passport from 'passport';
 
 import express from 'express';
 import multer from 'multer';
 import bodyParser from 'body-parser';
-import { dirname } from 'path';
 
 import { MongoClient } from 'mongodb';
 
