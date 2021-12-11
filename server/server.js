@@ -1,6 +1,4 @@
 'use strict';
-import * as http from 'http';
-import * as url from 'url';
 import * as fs from 'fs';
 
 import * as picApi from './pictures-api.js';
@@ -18,6 +16,12 @@ import multer from 'multer';
 import bodyParser from 'body-parser';
 
 import { MongoClient } from 'mongodb';
+
+import { MiniCrypt } from './miniCrypt.js';
+
+const mc = new MiniCrypt();
+
+
 
 const LocalStrategy = passport_local.Strategy;// User/password strategy
 
@@ -103,8 +107,6 @@ const session = {
 
 const strategy = new LocalStrategy(
     async (username, password, done) => {
-        console.log(username);
-        console.log(password);
         user.findOne({ 'username': username }).then(document => {
             // Invalid username
             if (document === null) {
@@ -112,7 +114,7 @@ const strategy = new LocalStrategy(
                 return done(null, false, { 'message': 'Wrong username' });
             }
             // Invalid password
-            else if (document["password"] !== password) {
+            else if (!mc.check(password, document["password"][0], document["password"][1])) {
                 // invalid password
                 return done(null, false, { 'message': 'Wrong password' });
             }
@@ -145,12 +147,10 @@ const clientDir = process.env.CLIENTDIR || '../client';
 app.use(express.static(clientDir));
 app.use(express.json()) // To parse JSON bodies.
 app.use(bodyParser.urlencoded({ extended: true }));
-console.log("bleh");
 //app.use(express.bodyParser());
 
 // Routes
 function checkLoggedIn(req, res, next) {
-    console.log("Checking logged in");
     if (req.isAuthenticated()) {
         // If we are authenticated, run the next route.
         next();
@@ -214,35 +214,10 @@ app.get('/login', (req, res) => {
 
 // Login request
 app.post('/login',
-    //console.log(`U: ${username}, P: ${password}`);
     passport.authenticate('local', {
         successRedirect: '/user',
         failureRedirect: '/login'
     })
-    /*
-    const username = req.body['username'];
-    const password = req.body['password'];
-    console.log(`U: ${username}, P: ${password}`);
-    // Calling DB for the document with username.
-    user.findOne({ 'username': username }).then(document => {
-        // Invalid username
-        if (document === null) {
-            console.log("username not found");
-            res.status(404);
-        }
-        // Invalid password
-        else if (document["password"] !== password) {
-            console.log(`incorrect password-- expected ${document["password"]}`);
-            res.status(401);
-        } else {
-            res.status(200);
-            // Now returns userID based off of the unique id identifier.
-            res.json({ "id": document["_id"].toString() });
-        }
-        res.end();
-    });
-    */
-    //});
 );
 // Register request
 app.post('/register', (req, res) => {
@@ -260,7 +235,7 @@ app.post('/register', (req, res) => {
         } else {
             user.insertOne({
                 "username": username,
-                "password": password,
+                "password": mc.hash(password),
                 "theme": 1
             });
             res.status(200);
@@ -285,18 +260,6 @@ app.get('/user/:id/theme', (req, res) => {
             console.log(`Theme for user found`);
         }
     });
-    /*
-    Old implementation
-    if (!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    } else {
-        res.status(200);
-        res.json({ "theme": data[username]["theme"] });
-        console.log(`Theme for ${username} found`);
-    }
-    res.end();
-    */
 });
 
 // Set user's theme ID
@@ -369,20 +332,12 @@ app.get('/logout', (req, res) => {
 app.get("/",
     checkLoggedIn,
     (req, res) => {
-        console.log(req.path);
-        console.log(req.url);
-        console.log(req.params);
-        console.log("/");
         res.redirect('/user');
     }
 );
 
 // Route for invalid requests
 app.all("*", (req, res) => {
-    console.log(req.path);
-    console.log(req.url);
-    console.log(req.params);
-    console.log("*");
     res.redirect('/');
 });
 
