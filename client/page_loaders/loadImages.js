@@ -21,7 +21,7 @@ export async function loadImagesPage(page) {
 
 export async function resetImagesPage() {
   const imagePage = document.getElementById("pictures-page");
-  const parent = imagePage.parentNode();
+  const parent = imagePage.parentNode;
   parent.removeChild(imagePage);
   await loadImagesPage(parent);
 }
@@ -191,12 +191,12 @@ async function pushUpdate(imageId) {
   const name = document.getElementById("name-input").value;
   const caption = document.getElementById("caption-input").value;
   await updateUserImage(imageId, name, caption);
-  // await resetImagesPage();
+  await resetImagesPage();
 }
 
 async function deleteImage(imageId) {
   await deleteUserImage(imageId);
-  // await resetImagesPage();
+  await resetImagesPage();
 }
 
 function initializeModal() {

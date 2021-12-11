@@ -1,4 +1,4 @@
-// import { resetImagesPage } from "./loadImages.js";
+import { resetImagesPage } from "./loadImages.js";
 
 export function loadAddPage(page) {
   console.log("loadAddPage");
@@ -155,22 +155,12 @@ function loadAddPicCard() {
   cardTitle.innerText = "Add Picture";
 
   cardBody.appendChild(cardTitle);
-  cardBody.appendChild(loadAddPicBox());
   cardBody.appendChild(selectFileForm());
   cardBody.appendChild(loadPicAddButton());
 
   addPicCard.appendChild(cardBody);
 
   return addPicCard;
-}
-
-function loadAddPicBox() {
-  const addPicBox = document.createElement("div");
-  addPicBox.id = "drop-box"
-  addPicBox.classList.add("upload-drop-box");
-  addPicBox.innerText = "Drop Files Here";
-
-  return addPicBox;
 }
 
 function loadAddButton() {
@@ -278,10 +268,10 @@ async function addImage() {
   const response = await fetch(endpoint, postOptions);
   if (response.ok) {
     console.log("Image added!");
-    // await resetImagesPage();
+    await resetImagesPage();
+    document.getElementById("pictures-page").style.display = "none";
     alert("Image added!");
   } else {
     alert("Failed to add Image!");
   }
 }
-
