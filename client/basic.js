@@ -72,7 +72,7 @@ async function initialize() {
         */
         fetch(`${window.requestName}/logout`).then(res => {
             if (res.redirected) {
-                window.location.href = response.url;
+                window.location.href = res.url;
             }
         });
     })
