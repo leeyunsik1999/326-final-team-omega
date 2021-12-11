@@ -4,10 +4,16 @@ import * as url from 'url';
 import * as fs from 'fs';
 
 import * as picApi from './pictures-api.js';
-import * as passport from 'passport';
+//import * as passport from 'passport';
+//import * as passport_local from 'passport-local';
+
+import * as path from 'path';
+
+import passport from 'passport';
 import * as passport_local from 'passport-local';
 
 import express from 'express';
+import expressSession from 'express-session';
 import multer from 'multer';
 import bodyParser from 'body-parser';
 
@@ -94,7 +100,40 @@ const session = {
 };
 
 // Passport config for app
-app.use
+
+const strategy = new LocalStrategy(
+    async (username, password, done) => {
+        console.log(username);
+        console.log(password);
+        user.findOne({ 'username': username }).then(document => {
+            // Invalid username
+            if (document === null) {
+                // no such user
+                return done(null, false, { 'message': 'Wrong username' });
+            }
+            // Invalid password
+            else if (document["password"] !== password) {
+                // invalid password
+                return done(null, false, { 'message': 'Wrong password' });
+            }
+            return done(null, username);
+        });
+    }
+);
+
+app.use(expressSession(session));
+passport.use(strategy);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Convert user object to a unique identifier.
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+// Convert a unique identifier to a user object.
+passport.deserializeUser((uid, done) => {
+    done(null, uid);
+});
 
 // Picture API shared object
 const port = process.env.PORT || 8080;
@@ -106,6 +145,22 @@ const clientDir = process.env.CLIENTDIR || '../client';
 app.use(express.static(clientDir));
 app.use(express.json()) // To parse JSON bodies.
 app.use(bodyParser.urlencoded({ extended: true }));
+console.log("bleh");
+//app.use(express.bodyParser());
+
+// Routes
+function checkLoggedIn(req, res, next) {
+    console.log("Checking logged in");
+    if (req.isAuthenticated()) {
+        // If we are authenticated, run the next route.
+        console.log("logged in");
+        next();
+    } else {
+        // Otherwise, redirect to the login page.
+        console.log("Not logged in, redirecting to login");
+        res.redirect('/login');
+    }
+}
 
 // IMAGE routes
 // - /images/id
@@ -155,12 +210,21 @@ app.delete('/:user/:id/images/delete', function (req, res) { picApi.deleteUserIm
 
 // LOGIN RELATED APIs
 
-// Login request
 app.get('/login', (req, res) => {
-    const username = req.query.username;
-    const password = req.query.password;
-    console.log(`U: ${username}, P: ${password}`);
+    res.sendFile(`login.html`, {'root' : clientDir});
+});
 
+// Login request
+app.post('/login',
+    //console.log(`U: ${username}, P: ${password}`);
+    passport.authenticate('local', {
+        successRedirect: '/user',
+        failureRedirect: '/login'
+    })
+    /*
+    const username = req.body['username'];
+    const password = req.body['password'];
+    console.log(`U: ${username}, P: ${password}`);
     // Calling DB for the document with username.
     user.findOne({ 'username': username }).then(document => {
         // Invalid username
@@ -179,8 +243,9 @@ app.get('/login', (req, res) => {
         }
         res.end();
     });
-});
-
+    */
+//});
+);
 // Register request
 app.post('/register', (req, res) => {
     const username = req.body['username'];
@@ -206,10 +271,6 @@ app.post('/register', (req, res) => {
         res.end();
     })();
 });
-
-
-
-
 
 // THEME RELATED APIs
 
@@ -283,13 +344,35 @@ app.get('/user/:id/date', (req, res) => {
     res.end();
 });
 
-app.get("*", (req, res) => {
-    /*
-    const __filename = url.fileURLToPath(import.meta.url);
-    res.sendFile(dirname(__filename) + "/../client/index.html");
-    */
-    res.write(fs.readFileSync(`${clientDir}/index.html`));
-    res.end();
+app.get('/user',
+    checkLoggedIn,
+    (req, res) => {
+        res.redirect('/user/' + req.user);
+    }
+);
+
+app.get('/user/:id/',
+    checkLoggedIn,
+    (req, res) => {
+        if (req.params.id === req.user) {
+            res.sendFile(`page.html`, {'root' : clientDir});
+		} else {
+			res.redirect('/user/');
+		}
+    }
+)
+
+// Default route-- redirects to main page if logged in, else to login
+app.get("/",
+    checkLoggedIn,
+    (req, res) => {
+        res.redirect('/user');
+    }
+);
+
+// Route for invalid requests
+app.all("*", (req, res) => {
+    res.redirect('/');
 });
 
 app.listen(port, () => {
