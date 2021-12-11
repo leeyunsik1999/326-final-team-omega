@@ -31,6 +31,10 @@ function load_page(page_id) {
 }
 
 async function initialize() {
+
+    window.user_name = document.URL.split('/')[4];
+    console.log(window.user_name);
+
     const page_container = document.getElementById("page-container");
 
     const page = document.getElementById("page-content");
@@ -66,7 +70,11 @@ async function initialize() {
         page_container.innerHTML = "";
         load_login_card();
         */
-       await fetch(`${window.requestName}/logout`);
+        fetch(`${window.requestName}/logout`).then(res => {
+            if (res.redirected) {
+                window.location.href = response.url;
+            }
+        });
     })
 
     // Adding functionality to logo button and toolbar button going to habits page

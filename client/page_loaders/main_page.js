@@ -49,7 +49,7 @@ function main_row(page){
         const button_logo = document.createElement("img");
         button_logo.id = `${text}-button-logo`;
         button_logo.classList.add("button-image");
-        button_logo.src = `./images/${text}_logo.png`;
+        button_logo.src = `/images/${text}_logo.png`;
         button.appendChild(button_logo);
         
         return button;
@@ -87,7 +87,7 @@ function main_row(page){
         const button_logo = document.createElement("img");
         button_logo.id = `${text}-button-logo`;
         button_logo.classList.add("button-image");
-        button_logo.src = `./images/${text}_logo.png`;
+        button_logo.src = `/images/${text}_logo.png`;
         button.appendChild(button_logo);
         
         return button;

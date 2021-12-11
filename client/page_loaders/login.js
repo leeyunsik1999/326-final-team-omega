@@ -141,28 +141,16 @@ async function login_button_event() {
             })
         });
 
+        console.log(response.redirected);
         
         console.log("Post request processing clientside");
-        document.write(await response.text());
         // Processing respons
         if (response.status === 401) {
             alert("Invalid password!");
         } else if (response.status === 404) {
             alert("Invalid username!");
-        } else {
-            // Getting JSON data fetched from server
-            const data = await response.json();
-            // Setting session data
-            window.user_name = username;
-            window.user_id = data["id"];
-            // Un-loading login page
-            document.getElementById("login-container").innerHTML = "";
-
-            // Loading main page after logging in successfully
-            // TO REPLACE when we can generate entire page_content through JS
-            document.getElementById("page-container").innerHTML = window.main_page_content;
-            parent.innerHTML = "";
-            window.init_func();
+        } else if (response.redirected){
+            window.location.href = response.url;
         }
     }
 }
