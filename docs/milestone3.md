@@ -17,18 +17,24 @@ eventList document{
     _id: <ObjectId1>,       // id of this eventList
     userID: <ObjectId1>,    // id of user that this eventList belongs to
     name: String,           // Name of event / habit that is being kept track of.
+    month: String           // Month that this event is being tracked for. JAN, FEB, MAR, etc. All caps
 }
 
 events document{
     _id: <ObjectId1>,       // id of this event
     userID: <ObjectId1>,    // id of user that this event belongs to
+    eventID: <ObjectId1>,   // id of event that this is an instance of
+    name: String,           // name of even tthat this is an instance of
+    month: String,          // Month that this specific event occured in. JAN, FEB, MAR, etc. All caps
+    day: int32,             // Day that this specific event occured in. 1, 2, 3, 4, etc.
     date: String,           // Date that this specific events this is for. Format: YYYY-mm-dd
     completed: Boolean      // If this event / habit was completed or not.
 }
 
 images document{
-    _id: <ObjectId1>,       // id of this image. Should also be used as the image's name with ObjectId.toString(). Could probably format it like `${ObjectId.toString()}.jpg`
+    _id: <ObjectId1>,       // id of this image. Should also be used as the image's name with ObjectId.
     userID: <ObjectId1>,    // id of the user that this image belongs to
+    path: String,           // Path to the specific image.
     date: String,           // Date that this specific image is for. Format: YYYY-mm-dd
     name: String,           // User-specified name for this image.
     caption: String         // Additional details specified by the user for this image.
@@ -41,9 +47,28 @@ user document{
     theme: int32            // user's theme setting.
 }
 ```
+<<<<<<< HEAD
 # Work Distribution
 ## Yun's Responsibility
 
 ## Erin's Responsibility
 
 ## Swar's Responsibility
+=======
+
+
+# Labor Breakdown
+## Yun
+- Made the database and made the server.js connect to the database.
+- Defined environment variables to use
+- Defined the database collection specifications
+- Converted the login API's to utilize the database instead of dummy data
+
+## Swar
+- Converted all picture-related API to utilize the database for image storage/fetching.
+
+## Erin
+- Converted all theme and event-related API to utilize the database for event storage/fetching.
+
+In summary, we just converted our API's to utilize the database instead of our dummy data, as finishing the API's was a part of our milestone 2 objectives.
+>>>>>>> c3672ff2b01804024f211d139d93f51a317c79e5

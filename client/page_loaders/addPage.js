@@ -188,21 +188,9 @@ function selectFileForm() {
   const addForm = document.createElement("div");
   addForm.classList.add("form-group");
 
-  const fileIdLabel = document.createElement("label");
-  fileIdLabel.for = "file-id";
-  fileIdLabel.innerText = "File ID";
-
-  const fileIdInput = document.createElement("input");
-  fileIdInput.type = "text";
-  fileIdInput.classList.add("form-control");
-  fileIdInput.id = "file-id";
-
-  addForm.appendChild(fileIdLabel);
-  addForm.appendChild(fileIdInput);
-
   const fileNameLabel = document.createElement("label");
   fileNameLabel.for = "file-name";
-  fileNameLabel.innerText = "File Name";
+  fileNameLabel.innerText = "Name";
 
   const fileNameInput = document.createElement("input");
   fileNameInput.type = "text";
@@ -214,7 +202,7 @@ function selectFileForm() {
 
   const fileCaptionLabel = document.createElement("label");
   fileCaptionLabel.for = "file-caption";
-  fileCaptionLabel.innerText = "File Caption";
+  fileCaptionLabel.innerText = "Caption";
 
   const fileCaptionInput = document.createElement("input");
   fileCaptionInput.type = "text";
@@ -264,14 +252,17 @@ function loadHabitAddButton() {
 async function addImage() {
   const formData = new FormData();
   formData.append("img", document.getElementById("add-file-form").files[0]);
-  formData.append("name", document.getElementById("file-name".value));
+  formData.append("name", document.getElementById("file-name").value);
   formData.append("caption", document.getElementById("file-caption").value);
 
-  var today = new Date();
-  const date = `${today.getFullYear()}` + `${today.getMonth()+1}` + `${today.getDate()}`;
-  const fileId = document.getElementById("file-id").value;
+  document.getElementById("add-file-form").value = "";
+  document.getElementById("file-name").value = "";
+  document.getElementById("file-caption").value = "";
 
-  const endpoint = `${window.requestName}/${window.user_name}/${fileId}/${date}/images/create`;
+  var today = new Date();
+  const date = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+
+  const endpoint = `${window.requestName}/${window.user_name}/${date}/images/create`;
 
   const postOptions = {
     method: 'POST',
@@ -285,7 +276,9 @@ async function addImage() {
   const response = await fetch(endpoint, postOptions);
   if (response.ok) {
     console.log("Image added!");
+    alert("Image added!");
   } else {
     alert("Failed to add Image!");
   }
 }
+

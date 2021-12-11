@@ -72,7 +72,7 @@ function loadImage(detail) {
   const image = document.createElement("img");
   image.src = path;
   image.alt = detail["caption"];
-  image.id = detail["pictureId"];
+  image.id = detail["_id"];
   image.classList.add("pic");
 
   lightBox.appendChild(image);
