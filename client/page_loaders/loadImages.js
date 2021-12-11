@@ -91,12 +91,25 @@ async function getUserImages() {
   }
 }
 
-// Delete request to delete an image from the server
-async function deleteUserImage() {
+// PUT request to update the name and caption of an image in the server
+async function updateUserImage(id, name, caption) {
   try {
-    const response = await fetch(`${window.requestName}/${window.user_name}/images/delete`);
-    const data = await response.json();
-    return data["images"];
+    const response = await fetch(`${window.requestName}/${window.user_name}/${id}/images/update`, {method: 'PUT', body: JSON.stringify({name: name, caption: caption})});
+    if (!response.ok) {
+      console.error(`Failed to update the name and caption for image: ${id}.`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Delete request to delete an image from the server
+async function deleteUserImage(id) {
+  try {
+    const response = await fetch(`${window.requestName}/${window.user_name}/${id}/images/delete`, {method: 'DELETE'});
+    if (!response.ok) {
+      console.error(`Failed to delete image (${id}) from server.`);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -120,26 +133,27 @@ function showPicture(path, caption, name, id) {
   var captionText = document.getElementById("caption");
   var nameText = document.getElementById("name");
 
-  // setDeleteImageButton(id);
   modalImg.src = path;
   nameText.innerHTML = name;
   captionText.innerHTML = caption;
+
+  document.getElementById("edit-button").onclick = function() {closeModal(); openEditModal(id);};
 }
 
 function updateImageButton() {
-  const deleteButton = document.createElement("button");
-  deleteButton.id = "edit-button";
-  deleteButton.classList.add("btn", "btn-danger");
-  deleteButton.innerHTML = "Edit/Delete Image";
-  // deleteButton.dataset.toggle = "modal";
-  // deleteButton.dataset.target = "#editModal";
-  deleteButton.onclick = function() {closeModal(); openEditModal();};
+  const editButton = document.createElement("button");
+  editButton.id = "edit-button";
+  editButton.classList.add("btn", "btn-primary");
+  editButton.innerHTML = "Edit/Delete Image";
+  // editButton.onclick = function() {closeModal(); openEditModal();};
 
-  return deleteButton;
+  return editButton;
 }
 
-function openEditModal() {
+function openEditModal(imageId) {
   document.getElementById("editModal").style.display = "block";
+  document.getElementById("save-button").onclick = function() {closeEditModal(); pushUpdate(imageId);};
+  document.getElementById("delete-button").onclick = function() {closeEditModal(); deleteImage(imageId);};
 }
 
 function closeEditModal() {
@@ -149,6 +163,16 @@ function closeEditModal() {
 function setDeleteImageButton(imageId) {
   const deleteButton = document.getElementById("edit-button");
   deleteButton.onclick = closeModal;
+}
+
+async function pushUpdate(imageId) {
+  const name = document.getElementById("name-input").value;
+  const caption = document.getElementById("caption-input").value;
+  await updateUserImage(imageId, name, caption);
+}
+
+async function deleteImage(imageId) {
+  await deleteUserImage(imageId);
 }
 
 function initializeModal() {
@@ -312,18 +336,19 @@ function createEditModalFooter() {
   modalFooter.className = "modal-footer";
 
   const deleteButton = document.createElement("button");
-  deleteButton.className = "btn btn-secondary";
-  deleteButton.innerHTML = "Cancel";
-  deleteButton.dataset.dismiss = "modal";
-  // deleteButton.onclick = closeModal;
+  deleteButton.className = "btn btn-danger";
+  deleteButton.innerHTML = "Delete Image";
+  deleteButton.id = "delete-button";
+  deleteButton.onclick = function() {closeEditModal();};
 
   const saveButton = document.createElement("button");
   saveButton.className = "btn btn-primary";
   saveButton.innerHTML = "Save";
   saveButton.id = "save-button";
-  saveButton.dataset.dismiss = "modal";
+  saveButton.onclick = function() {closeEditModal();};
 
   modalFooter.appendChild(saveButton);
+  modalFooter.appendChild(deleteButton);
 
   return modalFooter;
 }
