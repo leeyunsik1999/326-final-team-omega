@@ -80,104 +80,6 @@ export let database, events, eventList, images, user, counters;
 
 })();
 
-// Variable to store pre-defined data on
-/**
- * Format:
- * keys in the object "data" are usernames.
- * In username: key "password" contains the user's password.
- * ID should be used to query things in the future-- implement this when databases
- */
-const data = {
-    "username": {
-        "id": 1,
-        "password": "password",
-        "events": [
-            "Go to the gym",
-            "Go swimming"
-        ],
-        "theme": 1,
-        "data": {
-            "20211101": {
-                "images": [
-                ],
-                "events": [
-                    {
-                        "name": "Go biking",
-                        "completed": true
-                    }
-                ]
-            },
-            "20211102": {
-                "images": [
-                    {
-                        "id": 1,
-                        "name": "gym1",
-                        "caption": "Example Caption"
-                    }
-                ],
-                "events": [
-                    {
-                        "name": "Go to the gym",
-                        "completed": true
-                    }
-                ]
-            },
-            "20211103": {
-                "images": [
-                    {
-                        "id": 2,
-                        "name": "gym2",
-                        "caption": "Another example caption"
-                    }
-                ],
-                "events": [
-                    {
-                        "name": "Go to the gym",
-                        "completed": false
-                    },
-                    {
-                        "name": "Go swimming",
-                        "completed": false
-                    }
-                ]
-            }
-        }
-    },
-    "user1": {
-        "id": 2,
-        "password": "asdf1234",
-        "events": [
-            "Eat breakfast"
-        ],
-        "theme": 2,
-        "data": {
-            "20211101": {
-                "images": [],
-                "events": []
-            },
-            "20211102": {
-                "images": [
-                    {
-                        "id": 3,
-                        "name": "breakfast",
-                        "caption": "Example captions"
-                    }
-                ],
-                "events": []
-            },
-            "20211103": {
-                "images": [],
-                "events": [
-                    {
-                        "name": "Eat breakfast",
-                        "completed": true
-                    }
-                ]
-            }
-        }
-    }
-};
-
 const upload = multer({ dest: '../client/uploads/' });
 const app = express();
 
@@ -263,24 +165,6 @@ app.get('/login', (req, res) => {
             res.json({ "id": document["_id"].toString() });
         }
         res.end();
-        /*
-        Old implementation using data
-        // Invalid username
-        if (!(username in data)) {
-            console.log("username not found");
-            res.status(404);
-        }
-        // Invalid password
-        else if (data[username]["password"] !== password) {
-            console.log(`incorrect password-- expected ${data[username]["password"]}`);
-            res.status(401);
-        } else {
-            res.status(200);
-            console.log(`${username} logged in`);
-            res.json({ "id": data[username]["id"] });
-        }
-        res.end();
-        */
     });
 });
 
@@ -298,18 +182,6 @@ app.post('/register', (req, res) => {
             console.log("Username or password too short");
             res.status(406);
         } else {
-            /*
-            local implementation:
-
-            let temp = {
-                "id": Math.floor(Math.random() * (999999 - 3 + 1) + 3),
-                "password": password,
-                "events": [],
-                "theme": 1,
-                "data": {}
-            };
-            data[username] = temp;
-            */
             user.insertOne({
                 "username": username,
                 "password": password,
@@ -360,6 +232,8 @@ app.get('/user/:id/theme', (req, res) => {
 app.put('/user/:id/theme/set', (req, res) => {
     const username = req.params["id"];
     const theme = req.body["id"];
+
+    // Broken-- need to use database, not data
     if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
@@ -382,6 +256,8 @@ app.put('/user/:id/theme/set', (req, res) => {
 // Fetches dates that user has data for
 app.get('/user/:id/date', (req, res) => {
     const username = req.params["id"];
+
+    // Broken-- need to use database, not data
     if (!(username in data)) {
         res.status(404);
         console.log(`Username ${username} not found`);
