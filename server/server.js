@@ -362,6 +362,11 @@ app.get('/user/:id/',
     }
 )
 
+app.get('/logout', (req, res) => {
+    req.logout(); // Logs us out!
+	res.redirect('/login'); // back to login
+})
+
 // Default route-- redirects to main page if logged in, else to login
 app.get("/",
     checkLoggedIn,

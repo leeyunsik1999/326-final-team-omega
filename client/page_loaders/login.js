@@ -127,9 +127,24 @@ async function login_button_event() {
         alert("Enter a password!");
     } else {
         // Requesting login to server
-        const response = await fetch(`${window.requestName}/login?username=${username}&password=${password}`);
+        //const response = await fetch(`${window.requestName}/login?username=${username}&password=${password}`);
+        
+        // Changed to post request
+        const response = await fetch(`${window.requestName}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        });
 
-        // Processing response
+        
+        console.log("Post request processing clientside");
+        document.write(await response.text());
+        // Processing respons
         if (response.status === 401) {
             alert("Invalid password!");
         } else if (response.status === 404) {
@@ -180,7 +195,6 @@ async function register_button_event(){
                 "password": password
             })
         });
-
         // Processing response
         if (response.status === 406) {
             alert("Username or password is too short!");
