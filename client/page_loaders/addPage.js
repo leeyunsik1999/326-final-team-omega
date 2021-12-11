@@ -1,3 +1,5 @@
+// import { resetImagesPage } from "./loadImages.js";
+
 export function loadAddPage(page) {
   console.log("loadAddPage");
   const addPage = document.createElement("div");
@@ -276,6 +278,7 @@ async function addImage() {
   const response = await fetch(endpoint, postOptions);
   if (response.ok) {
     console.log("Image added!");
+    // await resetImagesPage();
     alert("Image added!");
   } else {
     alert("Failed to add Image!");

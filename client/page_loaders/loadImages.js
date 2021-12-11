@@ -19,6 +19,13 @@ export async function loadImagesPage(page) {
     page.appendChild(imagePage);
 }
 
+export async function resetImagesPage() {
+  const imagePage = document.getElementById("pictures-page");
+  const parent = imagePage.parentNode();
+  parent.removeChild(imagePage);
+  await loadImagesPage(parent);
+}
+
 function loadLogo() {
   const logo = document.createElement("img");
   logo.classList.add("photo-image");
@@ -93,25 +100,41 @@ async function getUserImages() {
 
 // PUT request to update the name and caption of an image in the server
 async function updateUserImage(id, name, caption) {
-  try {
-    const response = await fetch(`${window.requestName}/${window.user_name}/${id}/images/update`, {method: 'PUT', body: JSON.stringify({name: name, caption: caption})});
-    if (!response.ok) {
-      console.error(`Failed to update the name and caption for image: ${id}.`);
-    }
-  } catch (error) {
-    console.log(error);
+  const jsonString = JSON.stringify({
+    name: name,
+    caption: caption
+  });
+
+  const postOptions = {
+    method: 'PUT',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: jsonString
+  }
+
+  const response = await fetch(`${window.requestName}/${window.user_name}/${id}/images/update`, postOptions);
+  if (response.ok) {
+    console.log(`Updated image (${id}), Name: ${name}, Caption: ${caption}.`);
+    alert("Image updated successfully.");
+  } else {
+    console.log(`Failed to update the name and caption for image: ${id}.`);
+    alert("Failed to update image!");
   }
 }
 
 // Delete request to delete an image from the server
 async function deleteUserImage(id) {
-  try {
     const response = await fetch(`${window.requestName}/${window.user_name}/${id}/images/delete`, {method: 'DELETE'});
-    if (!response.ok) {
-      console.error(`Failed to delete image (${id}) from server.`);
-    }
-  } catch (error) {
-    console.log(error);
+  if (response.ok) {
+    console.log(`Deleted image (${id}).`);
+    alert("Image deleted successfully.");
+  } else {
+    console.log(`Failed to delete image (${id}) from server.`);
+    alert("Failed to delete image!");
   }
 }
 
@@ -145,7 +168,6 @@ function updateImageButton() {
   editButton.id = "edit-button";
   editButton.classList.add("btn", "btn-primary");
   editButton.innerHTML = "Edit/Delete Image";
-  // editButton.onclick = function() {closeModal(); openEditModal();};
 
   return editButton;
 }
@@ -169,10 +191,12 @@ async function pushUpdate(imageId) {
   const name = document.getElementById("name-input").value;
   const caption = document.getElementById("caption-input").value;
   await updateUserImage(imageId, name, caption);
+  // await resetImagesPage();
 }
 
 async function deleteImage(imageId) {
   await deleteUserImage(imageId);
+  // await resetImagesPage();
 }
 
 function initializeModal() {
@@ -186,20 +210,10 @@ function createModal() {
   modal.style.display = "none";
   modal.style.position = "fixed";
 
-  console.log("Creating Modal!");
-
   modal.appendChild(createCloseButton());
-  console.log("Created Close Button!");
-
   modal.appendChild(createNameText());
-  console.log("Created Name Content!");
-
   modal.appendChild(createModalImage());
-  console.log("Created Modal Content!");
-
   modal.appendChild(createCaptionText());
-  console.log("Created Caption!");
-
   modal.appendChild(updateImageButton());
 
   return modal;
