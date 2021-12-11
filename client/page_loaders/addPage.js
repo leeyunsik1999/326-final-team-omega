@@ -169,7 +169,7 @@ function loadAddButton() {
 
   const addLogo = document.createElement("img");
   addLogo.id = "add-button-logo";
-  addLogo.src = "./images/add_logo.png";
+  addLogo.src = "/images/add_logo.png";
 
   addPicButton.appendChild(addLogo);
 
@@ -220,7 +220,7 @@ function loadPicAddButton() {
 
   const addLogo = document.createElement("img");
   addLogo.id = "add-button-logo";
-  addLogo.src = "./images/add_logo.png";
+  addLogo.src = "/images/add_logo.png";
 
   addPicButton.appendChild(addLogo);
   addPicButton.id = "add-pic-sub-button";

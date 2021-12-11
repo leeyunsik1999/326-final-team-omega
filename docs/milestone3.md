@@ -47,6 +47,14 @@ user document{
     theme: int32            // user's theme setting.
 }
 ```
+<<<<<<< HEAD
+# Work Distribution
+## Yun's Responsibility
+
+## Erin's Responsibility
+
+## Swar's Responsibility
+=======
 
 
 # Labor Breakdown
@@ -63,3 +71,4 @@ user document{
 - Converted all theme and event-related API to utilize the database for event storage/fetching.
 
 In summary, we just converted our API's to utilize the database instead of our dummy data, as finishing the API's was a part of our milestone 2 objectives.
+>>>>>>> c3672ff2b01804024f211d139d93f51a317c79e5

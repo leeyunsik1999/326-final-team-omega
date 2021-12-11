@@ -29,7 +29,10 @@ export async function resetImagesPage() {
 function loadLogo() {
   const logo = document.createElement("img");
   logo.classList.add("photo-image");
-  logo.src = "./images/pictures_logo.png";
+  //logo.src = "./images/pictures_logo.png";
+
+  // Can't do ./images
+  logo.src = "/images/pictures_logo.png";
   logo.alt = "logo";
   logo.id = "picture-page-logo";
 
@@ -75,8 +78,13 @@ function createGalleryColumn(details) {
 
 
 function loadImage(detail) {
-  const path = "." + detail["path"].substr(9); // remove "../client" For some reason the path is not correct.
-  console.log(detail);
+  const lightBox = document.createElement("a");
+  // Can't do ./images now-- fixed that up
+  const path = detail["path"].substr(9); // remove "../client" For some reason the path is not correct.
+
+  lightBox.classList.add("lightbox");
+  lightBox.setAttribute("href", path);
+
   const image = document.createElement("img");
   image.src = path;
   image.alt = detail["caption"];
