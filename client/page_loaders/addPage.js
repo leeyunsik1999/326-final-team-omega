@@ -304,12 +304,12 @@ async function addHabit() {
         "name": name
       })
     });
-    if (response.status === 200){
+    if (response.status === 200) {
       window.alert("Event created!");
       document.getElementById("habit-name").value = '';
-  }else if (response.status === 404){
+    } else if (response.status === 404) {
       window.alert("Username not found!");
-    } else if (response.status === 500){
+    } else if (response.status === 500) {
       window.alert("Server error");
     }
   }

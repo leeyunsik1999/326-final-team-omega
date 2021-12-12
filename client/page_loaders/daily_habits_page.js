@@ -1,21 +1,20 @@
 //dictionary for the months
 const month_word = {
-  1 : "January",
-  2 : "February",
-  3 : "March",
-  4 : "April",
-  5 : "May",
-  6 : "June",
-  7 : "July",
-  8 : "August",
-  9 : "September",
-  10 : "October",
-  11 : "November",
-  12 : "December"
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December"
 }
 
 export function load_daily_page(parent) {
-
   (async () => {
     // create div for the habits page 
     const habits_page = document.createElement("div");
@@ -53,6 +52,20 @@ export function load_daily_page(parent) {
     // creates the list of items that needs to be checked off. Pulls from the events (what is checked off) and eventList (what needs to be added to the list) api
     const habits_list = document.createElement("div");
     habits_list.id = "habits-list";
+
+    // First create the checkboxes
+    // '/user/:id/:month/eventList'
+    console.log("beep");
+    const event_response = await fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/eventList`);
+    if (event_response.status !== 200) {
+      console.log("Error loading events for month");
+    } else {
+      console.log("boop");
+      const events = await event_response.json();
+      for (const event of events) {
+        create_habit(event, habits_list);
+      }
+    }
     // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date()}/events}`)
     // if(event_response.status !== 200) {
     //   alert("An error has occured.");
@@ -138,8 +151,20 @@ function get_date() {
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mm = String(today.getMonth() + 1).padStart(2, '0');
-  let yyyy = today.getFullYear(); 
+  let yyyy = today.getFullYear();
   return yyyy + mm + dd;
+}
+
+// Gets the month in string
+function get_month() {
+  let today = new Date();
+  return month_word[today.getMonth() + 1];
+}
+
+// Gets the date in number
+function get_day() {
+  let today = new Date();
+  return today.getDate();
 }
 
 // gets the date and returns as the name of the month and day and year
@@ -147,12 +172,13 @@ function get_date_text() {
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mm = String(today.getMonth() + 1).padStart(2, '0');
-  let yyyy = today.getFullYear(); 
+  let yyyy = today.getFullYear();
   return month_word[mm] + ", " + dd + " " + yyyy;
 }
 
 // creates the individual checkboxes for each habit under the to do list
-function create_habit(habit_title, parent) {
+function create_habit(habit, parent) {
+  console.log(habit);
   // checkbox div
   const task = document.createElement("div");
   task.classList.add("custom-control", "custom-checkbox");
@@ -160,17 +186,59 @@ function create_habit(habit_title, parent) {
 
   // specific checkbox for the habit
   const checkbox = document.createElement("input");
-  checkbox.id = habit_title;
+  checkbox.id = habit["name"];
   checkbox.type = "checkbox";
-  checkbox.classList("custom-control-input");
+  checkbox.classList.add("custom-control-input");
+  checkbox.value = habit["_id"];
   task.appendChild(checkbox);
+
+  // Logic for API call on post / delete
+  checkbox.addEventListener("click", () => {
+    (async () => {
+      console.log(checkbox.checked);
+      const endpoint = `${window.requestName}/user/${window.user_name}/events`;
+      const type = checkbox.checked ? 'POST' : 'DELETE';
+      const response = await fetch(endpoint, {
+        method: type,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "username": window.user_name,
+          "month": habit["month"],
+          "name": habit["name"],
+          "eventID": habit["_id"],
+          "date": get_date()
+        })
+      });
+      // True case: POST
+      if (checkbox.checked) {
+        if (response.status === 200) {
+          console.log("Event occurence created");
+        } else {
+          console.log("Failed to create event " + habit["name"]);
+          window.alert("Failed to create event " + habit["name"]);
+        }
+        // False case: DELETE
+      } else {
+        if (response.status === 200) {
+          console.log("Event deleted");
+        } else {
+          console.log("Event deletion unsuccessful");
+          window.alert("Event deletion unsuccessful");
+        }
+      }
+    })();
+  });
 
   // what the habit name is called 
   const label = document.createElement("label");
   label.classList.add("custom-control-label");
-  label.setAttribute("for", habit_title)
-  label.innerText = habit_title;
+  label.setAttribute("for", habit["name"]);
+  label.innerText = habit["name"];
   task.appendChild(label);
+
+
 }
 
 // creates the html for adding images to the images colum (this probably needs to be changed)

@@ -100,8 +100,8 @@ async function initialize() {
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
     // Adding functionality to monthly view button on habits page
-    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
     document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));
+    //document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
 
     load_page("main-page");
 }
