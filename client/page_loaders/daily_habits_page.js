@@ -64,21 +64,38 @@ export async function load_daily_page(parent) {
           }
         });
       }
+    }).finally(res => {
+      fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/${get_day()}/events`).then(res => {
+        if (res.status !== 200){
+          console.log("Error loading events for today");
+        } else {
+          res.json().then(events => {
+            for (const event of events){
+              console.log(`Checkbox Event: ${event["name"]}`);
+              let box = document.getElementById(`Checkbox Event: ${event["name"]}`);
+  
+              box.checked = true;
+            }
+          });
+        }
+      });
     });
 
     // Call events for this day and fill in already-completed events
-    fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/${get_day()}/events`).then(res => {
-      if (res.status !== 200){
-        console.log("Error loading events for today");
-      } else {
-        res.json().then(events => {
-          for (const event of events){
-            let box = document.getElementById(`Checkbox Event: ${event["name"]}`);
-            box.checked = true;
-          }
-        });
-      }
-    });
+    // fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/${get_day()}/events`).then(res => {
+    //   if (res.status !== 200){
+    //     console.log("Error loading events for today");
+    //   } else {
+    //     res.json().then(events => {
+    //       for (const event of events){
+    //         console.log(`Checkbox Event: ${event["name"]}`);
+    //         let box = document.getElementById(`Checkbox Event: ${event["name"]}`);
+
+    //         box.checked = true;
+    //       }
+    //     });
+    //   }
+    // });
 
     card_body.appendChild(habits_list);
 
@@ -236,7 +253,6 @@ function create_habit(habit, parent) {
       }
     })();
   });
-
   // what the habit name is called 
   const label = document.createElement("label");
   label.classList.add("custom-control-label");
@@ -244,6 +260,9 @@ function create_habit(habit, parent) {
   label.innerText = habit["name"];
   task.appendChild(label);
 
+  task.addEventListener("click", () => {
+    checkbox.click();
+  });
 
 }
 

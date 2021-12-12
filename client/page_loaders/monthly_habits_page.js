@@ -1,33 +1,33 @@
 // dict for the month and their respective # of days 
 const months = {
-  1 : 31,
-  2 : 28,
-  3 : 31,
-  4 : 30,
-  5 : 31,
-  6 : 30,
-  7 : 31,
-  8 : 31,
-  9 : 30,
-  10 : 31,
-  11 : 30,
-  12 : 31
+  1: 31,
+  2: 28,
+  3: 31,
+  4: 30,
+  5: 31,
+  6: 30,
+  7: 31,
+  8: 31,
+  9: 30,
+  10: 31,
+  11: 30,
+  12: 31
 }
 
 // dict for the month name in full
 const month_word = {
-  1 : "Jamuary",
-  2 : "February",
-  3 : "March",
-  4 : "April",
-  5 : "May",
-  6 : "June",
-  7 : "July",
-  8 : "August",
-  9 : "September",
-  10 : "October",
-  11 : "November",
-  12 : "December"
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December"
 }
 
 // helper function to get the current month number
@@ -36,18 +36,14 @@ function get_month() {
   return String(today.getMonth() + 1).padStart(2, '0');
 }
 
+function get_day() {
+  let today = new Date();
+  return today.getDate();
+}
+
 export async function load_monthly_page(parent) {
   (async () => {
-    const month_days = months[get_month];
-
-    // gets habits from eventList and adds them to habit_list to use later on when creating the individual habits
-    let habit_list = {};
-    // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${month_word[get_month]}/events}`);
-    // if(event_response.status !== 200) {
-    //   alert("An error has occured.");
-    // } else {
-    //   habit_list = await event_response.json();
-    // }
+    const month_days = months[get_month()];
 
     // div for the habits page
     const monthly_habits_page = document.createElement("div");
@@ -70,25 +66,49 @@ export async function load_monthly_page(parent) {
 
     add_br(grid_container);
 
-    // adds the habits from habit_list to the page
-    for(let i = 0; i < habit_list.length; i++) {
-      add_habit(grid_container, habit_list[i]["name"], month_days);
-    }
+    fetch(`${window.requestName}/user/${window.user_name}/${month_word[get_month()]}/eventList`).then(res => {
+      if (res.status !== 200) {
+        alert("Error loading events for month");
+      } else {
+        res.json().then(resp => {
+          for (let i = 0; i < resp.length; i++) {
+            add_habit(grid_container, resp[i]["name"], month_days);
+          }
+          console.log("add habit completed");
+          add_br(grid_container);
 
-    add_br(grid_container);
+          // button to go back to the daily page div
+          const daily_page_button = document.createElement("div");
+          daily_page_button.id = "daily-page-button";
+          daily_page_button.classList.add("d-flex", "justify-content-center");
+          grid_container.appendChild(daily_page_button);
+          console.log("Finished daily page button");
+          // formatting for the button
+          const daily_button = document.createElement("button");
+          daily_button.type = "button";
+          daily_button.classList.add("btn", "btn-light");
+          daily_button.innerText = "Daily View";
+          daily_page_button.appendChild(daily_button);
+          console.log("Finished daily button");
 
-    // button to go back to the daily page div
-    const daily_page_button = document.createElement("div");
-    daily_page_button.id = "daily-page-button";
-    daily_page_button.classList.add("d-flex", "justify-content-center");
-    grid_container.appendChild(daily_page_button);
-
-    // formatting for the button
-    const daily_button = document.createElement("button");
-    daily_button.type = "button";
-    daily_button.classList.add("btn", "btn-light");
-    daily_button.innerText = "Daily View";
-    daily_page_button.appendChild(daily_button);
+          // Coloring in completed tasks
+          fetch(`${window.requestName}/user/${window.user_name}/${month_word[get_month()]}/${get_day()}/events`).then(res => {
+            if (res.status !== 200) {
+              console.log("Error loading events for today");
+            } else {
+              res.json().then(events => {
+                for (const event of events) {
+                  console.log(`Event-${event["name"]}-Day-${event["day"]}`);
+                  let box = document.getElementById(`Event-${event["name"]}-Day-${event["day"]}`);
+                  box.style.backgroundColor = "pink";
+                  box.style.color = "black";
+                }
+              });
+            }
+          });
+        });
+      }
+    });
   })();
 
 }
@@ -131,10 +151,11 @@ function add_habit(parent, habit_name, month_days) {
   col_10.appendChild(grid);
 
   // putting the dates into the boxes based on the specific month
-  for(let i = 0; i < month_days; i++) {
+  for (let i = 0; i < month_days; i++) {
     const day = document.createElement("div");
     day.classList.add("day");
-    day.innerText = i < 9 ? `0${i+1}` : i+1;
+    day.id = `Event-${habit_name}-Day-${i + 1}`;
+    day.innerText = i < 9 ? `0${i + 1}` : i + 1;
     grid.appendChild(day);
   }
 }

@@ -99,6 +99,9 @@ async function initialize() {
     document.getElementById("add-habit-sub-button").addEventListener("click", () => load_page("add-page"));
     document.getElementById("add-pic-sub-button").addEventListener("click", () => load_page("add-page"));
 
+    while (document.getElementById("daily-page-button") === null || document.getElementById("monthly-page-button") === null){
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
     // Adding functionality to monthly view button on habits page
     document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));
     document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
