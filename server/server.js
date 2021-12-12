@@ -309,86 +309,179 @@ app.get('/user/:id/date', (req, res) => {
 // ERIN
 // EVENTS
 
+async function userExists(username) {
+    return await user.find({ "username": username }).count() !== 0;
+  }
+  
+  // Helper function to get the userID for a corresponding username.
+async function getUserId(username) {
+    if (await userExists(username)) {
+      const userObject = await user.findOne({"username": username });
+      return userObject._id;
+    }
+    return null;
+}
+  
+
+//to get all completed events 
+// Tested with postman
 app.get('/user/:id/events', (req, res) => {
-    const username = req.params["id"];
-    if(!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
-        res.status(200);
-        eventList.find({userID : id});
-    }
-    res.end();
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            res.status(200);
+            const userId = await getUserId(username);
+            res.json(await events.find({"userID" : userId}).toArray());
+        }
+        res.end();
+    })();
 });
 
-app.post('/user/:id/:date/events/create', (req, res) => {
-    const username = req.params["id"];
-    if(!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
-        if(!date in data["username"]["data"]) {
-            data["username"]["data"][date] = {
-                "images": [],
-                "events": []
+//create a completed event on a specific day used when checkbox is checked off
+// Tested with postman
+app.post('/user/:id/events', (req, res) => {
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        // req.body should look like
+        // {
+        //     eventID: <ObjectId1>,   // id of event that this is an instance of
+        //     name: String,           // name of even tthat this is an instance of
+        //     month: String,          // Month that this specific event occured in. JAN, FEB, MAR, etc. All caps
+        //     day: int32,             // Day that this specific event occured in. 1, 2, 3, 4, etc.
+        //     date: String,           // Date that this specific events this is for. Format: YYYY-mm-dd
+        // }
+        else {
+            const document = req.body;
+            document["userID"] = await getUserId(username);
+            try{
+                await events.insertOne(document);
+                res.status(200);
+                console.log("Event occurence created");
+            } catch (e) {
+                res.status(500);
+                console.log("Err adding event occurence");
+                console.log(e);
             }
         }
-        data["username"]["data"][date] = req.body;
-    }
+        res.end();
+    })();
 });
 
-// app.put('/user/:id/:date/events/update', (req, res) => {
-//     const username = req.params["id"];
-//     if (!(username in data)){
-//         res.status(404);
-//         console.log(`Username ${username} not found`);
-//     }
-//     else {
-        
-//     }
-// });
+//removes completed event from the list, happens when a checkbox is unchecked
+// tested in postman
+app.delete('/user/:id/events', (req, res) => {
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            try {
+                const document = req.body;
+                document["userID"] = await getUserId(username);
+                await events.findOneAndDelete(document);
+                res.status(200);
+            }
+            catch (e) {
+                res.status(500);
+                console.log(e);
+            }
+        }
+        res.end();
+    })();
+});
 
+//get the events completed in a specific month with all details to fill in boxes on monthly page
+// Tested with postman
 app.get('/user/:id/:month/events', (req, res) => {
-    const username = req.params["id"];
-    if(!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
-        res.status(200);
-        eventList.find({userID = id, month = month});
-    }
-    res.end();
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            res.status(200);
+            const userId = await getUserId(username);
+            res.json(await events.find({"userID" : userId, "month": req.params.month}).toArray());
+        }
+        res.end();
+    })();
 });
 
-app.get('/user/:id/date/events', (req, res) => {
-    const username = req.params["id"];
-    if(!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
-        res.status(200);
-        // res.json({"events": data[username]["data"][date]["events"]});
-        events.find({userID : id, date : date, name : events});
-    }
-    res.end();
+//get the completed events for a specific day
+// Tested with postman
+app.get('/user/:id/:month/:day/events', (req, res) => {
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            res.status(200);
+            const userId = await getUserId(username);
+            res.json(await events.find({"userID" : userId, "month": req.params.month, "day": parseInt(req.params.day)}).toArray());
+        }
+        res.end();
+    })();
 });
 
-app.get('/user/:id/date/full_day', (req, res) => {
-    const username = req.params["id"];
-    if(!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    }
-    else {
-        res.status(200);
-        // res.json({"events": data[username]["data"][date]});
-        events.find({userID : id, date : date});
-    }
+//gets the list of events for that specific month, used to make checklist and load sections for monthly and daily pages
+// Tested with postman
+app.get('/user/:id/:month/eventList', (req, res) => {
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            res.status(200);
+            const userId = await getUserId(username);
+            res.json(await eventList.find({"userID" : userId, "month": req.params.month}).toArray());
+        }
+        res.end();
+    })();
 });
+
+// create event that is being tracked for the month
+// Tested with postman
+app.post('/user/:id/eventList', (req, res) => {
+    const username = req.params.id;
+    (async () => {
+        if(!(await userExists(username))) {
+            res.status(404);
+            console.log(`Username ${username} not found`);
+        }
+        else {
+            res.status(200);
+            const document = req.body;
+            document["userID"] = await getUserId(username);
+            try{
+                eventList.insertOne(document);
+                res.status(200);
+                console.log("Event created");
+            } catch (e) {
+                res.status(500);
+                console.log("Err adding event");
+                console.log(e);
+            }
+        }
+        res.end();
+    })();
+});
+
+
 
 
 app.get('/user',

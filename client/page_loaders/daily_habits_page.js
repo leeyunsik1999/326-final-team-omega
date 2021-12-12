@@ -64,7 +64,7 @@ export function load_daily_page(parent) {
     card_body.appendChild(add_habit_sub_button);
     const plus_image = document.createElement("img");
     plus_image.id = "add-button-logo";
-    plus_image.src = "./images/add_logo.png";
+    plus_image.src = "/images/add_logo.png";
     add_habit_sub_button.appendChild(plus_image);
 
     habit_card.appendChild(document.createElement("br"));
@@ -102,6 +102,7 @@ export function load_daily_page(parent) {
     photo_card_container.appendChild(image_row);
 
     // images
+    
 
     const add_pic_sub_button = document.createElement("div");
     add_pic_sub_button.id = "add-pic-sub-button";
@@ -110,7 +111,7 @@ export function load_daily_page(parent) {
 
     const add_button_logo = document.createElement("img");
     add_button_logo.id = "add-button-logo";
-    add_button_logo.src = "./images/add_logo.png";
+    add_button_logo.src = "/images/add_logo.png";
     add_pic_sub_button.appendChild(add_button_logo);
   })();
 }
