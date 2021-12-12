@@ -98,7 +98,7 @@ const app = express();
 
 // express session config
 const session = {
-    secret: process.env.EXPRESS_HASH || 'SECRET', // set this encryption key in Heroku config (never in GitHub)!
+    secret: process.env.EXPRESS_HASH || JSON.parse(fs.readFileSync("secrets.json"))["hash"],
     resave: false,
     saveUninitialized: false
 };
