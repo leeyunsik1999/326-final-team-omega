@@ -100,7 +100,7 @@ function loadHabitDropdown() {
   habitDropdownMenu.classList.add("dropdown-menu");
   habitDropdownMenu.setAttribute("aria-labelledby", "dropdownMenuButton");
   for (let i = 0; i < 12; i++) {
-    habitDropdownMenu.appendChild(loadDropdownItems(i));
+    habitDropdownMenu.appendChild(loadDropdownItems(i, habitDropdownToggle));
   }
 
   habitDropdownToggle.appendChild(habitDropdownMenu);
@@ -109,13 +109,19 @@ function loadHabitDropdown() {
   return habitDropdown;
 }
 
-function loadDropdownItems(month) {
+function loadDropdownItems(month, habitDropdownToggle) {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const dropdownItem = document.createElement("a");
   dropdownItem.classList.add("dropdown-item");
   dropdownItem.setAttribute("href", "#");
   dropdownItem.innerText = months[month];
-
+  
+  // On selection, saves selection to value and changes innerText of dropdown to selected value
+  dropdownItem.addEventListener("click", () => {
+    // Specifically changing text on childNodes[0] so it changes text only, not inner HTML
+    habitDropdownToggle.childNodes[0].nodeValue = dropdownItem.innerText;
+    habitDropdownToggle.value = dropdownItem.innerText;
+  });
   return dropdownItem;
 }
 
