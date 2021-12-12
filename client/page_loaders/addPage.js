@@ -100,7 +100,7 @@ function loadHabitDropdown() {
   habitDropdownMenu.classList.add("dropdown-menu");
   habitDropdownMenu.setAttribute("aria-labelledby", "dropdownMenuButton");
   for (let i = 0; i < 12; i++) {
-    habitDropdownMenu.appendChild(loadDropdownItems(i));
+    habitDropdownMenu.appendChild(loadDropdownItems(i, habitDropdownToggle));
   }
 
   habitDropdownToggle.appendChild(habitDropdownMenu);
@@ -109,13 +109,19 @@ function loadHabitDropdown() {
   return habitDropdown;
 }
 
-function loadDropdownItems(month) {
+function loadDropdownItems(month, habitDropdownToggle) {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const dropdownItem = document.createElement("a");
   dropdownItem.classList.add("dropdown-item");
   dropdownItem.setAttribute("href", "#");
   dropdownItem.innerText = months[month];
 
+  // On selection, saves selection to value and changes innerText of dropdown to selected value
+  dropdownItem.addEventListener("click", () => {
+    // Specifically changing text on childNodes[0] so it changes text only, not inner HTML
+    habitDropdownToggle.childNodes[0].nodeValue = dropdownItem.innerText;
+    habitDropdownToggle.value = dropdownItem.innerText;
+  });
   return dropdownItem;
 }
 
@@ -235,6 +241,8 @@ function loadHabitAddButton() {
   addButton.id = "add-habit-sub-button";
   addButton.classList.add("add-habit-btn");
 
+  addButton.addEventListener("click", addHabit);
+
   return addButton;
 }
 
@@ -252,7 +260,7 @@ async function addImage() {
   document.getElementById("file-caption").value = "";
 
   var today = new Date();
-  const date = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+  const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 
   const endpoint = `${window.requestName}/${window.user_name}/${date}/images/create`;
 
@@ -273,5 +281,36 @@ async function addImage() {
     alert("Image added!");
   } else {
     alert("Failed to add Image!");
+  }
+}
+
+async function addHabit() {
+  const month = document.getElementById("dropdownMenuButton").value;
+  const name = document.getElementById("habit-name").value;
+  if (month === '') {
+    window.alert("Please select a month!");
+  } else if (name === '') {
+    window.alert("Please enter a name for the event!");
+  } else {
+    const endpoint = `${window.requestName}/user/${window.user_name}/eventList`;
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "username": window.user_name,
+        "month": month,
+        "name": name
+      })
+    });
+    if (response.status === 200) {
+      window.alert("Event created!");
+      document.getElementById("habit-name").value = '';
+    } else if (response.status === 404) {
+      window.alert("Username not found!");
+    } else if (response.status === 500) {
+      window.alert("Server error");
+    }
   }
 }

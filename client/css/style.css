@@ -218,6 +218,8 @@
 
 .day {
     border: 2px solid black;
+    background-color: lightgrey;
+    color: lightgrey;
 }
 
 #habit-card {
