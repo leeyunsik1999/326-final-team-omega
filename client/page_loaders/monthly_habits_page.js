@@ -36,7 +36,7 @@ function get_month() {
   return String(today.getMonth() + 1).padStart(2, '0');
 }
 
-export function load_monthly_page(parent) {
+export async function load_monthly_page(parent) {
   (async () => {
     const month_days = months[get_month];
 

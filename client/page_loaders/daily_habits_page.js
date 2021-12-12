@@ -14,7 +14,7 @@ const month_word = {
   12: "December"
 }
 
-export function load_daily_page(parent) {
+export async function load_daily_page(parent) {
   (async () => {
     // create div for the habits page 
     const habits_page = document.createElement("div");
@@ -54,27 +54,32 @@ export function load_daily_page(parent) {
     habits_list.id = "habits-list";
 
     // First create the checkboxes
-    // '/user/:id/:month/eventList'
-    console.log("beep");
-    const event_response = await fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/eventList`);
-    if (event_response.status !== 200) {
-      console.log("Error loading events for month");
-    } else {
-      console.log("boop");
-      const events = await event_response.json();
-      for (const event of events) {
-        create_habit(event, habits_list);
+    fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/eventList`).then(res => {
+      if (res.status !== 200) {
+        console.log("Error loading events for month");
+      } else {
+        res.json().then(events => {
+          for (const event of events) {
+            create_habit(event, habits_list);
+          }
+        });
       }
-    }
-    // const event_response = await fetch(`${window.hostname}/user/${window.user_name}/${get_date()}/events}`)
-    // if(event_response.status !== 200) {
-    //   alert("An error has occured.");
-    // } else {
-    //   const events = await event_response.json();
-    //   for(const event in events) {
-    //     habits_list.appendChild(create_habit(event));
-    //   }
-    // }
+    });
+
+    // Call events for this day and fill in already-completed events
+    fetch(`${window.requestName}/user/${window.user_name}/${get_month()}/${get_day()}/events`).then(res => {
+      if (res.status !== 200){
+        console.log("Error loading events for today");
+      } else {
+        res.json().then(events => {
+          for (const event of events){
+            let box = document.getElementById(`Checkbox Event: ${event["name"]}`);
+            box.checked = true;
+          }
+        });
+      }
+    });
+
     card_body.appendChild(habits_list);
 
     habit_card.appendChild(document.createElement("br"));
@@ -94,6 +99,7 @@ export function load_daily_page(parent) {
     // button that redirects to monthly page
     const monthly_page_button = document.createElement("div");
     monthly_page_button.id = "monthly-page-button";
+    console.log("monthy page created");
     monthly_page_button.classList.add("d-flex", "justify-content-center");
     habit_card.appendChild(monthly_page_button);
     const button = document.createElement("button");
@@ -178,7 +184,6 @@ function get_date_text() {
 
 // creates the individual checkboxes for each habit under the to do list
 function create_habit(habit, parent) {
-  console.log(habit);
   // checkbox div
   const task = document.createElement("div");
   task.classList.add("custom-control", "custom-checkbox");
@@ -186,7 +191,7 @@ function create_habit(habit, parent) {
 
   // specific checkbox for the habit
   const checkbox = document.createElement("input");
-  checkbox.id = habit["name"];
+  checkbox.id = `Checkbox Event: ${habit["name"]}`;
   checkbox.type = "checkbox";
   checkbox.classList.add("custom-control-input");
   checkbox.value = habit["_id"];
@@ -208,6 +213,7 @@ function create_habit(habit, parent) {
           "month": habit["month"],
           "name": habit["name"],
           "eventID": habit["_id"],
+          "day": get_day(),
           "date": get_date()
         })
       });

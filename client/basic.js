@@ -44,9 +44,9 @@ async function initialize() {
 
     load_main_page(page);
 
-    load_daily_page(page);
+    await load_daily_page(page);
 
-    load_monthly_page(page);
+    await load_monthly_page(page);
     await loadImagesPage(page);
     loadAddPage(page);
 
@@ -101,8 +101,8 @@ async function initialize() {
 
     // Adding functionality to monthly view button on habits page
     document.getElementById("daily-page-button").addEventListener("click", () => load_page("habits-page"));
-    //document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
-
+    document.getElementById("monthly-page-button").addEventListener("click", () => load_page("monthly-habits-page"));
+    
     load_page("main-page");
 }
 
