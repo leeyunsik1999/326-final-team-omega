@@ -3,6 +3,7 @@
 ._*
 .Spotlight-V100
 .Trashes
+.eslintrc.json
 
 # Project specific
 server/uploads

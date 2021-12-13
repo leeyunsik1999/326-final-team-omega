@@ -1,10 +1,10 @@
 'use strict';
 
-import { readFileSync, readdirSync, writeFileSync, existsSync, unlinkSync, renameSync, mkdirSync} from 'fs';
-import { parse}  from "path";
-import { database, events, eventList, images, user, counters} from './server.js';
+import {existsSync, unlinkSync, renameSync, mkdirSync} from 'fs';
+import {parse} from 'path';
+import {images} from './server.js';
 import * as userApi from './user-api.js';
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 // ##############################################################################################
 // ######################################## MongoDB APIs ########################################
@@ -22,7 +22,7 @@ export async function createUserImageHandler(req, res) {
 
   if (img === undefined) {
     res.writeHead(404, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('No image was uploaded.');
     return;
@@ -34,26 +34,25 @@ export async function createUserImageHandler(req, res) {
       try {
         await createUserImage(username, img, date, caption, name);
         res.writeHead(200, {
-          'Content-Type': 'text/plain'
+          'Content-Type': 'text/plain',
         });
         res.end('Picture added!');
       } catch (err) {
         console.log(err);
         res.writeHead(500, {
-          'Content-Type': 'text/plain'
+          'Content-Type': 'text/plain',
         });
         res.end('Internal server error');
       }
-    }
-    else {
+    } else {
       res.writeHead(404, {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
       });
       res.end('User does not exist');
     }
   } else {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Unsupported image file type.');
   }
@@ -72,14 +71,13 @@ export async function deleteUserImageHandler(req, res) {
   try {
     await deleteUserImage(username, pictureId);
     res.writeHead(200, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Picture deleted.');
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -95,7 +93,7 @@ export async function updateUserImageHandler(req, res) {
 
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -105,14 +103,13 @@ export async function updateUserImageHandler(req, res) {
   try {
     await updateImageDetails(pictureId, name, caption);
     res.writeHead(200, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Picture details updated!');
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -127,7 +124,7 @@ export async function updateUserImageCaptionHandler(req, res) {
 
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -137,14 +134,13 @@ export async function updateUserImageCaptionHandler(req, res) {
   try {
     await updateImageCaption(pictureId, caption);
     res.writeHead(200, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Picture caption updated!');
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -159,7 +155,7 @@ export async function updateUserImageNameHandler(req, res) {
 
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -169,14 +165,13 @@ export async function updateUserImageNameHandler(req, res) {
   try {
     await updateImageName(pictureId, name);
     res.writeHead(200, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Picture name updated!');
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -189,7 +184,7 @@ export async function getUserImageDetailsHandler(req, res) {
   const username = req.params.user;
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -199,16 +194,16 @@ export async function getUserImageDetailsHandler(req, res) {
   try {
     const details = await getAllImagesForAUser(username);
     res.writeHead(200, {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
     const paths = {
-      images: details
+      images: details,
     };
     res.end(JSON.stringify(paths));
   } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -223,7 +218,7 @@ export async function getUserImagesByDateHandler(req, res) {
 
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -233,7 +228,7 @@ export async function getUserImagesByDateHandler(req, res) {
   try {
     const images = await getUserImagesByDate(username, date);
     res.writeHead(200, {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
     const pictureDates = {};
     const dateStr = date.toString();
@@ -242,7 +237,7 @@ export async function getUserImagesByDateHandler(req, res) {
   } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -257,7 +252,7 @@ export async function getUserImageHandler(req, res) {
 
   if (!userApi.userExists(username)) {
     res.writeHead(400, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('User does not exist');
 
@@ -267,13 +262,13 @@ export async function getUserImageHandler(req, res) {
   try {
     const image = await getUserImage(username, pictureId);
     res.writeHead(200, {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
     res.end(JSON.stringify(image.path));
   } catch (err) {
     console.log(err);
     res.writeHead(500, {
-      'Content-Type': 'text/plain'
+      'Content-Type': 'text/plain',
     });
     res.end('Internal server error.');
   }
@@ -302,22 +297,22 @@ async function getImagePathsForAllImagesForAUser(username) {
 
 // Get all images for a user.
 async function getAllImagesForAUser(username) {
-    const userId = await userApi.getUserId(username);
-    if (userId === null) {
-      throw new Error(`User (${username}) does not exist.`);
-    }
+  const userId = await userApi.getUserId(username);
+  if (userId === null) {
+    throw new Error(`User (${username}) does not exist.`);
+  }
 
-    return await images.find({"userID": userId}).toArray();
+  return await images.find({'userID': userId}).toArray();
 }
 
 // Get all images for a user for a specific date.
 async function getUserImagesByDate(username, date) {
-    const userId = await userApi.getUserId(username);
-    if (userId === null) {
-      throw new Error(`User (${username}) does not exist.`);
-    }
+  const userId = await userApi.getUserId(username);
+  if (userId === null) {
+    throw new Error(`User (${username}) does not exist.`);
+  }
 
-    return await images.find({"userID": userId, "date": date}).toArray();
+  return await images.find({'userID': userId, 'date': date}).toArray();
 }
 
 // Get an image from a user based on its ID
@@ -327,7 +322,7 @@ async function getUserImage(username, id) {
     throw new Error(`User (${username}) does not exist.`);
   }
 
-  return await images.findOne({"userID": userId, "_id": id}).toArray();
+  return await images.findOne({'userID': userId, '_id': id}).toArray();
 }
 
 // Delete all images for a user.
@@ -337,17 +332,16 @@ async function deleteUserPictures(username) {
     throw new Error(`User (${username}) does not exist.`);
   }
 
-  const imgs = await images.find({"userID": userId}).toArray();
+  const imgs = await images.find({'userID': userId}).toArray();
 
   const imgPaths = [];
   for (let i = 0; i < imgs.length; i++) {
     imgPaths.push(imgs[i].path);
-
   }
 
-  await images.deleteMany({"userID": userId});
+  await images.deleteMany({'userID': userId});
 
-  return imgPaths
+  return imgPaths;
 }
 
 // Delete all images for a user for a specific date.
@@ -357,17 +351,16 @@ async function deleteUserPicturesByDate(username, date) {
     throw new Error(`User (${username}) does not exist.`);
   }
 
-  const imgs = await images.find({"userID": userId}).toArray();
+  const imgs = await images.find({'userID': userId}).toArray();
 
   const imgPaths = [];
   for (let i = 0; i < imgs.length; i++) {
     imgPaths.push(imgs[i].path);
-
   }
 
-  await images.deleteMany({"userID": userId, "date": date});
+  await images.deleteMany({'userID': userId, 'date': date});
 
-  return imgPaths
+  return imgPaths;
 }
 
 // Delete an image from the database for a user based on its ID.
@@ -379,7 +372,7 @@ async function deleteUserImage(username, id) {
 
   const imgID = new ObjectId(id);
   try {
-    const deletedImg = await images.findOneAndDelete({"_id": imgID});
+    const deletedImg = await images.findOneAndDelete({'_id': imgID});
     // Return the path to the image to be deleted.
     deleteFileIfExists(`../client/images/user_images/${imgID}.jpg`);
   } catch (err) {
@@ -404,12 +397,12 @@ async function createUserImage(username, img, date, caption, name) {
   }
 
   const result = await images.insertOne({
-    "_id": objID,
-    "userID": userId,
-    "path": path,
-    "date": date,
-    "caption": caption,
-    "name": name
+    '_id': objID,
+    'userID': userId,
+    'path': path,
+    'date': date,
+    'caption': caption,
+    'name': name,
   });
 
   return result.insertedId;
@@ -417,17 +410,17 @@ async function createUserImage(username, img, date, caption, name) {
 
 async function updateImageName(id, name) {
   const imgID = new ObjectId(id);
-  await images.updateOne({"_id": imgID}, {$set: {"name": name}});
+  await images.updateOne({'_id': imgID}, {$set: {'name': name}});
 }
 
 async function updateImageCaption(id, caption) {
   const imgID = new ObjectId(id);
-  await images.updateOne({"_id": imgID}, {$set: {"caption": caption}});
+  await images.updateOne({'_id': imgID}, {$set: {'caption': caption}});
 }
 
 async function updateImageDetails(id, name, caption) {
   const imgID = new ObjectId(id);
-  await images.updateOne({"_id": imgID}, {$set: {"name": name, "caption": caption}});
+  await images.updateOne({'_id': imgID}, {$set: {'name': name, 'caption': caption}});
 }
 
 // Move the file if it exists.
@@ -440,7 +433,7 @@ function moveFileIfExists(src, dest) {
 // Create a dir if it doesn't exists.
 function createDirIfDNE(path) {
   if (!existsSync(path)) {
-    mkdirSync(path, { recursive: true });
+    mkdirSync(path, {recursive: true});
   }
 }
 

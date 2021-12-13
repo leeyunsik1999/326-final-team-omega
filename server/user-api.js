@@ -1,6 +1,6 @@
 'use strict';
 
-import {database, events, eventList, images, user, counters} from './server.js';
+import {user} from './server.js';
 
 // Helper function to see if a user exists.
 export async function userExists(username) {

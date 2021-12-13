@@ -35,7 +35,7 @@ images document{
     _id: <ObjectId1>,       // id of this image. Should also be used as the image's name with ObjectId.
     userID: <ObjectId1>,    // id of the user that this image belongs to
     path: String,           // Path to the specific image.
-    date: String,           // Date that this specific image is for. Format: YYYY-mm-dd
+    date: String,           // Date that this specific image is for65. Format: YYYY-mm-dd
     name: String,           // User-specified name for this image.
     caption: String         // Additional details specified by the user for this image.
 }
@@ -47,14 +47,6 @@ user document{
     theme: int32            // user's theme setting.
 }
 ```
-<<<<<<< HEAD
-# Work Distribution
-## Yun's Responsibility
-
-## Erin's Responsibility
-
-## Swar's Responsibility
-=======
 
 
 # Labor Breakdown
@@ -71,4 +63,3 @@ user document{
 - Converted all theme and event-related API to utilize the database for event storage/fetching.
 
 In summary, we just converted our API's to utilize the database instead of our dummy data, as finishing the API's was a part of our milestone 2 objectives.
->>>>>>> c3672ff2b01804024f211d139d93f51a317c79e5

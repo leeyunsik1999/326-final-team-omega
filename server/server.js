@@ -2,10 +2,6 @@
 import * as fs from 'fs';
 
 import * as picApi from './pictures-api.js';
-//import * as passport from 'passport';
-//import * as passport_local from 'passport-local';
-
-import * as path from 'path';
 
 import passport from 'passport';
 import * as passport_local from 'passport-local';
@@ -245,23 +241,6 @@ app.post('/register', (req, res) => {
     })();
 });
 
-// THEME RELATED APIs
-
-// Fetch user's theme id
-app.get('/user/:id/theme', (req, res) => {
-    const id = req.params["id"];
-    user.findOne({ '_id': new ObjectId(id) }).then(document => {
-        if (document === null) {
-            res.status(404);
-            console.log(`User not found`);
-        } else {
-            res.status(200);
-            res.json({ "theme": document["theme"] });
-            console.log(`Theme for user found`);
-        }
-    });
-});
-
 // ERIN
 // EVENTS
 
@@ -280,7 +259,6 @@ async function getUserId(username) {
   
 
 //to get all completed events 
-// Tested with postman
 app.get('/user/:id/events', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -298,7 +276,6 @@ app.get('/user/:id/events', (req, res) => {
 });
 
 //create a completed event on a specific day used when checkbox is checked off
-// Tested with postman
 app.post('/user/:id/events', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -324,7 +301,6 @@ app.post('/user/:id/events', (req, res) => {
 });
 
 //removes completed event from the list, happens when a checkbox is unchecked
-// tested in postman
 app.delete('/user/:id/events', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -349,7 +325,6 @@ app.delete('/user/:id/events', (req, res) => {
 });
 
 //get the events completed in a specific month with all details to fill in boxes on monthly page
-// Tested with postman
 app.get('/user/:id/:month/events', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -367,7 +342,6 @@ app.get('/user/:id/:month/events', (req, res) => {
 });
 
 //get the completed events for a specific day
-// Tested with postman
 app.get('/user/:id/:month/:day/events', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -385,7 +359,6 @@ app.get('/user/:id/:month/:day/events', (req, res) => {
 });
 
 //gets the list of events for that specific month, used to make checklist and load sections for monthly and daily pages
-// Tested with postman
 app.get('/user/:id/:month/eventList', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -403,7 +376,6 @@ app.get('/user/:id/:month/eventList', (req, res) => {
 });
 
 // create event that is being tracked for the month
-// Tested with postman
 app.post('/user/:id/eventList', (req, res) => {
     const username = req.params.id;
     (async () => {
@@ -428,9 +400,6 @@ app.post('/user/:id/eventList', (req, res) => {
         res.end();
     })();
 });
-
-
-
 
 app.get('/user',
     checkLoggedIn,
