@@ -262,50 +262,6 @@ app.get('/user/:id/theme', (req, res) => {
     });
 });
 
-// Set user's theme ID
-// TODO: Update this with database implementation
-app.put('/user/:id/theme/set', (req, res) => {
-    const username = req.params["id"];
-    const theme = req.body["id"];
-
-    // Broken-- need to use database, not data
-    if (!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    } else if (typeof (theme) !== "number") {
-        console.log(`${theme} is INVALID`);
-        res.status(400);
-    } else {
-        res.status(200);
-        console.log("Theme successfully overwritten");
-        data[username]["theme"] = theme;
-    }
-    res.end();
-});
-
-
-
-
-// DATE related API's
-
-// Fetches dates that user has data for
-app.get('/user/:id/date', (req, res) => {
-    const username = req.params["id"];
-
-    // Broken-- need to use database, not data
-    if (!(username in data)) {
-        res.status(404);
-        console.log(`Username ${username} not found`);
-    } else {
-        res.status(200);
-        res.json({
-            "dates": Object.keys(data[username]["data"])
-        })
-    }
-    res.end();
-});
-
-
 // ERIN
 // EVENTS
 
@@ -350,14 +306,6 @@ app.post('/user/:id/events', (req, res) => {
             res.status(404);
             console.log(`Username ${username} not found`);
         }
-        // req.body should look like
-        // {
-        //     eventID: <ObjectId1>,   // id of event that this is an instance of
-        //     name: String,           // name of even tthat this is an instance of
-        //     month: String,          // Month that this specific event occured in. JAN, FEB, MAR, etc. All caps
-        //     day: int32,             // Day that this specific event occured in. 1, 2, 3, 4, etc.
-        //     date: String,           // Date that this specific events this is for. Format: YYYY-mm-dd
-        // }
         else {
             const document = req.body;
             document["userID"] = await getUserId(username);
