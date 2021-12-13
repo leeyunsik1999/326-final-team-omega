@@ -64,8 +64,8 @@
 }
 
 #toolbar-logo{
-    width: 96px;
-    height: 96px;
+    max-width: 72px;
+    max-height: 72px;
 }
 
 #toolbar-logo-button{

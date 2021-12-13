@@ -56,12 +56,18 @@ function append_logo_row(toolbar){
     logo_toolbar.appendChild(logo_button);
     logo_button.id = "toolbar-logo-button";
     logo_button.classList.add("main-button", "d-flex", "justify-content-center", "align-items-center", "flex-column");
+    
+    const logo_image = document.createElement("img");
+    logo_image.classList.add("toolbar-logo");
+    logo_image.src="/images/logo.png";
 
-    const logo_button_text = document.createElement("div"); // Holder for logo button text
-    logo_button_text.id = "logo-text-placeholder";
-    logo_button_text.innerText = "LOGO";
+    logo_button.appendChild(logo_image);
 
-    logo_button.appendChild(logo_button_text);
+    // const logo_button_text = document.createElement("div"); // Holder for logo button text
+    // logo_button_text.id = "logo-text-placeholder";
+    // logo_button_text.innerText = "LOGO";
+
+    // logo_button.appendChild(logo_button_text);
 
 
 
